@@ -11,13 +11,47 @@ function App() {
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const addMessage = (message) => {
+  const addMessage = async (message) => {
+    // 1. Update the state immediately with the new message
+    setMessages(prevMessages => [...prevMessages, message]);
+  
+    // 2. Start loading state
     setIsLoading(true);
-    // Simulate a delay to fetch data (replace this with your actual data fetching logic)
-    setTimeout(() => {
-      setMessages([...messages, message]);
-      setIsLoading(false); // Set loading to false once data is fetched
-    }, 2000); // Simulating a 2-second delay
+  
+    try {
+      // 3. Make the API call to your Flask backend
+      const response = await fetch('/process', { 
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ question: message.question }) // Assuming message has a 'question' property
+      });
+  
+      if (!response.ok) {
+        throw new Error(`API request failed with status ${response.status}`);
+      }
+  
+      const data = await response.json();
+  
+      // 4. Update the message object with the response data
+      setMessages(prevMessages => {
+        const updatedMessages = [...prevMessages];
+        updatedMessages[updatedMessages.length - 1] = {
+          ...updatedMessages[updatedMessages.length - 1],
+          answer: data.answer, // Assuming your API returns 'answer'
+          source_documents: data.source_documents // Assuming your API returns 'source_documents'
+        };
+        return updatedMessages;
+      });
+  
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      // Handle the error appropriately (e.g., display an error message)
+    } finally {
+      // 5. Stop loading state
+      setIsLoading(false);
+    }
   };
 
   return (
