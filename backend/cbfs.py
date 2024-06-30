@@ -51,10 +51,10 @@ No_Doc = "Die hinterlegten Leitlinien Dokumente enthalten keine Informationen zu
 
 # Prompt template definition for the chatbot
 template = """
-Only base your response on the context. 
-The answer should not exceed 8 sentences.
-context: {context}
-question: {question}
+Beantworte die Frage ausschließlich basierend auf dem gegebenen Kontext. 
+Die Antwort sollte 8 Sätze nicht überschreiten.
+Kontext: {context}
+Frage: {question}
 :"""
 prompt = PromptTemplate.from_template(template)
 

@@ -71,9 +71,9 @@ const SourcesOutput = ({ sourceDocuments, isLoading }) => {
   const renderSourceDocuments = () => {
     return sourceDocuments.map((doc, index) => {
       const { formattedTitle, registerNumber, entwicklungsstufe } = formatTitleAndExtractRegisterNumber(doc.metadata.Source.split('/').pop().replace('.pdf', ''));
-      const awmfRegisterUrl = registerNumber !== "Unbekannt"
-        ? `https://register.awmf.org/de/leitlinien/detail/${registerNumber}`
-        : null;
+
+      // Access href directly from metadata
+      const awmfRegisterUrl = doc.metadata.href; 
 
       // Handle multiple pages
       const pages = Array.isArray(doc.metadata.Page) ? doc.metadata.Page.join(', ') : doc.metadata.Page;
@@ -82,7 +82,7 @@ const SourcesOutput = ({ sourceDocuments, isLoading }) => {
         <div key={index} style={{ marginBottom: '1rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', marginBottom: '0.5rem' }}>
             <Typography fontWeight="bold" component="span" style={{ marginRight: '0.5rem' }}>Gültigkeit:</Typography>
-            {renderValidityButton(doc.metadata.Gültigkeit)} {/* Gültigkeit button added back */}
+            {renderValidityButton(doc.metadata.Gültigkeit)} 
           </div>
           <div style={{ display: 'flex', alignItems: 'center', marginBottom: '0.5rem' }}>
             <Typography fontWeight="bold" component="span" style={{ marginRight: '0.5rem' }}>Entwicklungsstufe:</Typography>
