@@ -4,33 +4,30 @@
   height: 100vh;
   width: 100vw;
   overflow-x: hidden;
+  padding: 0; /* Remove padding to make full width */
 }
 
 .chat-layout {
   display: flex;
-  height: 100vh; /* Full height of the viewport */
+  flex-direction: column; /* Changed from row to column */
+  height: 100%; /* Full height */
+  width: 100%; /* Full width */
 }
 
-.left-side {
+.left-side, .right-side {
   display: flex;
   flex-direction: column;
-  flex-basis: 50%; /* Adjust the width as necessary */
-  overflow-y: auto; /* If you want scrolling */
+  width: 100%; /* Full width */
+  overflow-y: auto; /* Enable scrolling if needed */
+  padding: 0; /* Remove padding to make full width */
 }
 
-.right-side {
-  flex-basis: 50%; /* Adjust the width as necessary */
-  overflow-y: auto; /* If you want scrolling */
-}
-
-/* Style for the menu button */
 .menu-button {
   /* Add your styles here */
 }
 
-/* Media query for tablets and up */
 @media (min-width: 768px) {
   .App {
-    flex-direction: row; /* Horizontal layout for larger devices */
+    flex-direction: column; /* Changed from row to column for larger devices */
   }
 }

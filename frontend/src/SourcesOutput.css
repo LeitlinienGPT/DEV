@@ -5,11 +5,12 @@
     flex-wrap: wrap;
     padding-top: 1rem;
     padding-bottom: 1rem;
+    width: 100%; /* Full width */
   }
   
   .sources-card {
-    max-width: 1200px;
-    width: 95%;
+    max-width: 100%; /* Full width */
+    width: 100%; /* Full width */
     border-radius: 16px;
     box-shadow: 3;
     background-color: var(--joy-palette-primary-box); /* Ensure this matches your theme */
@@ -32,7 +33,6 @@
     margin-top: 0.5rem;
   }
   
-  /* Add wrapping styles for table cells */
   .table-cell {
     word-wrap: break-word;
     white-space: normal;

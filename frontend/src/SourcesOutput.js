@@ -99,13 +99,13 @@ const SourcesOutput = ({ sourceDocuments, isLoading }) => {
 
   return (
     <div className="sources-output">
-      <Card className="sources-card">
+      <Card className="sources-card" sx={{ width: '100%' }}>
         <CardContent>
-          <Typography level="title-md" className="sources-title">
+          <Typography level="title-md" sx={{ fontSize: '1.5rem', marginBottom: '1rem' }}>
             Quellen
           </Typography>
-          <Sheet>
-            <Table>
+          <Sheet sx={{ width: '100%' }}>
+            <Table sx={{ width: '100%' }}>
               <thead>
                 <tr>
                   <th>Gültigkeit</th>

@@ -3,23 +3,15 @@ import './ChatOutput.css';
 import Card from '@mui/joy/Card';
 import CardContent from '@mui/joy/CardContent';
 import Typography from '@mui/joy/Typography';
-import Skeleton from '@mui/joy/Skeleton'; // Import Skeleton
+import Skeleton from '@mui/joy/Skeleton';
 
-const ChatOutput = ({ messages, isLoading }) => { // Add isLoading prop
+const ChatOutput = ({ messages, isLoading }) => {
   const lastMessage = messages[messages.length - 1] || {};
   const question = lastMessage.text || "Bitte stelle eine Frage, um eine Antwort zu erhalten.";
 
-  // Ausgabe in der Browser-Konsole
-  // console.log("Alle Nachrichten:", messages);
-  // console.log("Letzte Nachricht:", lastMessage);
-  // console.log("Antwort:", answer);
-  // console.log("Quellendokumente:", sourceDocuments);
-
-
   return (
-    <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap', paddingTop: '1rem', paddingBottom: '1rem' }}>
-      {/* Fragekarte */}
-      <Card sx={{ maxWidth: 900, width: '95%', borderRadius: '16px', boxShadow: 3}}>
+    <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap', paddingTop: '1rem', paddingBottom: '1rem', width: '100%' }}>
+      <Card sx={{ width: '100%', borderRadius: '16px', boxShadow: 3 }}>
         <CardContent>
           <Typography level="title-md" sx={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Frage</Typography>
           <Typography level="body2" color="text.secondary" component="div" sx={{ textAlign: 'justify' }}>
@@ -28,8 +20,7 @@ const ChatOutput = ({ messages, isLoading }) => { // Add isLoading prop
         </CardContent>
       </Card>
 
-      {/* Antwortkarte with Skeleton */}
-      <Card sx={{ maxWidth: 900, width: '95%', borderRadius: '16px', boxShadow: 3}}>
+      <Card sx={{ width: '100%', borderRadius: '16px', boxShadow: 3 }}>
         <CardContent>
           <Typography level="title-md" sx={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Antwort</Typography>
           {isLoading ? (

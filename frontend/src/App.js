@@ -40,13 +40,11 @@ function App() {
       ]);
     } catch (error) {
       console.error('Error fetching data:', error);
-      // Handle the error appropriately (e.g., display an error message)
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Use useEffect to control when SourcesOutput renders
   useEffect(() => {
     console.log('Messages array updated:', messages);
   }, [messages]);
@@ -61,17 +59,12 @@ function App() {
         }}
       >
         <div className="chat-layout">
-          <div className="left-side">
-            <Chat addMessage={addMessage} setMessages={setMessages} messages={messages} />
-            <ChatOutput messages={messages} isLoading={isLoading} />
-          </div>
-          <div className="right-side">
-            {/* Pass the source documents to SourcesOutput */}
-            <SourcesOutput
-              sourceDocuments={messages.flatMap((msg) => msg.source_documents)}
-              isLoading={isLoading}
-            />
-          </div>
+          <Chat addMessage={addMessage} setMessages={setMessages} messages={messages} />
+          <ChatOutput messages={messages} isLoading={isLoading} />
+          <SourcesOutput
+            sourceDocuments={messages.flatMap((msg) => msg.source_documents)}
+            isLoading={isLoading}
+          />
         </div>
       </div>
     </ThemeProvider>
