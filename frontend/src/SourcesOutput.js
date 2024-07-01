@@ -7,10 +7,30 @@ import Link from '@mui/joy/Link';
 import Button from '@mui/joy/Button';
 import Skeleton from '@mui/joy/Skeleton';
 
+const formatTitleAndExtractRegisterNumber = (source) => {
+  console.log('Source:', source);
+  const parts = source.split('_');
+  console.log('Source parts:', parts);
+
+  // Extract Registernummer
+  let registerNumber = parts[0];
+  if (registerNumber && registerNumber.length >= 6) {
+    registerNumber = `${registerNumber.substring(0, 3)}-${registerNumber.substring(4, 7)}`;
+  } else {
+    registerNumber = 'Unbekannt';
+  }
+
+  // Extract Entwicklungsstufe
+  const entwicklungsstufe = parts[1];
+
+  // Extract title (everything after the second underscore), preserving hyphens
+  const formattedTitle = parts.slice(2).join(' ');
+
+  return { formattedTitle, registerNumber, entwicklungsstufe };
+};
+
 const SourcesOutput = ({ sourceDocuments, isLoading }) => {
-  const [showContentStates, setShowContentStates] = useState(
-    Array(sourceDocuments.length).fill(false)
-  );
+  const [showContentStates, setShowContentStates] = useState(Array(sourceDocuments.length).fill(false));
 
   useEffect(() => {
     console.log('Source documents updated:', sourceDocuments);
@@ -20,37 +40,9 @@ const SourcesOutput = ({ sourceDocuments, isLoading }) => {
   console.log('Raw sourceDocuments:', sourceDocuments);
   console.log('Type of sourceDocuments:', typeof sourceDocuments);
 
-  const formatTitleAndExtractRegisterNumber = (source) => {
-    console.log('Source:', source);
-    const parts = source.split('_');
-    console.log('Source parts:', parts);
-
-    // Extract Registernummer
-    let registerNumber = parts[0];
-    if (registerNumber && registerNumber.length >= 6) {
-      registerNumber = `${registerNumber.substring(
-        0,
-        3
-      )}-${registerNumber.substring(4, 7)}`;
-    } else {
-      registerNumber = 'Unbekannt';
-    }
-
-    // Extract Entwicklungsstufe
-    const entwicklungsstufe = parts[1];
-
-    // Extract title (everything after the second underscore), preserving hyphens
-    const formattedTitle = parts.slice(2).join(' ');
-
-    return { formattedTitle, registerNumber, entwicklungsstufe };
-  };
-
   const renderValidityButton = (validity) => {
     return (
-      <Button
-        variant="soft"
-        color={validity === 'Gültig' ? 'success' : 'danger'}
-      >
+      <Button variant="soft" color={validity === 'Gültig' ? 'success' : 'danger'}>
         {validity}
       </Button>
     );
@@ -80,172 +72,55 @@ const SourcesOutput = ({ sourceDocuments, isLoading }) => {
     );
   };
 
+  const renderMetadataField = (label, value) => (
+    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '0.5rem' }}>
+      <Typography fontWeight="bold" component="span" style={{ marginRight: '0.5rem' }}>
+        {label}:
+      </Typography>
+      {value}
+    </div>
+  );
+
   const renderSourceDocuments = () => {
-    // Check if sourceDocuments is defined and not empty
     if (sourceDocuments && sourceDocuments.length > 0) {
       return sourceDocuments.map((doc, index) => {
-        // Optional Chaining to prevent errors if doc or metadata is undefined
-        const {
-          formattedTitle,
-          registerNumber,
-          entwicklungsstufe,
-        } = formatTitleAndExtractRegisterNumber(
-          doc?.metadata?.Source || ''
-        );
+        const { metadata } = doc;
+        const { formattedTitle, registerNumber, entwicklungsstufe } = formatTitleAndExtractRegisterNumber(metadata?.Source || '');
+        const { Gültigkeit, href: awmfRegisterUrl, Page, Fachgesellschaft } = metadata || {};
 
-        // Access href directly from metadata
-        const awmfRegisterUrl = doc?.metadata?.href;
-
-        // Handle multiple pages
-        const pages = Array.isArray(doc?.metadata?.Page)
-          ? doc.metadata.Page.join(', ')
-          : doc.metadata.Page;
+        const pages = Array.isArray(Page) ? Page.join(', ') : Page;
 
         return (
           <div key={index} style={{ marginBottom: '1rem' }}>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                marginBottom: '0.5rem',
-              }}
-            >
-              <Typography
-                fontWeight="bold"
-                component="span"
-                style={{ marginRight: '0.5rem' }}
-              >
-                Gültigkeit:
-              </Typography>
-              {renderValidityButton(doc?.metadata?.Gültigkeit)}
-            </div>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                marginBottom: '0.5rem',
-              }}
-            >
-              <Typography
-                fontWeight="bold"
-                component="span"
-                style={{ marginRight: '0.5rem' }}
-              >
-                Entwicklungsstufe:
-              </Typography>
-              <span>{entwicklungsstufe}</span>
-            </div>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                marginBottom: '0.5rem',
-              }}
-            >
-              <Typography
-                fontWeight="bold"
-                component="span"
-                style={{ marginRight: '0.5rem' }}
-              >
-                Registernummer:
-              </Typography>
-              {awmfRegisterUrl ? (
-                <Link
-                  href={awmfRegisterUrl}
-                  target="_blank"
-                  variant="outlined"
-                >
-                  {registerNumber}
-                </Link>
-              ) : (
-                <span>{registerNumber}</span>
-              )}
-            </div>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                marginBottom: '0.5rem',
-              }}
-            >
-              <Typography
-                fontWeight="bold"
-                component="span"
-                style={{ marginRight: '0.5rem' }}
-              >
-                Titel:
-              </Typography>
-              <span>{formattedTitle}</span>
-            </div>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                marginBottom: '0.5rem',
-              }}
-            >
-              <Typography
-                fontWeight="bold"
-                component="span"
-                style={{ marginRight: '0.5rem' }}
-              >
-                Seite (im PDF):
-              </Typography>
-              <span>{pages}</span>
-            </div>
-            {doc?.metadata?.Fachgesellschaft && (
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  marginBottom: '0.5rem',
-                }}
-              >
-                <Typography
-                  fontWeight="bold"
-                  component="span"
-                  style={{ marginRight: '0.5rem' }}
-                >
-                  Fachgesellschaften:
-                </Typography>
-                <span>{doc.metadata.Fachgesellschaft.join(', ')}</span>
-              </div>
-            )}
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                marginBottom: '0.5rem',
-              }}
-            >
-              <Typography
-                fontWeight="bold"
-                component="span"
-                style={{ marginRight: '0.5rem' }}
-              >
+            {renderMetadataField('Gültigkeit', renderValidityButton(Gültigkeit))}
+            {renderMetadataField('Entwicklungsstufe', entwicklungsstufe)}
+            {renderMetadataField('Registernummer', awmfRegisterUrl ? (
+              <Link href={awmfRegisterUrl} target="_blank" variant="outlined">
+                {registerNumber}
+              </Link>
+            ) : (
+              <span>{registerNumber}</span>
+            ))}
+            {renderMetadataField('Titel', formattedTitle)}
+            {renderMetadataField('Seite (im PDF)', pages)}
+            {Fachgesellschaft && renderMetadataField('Fachgesellschaften', Fachgesellschaft.join(', '))}
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '0.5rem' }}>
+              <Typography fontWeight="bold" component="span" style={{ marginRight: '0.5rem' }}>
                 Inhalt:
               </Typography>
-              <Button
-                onClick={() => toggleShowContent(index)}
-                variant="outlined"
-                size="small"
-              >
+              <Button onClick={() => toggleShowContent(index)} variant="outlined" size="small">
                 Mehr Informationen
               </Button>
             </div>
             {showContentStates[index] && (
-              <div style={{ marginTop: '0.5rem' }}>
-                {doc.page_content}
-              </div>
+              <div style={{ marginTop: '0.5rem' }}>{doc.page_content}</div>
             )}
             <hr />
           </div>
         );
       });
-    } else {
-      // Return null or a loading indicator if sourceDocuments is empty
-      return null; // Or <p>Loading sources...</p>
     }
+    return null;
   };
 
   return (
@@ -269,36 +144,20 @@ const SourcesOutput = ({ sourceDocuments, isLoading }) => {
         }}
       >
         <CardContent>
-          <Typography
-            level="title-md"
-            sx={{ fontSize: '1.5rem', marginBottom: '1rem' }}
-          >
+          <Typography level="title-md" sx={{ fontSize: '1.5rem', marginBottom: '1rem' }}>
             Quellen
           </Typography>
           {isLoading ? (
-            // Show skeletons while loading
             <>
               {renderSourceDocumentSkeleton()}
               {renderSourceDocumentSkeleton()}
             </>
           ) : sourceDocuments && sourceDocuments.length > 0 ? (
-            // Render source documents only if data is available
-            <Typography
-              variant="body2"
-              color="text.secondary"
-              component="div"
-              sx={{ textAlign: 'justify' }}
-            >
+            <Typography variant="body2" color="text.secondary" component="div" sx={{ textAlign: 'justify' }}>
               {renderSourceDocuments()}
             </Typography>
           ) : (
-            // Show a message if no data is found
-            <Typography
-              variant="body2"
-              color="text.secondary"
-              component="div"
-              sx={{ textAlign: 'justify' }}
-            >
+            <Typography variant="body2" color="text.secondary" component="div" sx={{ textAlign: 'justify' }}>
               Keine Quellen gefunden
             </Typography>
           )}
