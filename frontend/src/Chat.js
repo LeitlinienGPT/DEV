@@ -93,7 +93,7 @@ const Chat = ({ addMessage, setMessages, messages }) => {
   return (
     <Box className="chat"> 
       <div className="chat-header">
-        <h2>LeitlinienGPT</h2>
+        <h2>Demoversion: LeitlinienGPT</h2>
       </div>
       
       {/* Commented out the Select and Option components */}

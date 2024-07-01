@@ -83,13 +83,14 @@ const SourcesOutput = ({ sourceDocuments, isLoading }) => {
 
   const renderSourceDocuments = () => {
     if (sourceDocuments && sourceDocuments.length > 0) {
-      return sourceDocuments.map((doc, index) => {
+      const recentSourceDocuments = sourceDocuments.slice(-3);  // Get the last three elements
+      return recentSourceDocuments.map((doc, index) => {
         const { metadata } = doc;
         const { formattedTitle, registerNumber, entwicklungsstufe } = formatTitleAndExtractRegisterNumber(metadata?.Source || '');
         const { Gültigkeit, href: awmfRegisterUrl, Page, Fachgesellschaft } = metadata || {};
-
+  
         const pages = Array.isArray(Page) ? Page.join(', ') : Page;
-
+  
         return (
           <div key={index} style={{ marginBottom: '1rem' }}>
             {renderMetadataField('Gültigkeit', renderValidityButton(Gültigkeit))}
