@@ -1,0 +1,40 @@
+.sources-output {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+  
+  .sources-card {
+    max-width: 1200px;
+    width: 95%;
+    border-radius: 16px;
+    box-shadow: 3;
+    background-color: var(--joy-palette-primary-box); /* Ensure this matches your theme */
+  }
+  
+  .sources-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .sources-content {
+    text-align: justify;
+  }
+  
+  .source-skeleton {
+    margin-bottom: 1rem;
+  }
+  
+  .content-section {
+    margin-top: 0.5rem;
+  }
+  
+  /* Add wrapping styles for table cells */
+  .table-cell {
+    word-wrap: break-word;
+    white-space: normal;
+    overflow: hidden;
+  }
