@@ -33,7 +33,7 @@ function App() {
       setMessages((prevMessages) => [
         ...prevMessages,
         {
-          ...message,
+          text: message.text,
           answer: data.answer,
           source_documents: data.source_documents,
         },

@@ -7,7 +7,7 @@ import Skeleton from '@mui/joy/Skeleton'; // Import Skeleton
 
 const ChatOutput = ({ messages, isLoading }) => { // Add isLoading prop
   const lastMessage = messages[messages.length - 1] || {};
-  const question = lastMessage.question || "Bitte stelle eine Frage, um eine Antwort zu erhalten.";
+  const question = lastMessage.text || "Bitte stelle eine Frage, um eine Antwort zu erhalten.";
 
   // Ausgabe in der Browser-Konsole
   // console.log("Alle Nachrichten:", messages);
