@@ -39,19 +39,22 @@ def process_text():
     data = request.json
 
     if not data:
+        print("No data provided in the request")  # Log the error
         return jsonify({"error": "No data provided"}), 400
 
+    if 'question' not in data:
+        print("Missing 'question' field in the request payload")  # Log the error
+        return jsonify({"error": "Missing 'question' field in the request payload"}), 400
+
     try:
-        if 'question' in data:
-            response = langchain_instance.convchain(data['question'])
-            print("API:PY:", response)
-            print("API:PY:", jsonify(response))
-            return jsonify(response), 200
-        else:
-            return jsonify({"error": "No question provided"}), 400
+        response = langchain_instance.convchain(data['question'])
+        print("API:PY:", response)
+        print("API:PY:", jsonify(response))
+        return jsonify(response), 200
 
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        print(f"An error occurred: {str(e)}")  # Log the error
+        return jsonify({"error": f"An error occurred: {str(e)}"}), 500
 
 @app.route('/clear_history', methods=['POST'])
 def clear_history():
