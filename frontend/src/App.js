@@ -53,14 +53,15 @@ function App() {
   return (
     <ThemeProvider theme={joyTheme}>
       <CssBaseline />
-      <Header /> 
-      <div
+      <Header />
+      <div 
         className="app-container"
-        style={{
-          backgroundColor: joyTheme.colorSchemes.light.palette.primary.background,
+        sx={{ 
+          bgcolor: 'background.body', 
+          minHeight: '100vh',          
         }}
       >
-        <div className="chat-layout">
+        <div className="chat-layout"> 
           <Chat addMessage={addMessage} setMessages={setMessages} messages={messages} />
           <ChatOutput messages={messages} isLoading={isLoading} />
           <SourcesOutput

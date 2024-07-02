@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import './Chat.css';
 import Box from '@mui/joy/Box';
-import Button from '@mui/joy/Button';
 import Textarea from '@mui/joy/Textarea';
 import CircularProgress from '@mui/joy/CircularProgress';
 import IconButton from '@mui/joy/IconButton';
@@ -53,41 +52,11 @@ const Chat = ({ addMessage, setMessages, messages }) => {
     }
   };
 
-  const handleClearChat = async () => {
-    try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/clear_history`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      console.log(data.message);
-      setMessages([]);
-    } catch (error) {
-      console.error('Error clearing the chat history:', error);
-    }
-  };
-
   return (
-    <Box className="chat">
+    <Box className="chat" sx={{ bgcolor: 'background.body' }}> 
       <div className="chat-header">
-        <h1>Demoversion: LeitlinienGPT</h1>
-        <div style={{ padding: '10px', backgroundColor: '#f0f0f0', borderRadius: '8px', marginTop: '10px' }}>
-          <p>
-            Wir sind <a href="https://www.linkedin.com/in/paolo-oppelt/" target="_blank" rel="noopener noreferrer">Paolo</a>, <a href="https://www.linkedin.com/in/tim-strohmeyer-437a76185/" target="_blank" rel="noopener noreferrer">Tim</a> und <a href="https://www.linkedin.com/in/m-hamm/" target="_blank" rel="noopener noreferrer">Marlon</a>. Mit LeitlinienGPT möchten wir Ärzten dabei helfen, schnell und effizient auf Informationen aus den AWMF-Leitlinien zuzugreifen. Unser Ziel ist es, diese Plattform kontinuierlich auszubauen und weitere wertvolle Quellen einzubinden. Ihr Feedback ist uns dabei besonders wichtig. Kontaktieren Sie uns gerne unter: <a href="mailto:leitliniengpt@gmail.com">leitliniengpt@gmail.com</a>.
-          </p>
-        </div>
+        <h1 style={{ color: 'text.primary' }}>Demoversion: LeitlinienGPT</h1> 
       </div>
-
-      <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', justifyContent: 'space-between', variant: "soft" }}>
-        <Button variant="solid" sx={{ marginY: 2 }} onClick={handleClearChat}>Chat Leeren</Button>
-      </Box>
 
       <Box component="form" className="chat-input-container" onSubmit={handleSubmit} sx={{ display: 'flex', gap: 2 }}>
         <Textarea
@@ -102,7 +71,7 @@ const Chat = ({ addMessage, setMessages, messages }) => {
             flexGrow: 1,
             resize: 'none',
             width: '100%',
-            color: 'black',
+            color: 'text.primary',
             minWidth: '800px',
             minHeight: '100px'
           }}

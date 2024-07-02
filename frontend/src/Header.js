@@ -13,6 +13,7 @@ import Menu from "@mui/joy/Menu";
 import MenuButton from "@mui/joy/MenuButton";
 import MenuItem from "@mui/joy/MenuItem";
 import ListDivider from "@mui/joy/ListDivider";
+import ReloadButton from './ReloadButton';
 
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import DarkModeRoundedIcon from "@mui/icons-material/DarkModeRounded";
@@ -55,6 +56,31 @@ function ColorSchemeToggle() {
 }
 
 export default function Header() {
+    const handleClearChat = async () => {
+        try {
+          const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/clear_history`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+    
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+    
+          const data = await response.json();
+          console.log(data.message);
+          // Assuming you have a way to update the messages state in your main App component
+          // You'll need to pass a function to update the messages from Header to App
+          // For example: setMessages([]); 
+        } catch (error) {
+          console.error('Error clearing the chat history:', error);
+        }
+      };
+    
+
+
   return (
     <Box
       sx={{
@@ -72,7 +98,13 @@ export default function Header() {
           <LanguageRoundedIcon />
         </IconButton>
         {/* You can replace these buttons with your app's navigation */}
-        <Button variant="plain" color="neutral" href="#email">Email</Button>
+        <Button 
+            variant="plain" 
+            color="neutral" 
+            onClick={() => window.open('mailto:leitliniengpt@gmail.com', '_blank')}
+            >
+            Feedback an das Gründerteam
+        </Button>
         <Button variant="plain" color="neutral" href="#team">Team</Button>
         <Button variant="plain" color="neutral" href="#files">Files</Button>
       </Stack>
@@ -90,6 +122,9 @@ export default function Header() {
           sx={{ display: { xs: "none", sm: "inline-flex" } }}
         />
         <ColorSchemeToggle />
+        <Tooltip title="Chat Historie und Quellen zurücksetzen" variant="outlined">
+            <ReloadButton handleClearChat={handleClearChat} /> 
+        </Tooltip>
         <Dropdown>
           <MenuButton
             variant="plain"
@@ -125,10 +160,10 @@ export default function Header() {
                 />
                 <Box sx={{ ml: 1.5 }}>
                   <Typography level="title-sm" textColor="text.primary">
-                    Rick Sanchez
+                    Demo Nutzer
                   </Typography>
                   <Typography level="body-xs" textColor="text.tertiary">
-                    rick@email.com
+                    demo_nutzer@gmail.com
                   </Typography>
                 </Box>
               </Box>

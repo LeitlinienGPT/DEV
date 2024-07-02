@@ -11,7 +11,7 @@ const ChatOutput = ({ messages, isLoading }) => {
 
   return (
     <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap', paddingTop: '1rem', paddingBottom: '1rem', width: '100%' }}>
-      <Card sx={{ width: '100%', borderRadius: '16px', boxShadow: 3 }}>
+      <Card sx={{ width: '100%', borderRadius: '16px', boxShadow: 3, bgcolor: 'background.surface' }}> 
         <CardContent>
           <Typography level="title-md" sx={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Frage</Typography>
           <Typography level="body2" color="text.secondary" component="div" sx={{ textAlign: 'justify' }}>
@@ -20,7 +20,7 @@ const ChatOutput = ({ messages, isLoading }) => {
         </CardContent>
       </Card>
 
-      <Card sx={{ width: '100%', borderRadius: '16px', boxShadow: 3 }}>
+      <Card sx={{ width: '100%', borderRadius: '16px', boxShadow: 3, bgcolor: 'background.surface' }}> 
         <CardContent>
           <Typography level="title-md" sx={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Antwort</Typography>
           {isLoading ? (
