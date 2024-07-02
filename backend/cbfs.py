@@ -19,10 +19,9 @@ import param  # For defining parameters in classes
 load_dotenv('KEYs.env')
 
 # API keys and credentials
-os.environ['OPENAI_API_KEY'] = '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'
 openai.api_key = os.environ['OPENAI_API_KEY']
+PINECONE_API_KEY = os.getenv('PINECONE_API_KEY') 
 os.environ['COHERE_API_KEY'] = 'zrketPyUV8RuiWl33O4iOEelRhgB7MXeb8qPTnoI'
-os.environ['PINECONE_API_KEY'] = '910ba215-c358-45e8-97be-b80e87d82cf1'
 
 # Pinecone Index
 pinecone = Pinecone()
