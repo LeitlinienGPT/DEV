@@ -6,6 +6,7 @@ import SourcesOutput from './SourcesOutput';
 import './App.css';
 import { ThemeProvider } from '@mui/joy';
 import joyTheme from './joyTheme';
+import Header from './Header';
 
 function App() {
   const [messages, setMessages] = useState([]);
@@ -40,13 +41,11 @@ function App() {
       ]);
     } catch (error) {
       console.error('Error fetching data:', error);
-      // Handle the error appropriately (e.g., display an error message)
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Use useEffect to control when SourcesOutput renders
   useEffect(() => {
     console.log('Messages array updated:', messages);
   }, [messages]);
@@ -54,24 +53,21 @@ function App() {
   return (
     <ThemeProvider theme={joyTheme}>
       <CssBaseline />
-      <div
+      <Header />
+      <div 
         className="app-container"
-        style={{
-          backgroundColor: joyTheme.colorSchemes.light.palette.primary.background,
+        sx={{ 
+          bgcolor: 'background.body', 
+          minHeight: '100vh',          
         }}
       >
-        <div className="chat-layout">
-          <div className="left-side">
-            <Chat addMessage={addMessage} setMessages={setMessages} messages={messages} />
-            <ChatOutput messages={messages} isLoading={isLoading} />
-          </div>
-          <div className="right-side">
-            {/* Pass the source documents to SourcesOutput */}
-            <SourcesOutput
-              sourceDocuments={messages.flatMap((msg) => msg.source_documents)}
-              isLoading={isLoading}
-            />
-          </div>
+        <div className="chat-layout"> 
+          <Chat addMessage={addMessage} setMessages={setMessages} messages={messages} />
+          <ChatOutput messages={messages} isLoading={isLoading} />
+          <SourcesOutput
+            sourceDocuments={messages.flatMap((msg) => msg.source_documents)}
+            isLoading={isLoading}
+          />
         </div>
       </div>
     </ThemeProvider>
