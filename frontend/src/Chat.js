@@ -3,62 +3,47 @@ import './Chat.css';
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
 import Textarea from '@mui/joy/Textarea';
-// import Select from '@mui/joy/Select'; // Commented out Select import
-// import Option from '@mui/joy/Option'; // Commented out Option import
-import CircularProgress from '@mui/material/CircularProgress'; // Import CircularProgress for loading indicator
+import CircularProgress from '@mui/joy/CircularProgress';
+import IconButton from '@mui/joy/IconButton';
+import SendIcon from '@mui/icons-material/Send';
 
 const Chat = ({ addMessage, setMessages, messages }) => {
   const [input, setInput] = useState('');
-  // const [dropdownValue, setDropdownValue] = useState(''); // Commented out dropdown state
-  const [isSubmitting, setIsSubmitting] = useState(false); // State to track if a request is being processed
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log('Input:', input.trim());
-  
-    // Log the environment variable
-    console.log('Backend URL from env:', process.env.REACT_APP_BACKEND_URL);
-  
-    // Construct the URL and log it
     console.log('Backend URL from env:', process.env.REACT_APP_BACKEND_URL);
     const requestUrl = `${process.env.REACT_APP_BACKEND_URL}/process`;
     console.log('Request URL:', requestUrl);
     console.log('Environment variable:', process.env.REACT_APP_BACKEND_URL);
-  
+
     if (input.trim()) {
       setIsSubmitting(true);
       try {
-        // Log before sending the request
         console.log('Sending request to:', requestUrl);
-
-        // Log the body before sending the request (unformatted)
         console.log('Sending request body (unformatted):', JSON.stringify({ question: input.trim() }));
-
-        // Log the body before sending the request (formatted)
         console.log('Sending request body (formatted):', JSON.stringify({ question: input.trim() }, null, 2));
-  
+
         const response = await fetch(requestUrl, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json', // Sending as JSON
+            'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ question: input.trim() }), // JSON body
+          body: JSON.stringify({ question: input.trim() }),
         });
-  
-        // Log the HTTP response status
+
         console.log('Response status:', response.status);
-  
+
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-  
+
         const data = await response.json();
-  
-        // Log the received data
         console.log('Received data:', data);
-  
+
         addMessage({ text: input.trim(), ...data });
-  
         setInput('');
       } catch (error) {
         console.error('Error sending the query to the backend:', error);
@@ -76,15 +61,14 @@ const Chat = ({ addMessage, setMessages, messages }) => {
           'Content-Type': 'application/json',
         },
       });
-  
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-  
+
       const data = await response.json();
-      console.log(data.message); // "History cleared"
-  
-      setMessages([]); 
+      console.log(data.message);
+      setMessages([]);
     } catch (error) {
       console.error('Error clearing the chat history:', error);
     }
@@ -92,16 +76,16 @@ const Chat = ({ addMessage, setMessages, messages }) => {
 
   return (
     <Box className="chat">
-  <div className="chat-header">
-    <h1>Demoversion: LeitlinienGPT</h1>
-    <div style={{ padding: '10px', backgroundColor: '#f0f0f0', borderRadius: '8px', marginTop: '10px' }}>
-      <p>
-      Wir sind <a href="https://www.linkedin.com/in/paolo-oppelt/" target="_blank" rel="noopener noreferrer">Paolo</a>, <a href="https://www.linkedin.com/in/tim-strohmeyer-437a76185/" target="_blank" rel="noopener noreferrer">Tim</a> und <a href="https://www.linkedin.com/in/m-hamm/" target="_blank" rel="noopener noreferrer">Marlon</a>. Mit LeitlinienGPT möchten wir Ärzten dabei helfen, schnell und effizient auf Informationen aus den AWMF-Leitlinien zuzugreifen. Unser Ziel ist es, diese Plattform kontinuierlich auszubauen und weitere wertvolle Quellen einzubinden. Ihr Feedback ist uns dabei besonders wichtig. Kontaktieren Sie uns gerne unter: <a href="mailto:leitliniengpt@gmail.com">leitliniengpt@gmail.com</a>.
-      </p>
-    </div>
-  </div>
+      <div className="chat-header">
+        <h1>Demoversion: LeitlinienGPT</h1>
+        <div style={{ padding: '10px', backgroundColor: '#f0f0f0', borderRadius: '8px', marginTop: '10px' }}>
+          <p>
+            Wir sind <a href="https://www.linkedin.com/in/paolo-oppelt/" target="_blank" rel="noopener noreferrer">Paolo</a>, <a href="https://www.linkedin.com/in/tim-strohmeyer-437a76185/" target="_blank" rel="noopener noreferrer">Tim</a> und <a href="https://www.linkedin.com/in/m-hamm/" target="_blank" rel="noopener noreferrer">Marlon</a>. Mit LeitlinienGPT möchten wir Ärzten dabei helfen, schnell und effizient auf Informationen aus den AWMF-Leitlinien zuzugreifen. Unser Ziel ist es, diese Plattform kontinuierlich auszubauen und weitere wertvolle Quellen einzubinden. Ihr Feedback ist uns dabei besonders wichtig. Kontaktieren Sie uns gerne unter: <a href="mailto:leitliniengpt@gmail.com">leitliniengpt@gmail.com</a>.
+          </p>
+        </div>
+      </div>
 
-      <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', justifyContent: 'space-between', variant: "soft"}}>
+      <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', justifyContent: 'space-between', variant: "soft" }}>
         <Button variant="solid" sx={{ marginY: 2 }} onClick={handleClearChat}>Chat Leeren</Button>
       </Box>
 
@@ -112,18 +96,20 @@ const Chat = ({ addMessage, setMessages, messages }) => {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           variant="soft"
-          minRows={2}
-          maxRows={6}
+          minRows={3}
+          maxRows={8}
           sx={{
             flexGrow: 1,
             resize: 'none',
             width: '100%',
             color: 'black',
+            minWidth: '800px',
+            minHeight: '100px'
           }}
         />
-        <Button type="submit" variant="solid" size="md" disabled={isSubmitting}>
-          {isSubmitting ? <CircularProgress size={24} /> : 'Senden'}
-        </Button>
+        <IconButton type="submit" color="primary" disabled={isSubmitting}>
+          {isSubmitting ? <CircularProgress size="24" /> : <SendIcon />}
+        </IconButton>
       </Box>
     </Box>
   );

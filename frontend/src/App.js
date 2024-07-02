@@ -6,6 +6,7 @@ import SourcesOutput from './SourcesOutput';
 import './App.css';
 import { ThemeProvider } from '@mui/joy';
 import joyTheme from './joyTheme';
+import Header from './Header';
 
 function App() {
   const [messages, setMessages] = useState([]);
@@ -52,6 +53,7 @@ function App() {
   return (
     <ThemeProvider theme={joyTheme}>
       <CssBaseline />
+      <Header /> 
       <div
         className="app-container"
         style={{

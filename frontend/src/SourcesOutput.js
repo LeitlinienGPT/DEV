@@ -129,7 +129,7 @@ const SourcesOutput = ({ sourceDocuments, isLoading }) => {
                   <tr>
                     <td colSpan={7}>
                       <Typography variant="body2" color="text.secondary" className="sources-content">
-                        Keine Quellen gefunden
+                       Bitte stelle eine Frage, damit hier Quellen angezeigt werden.
                       </Typography>
                     </td>
                   </tr>
