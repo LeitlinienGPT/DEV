@@ -5,7 +5,6 @@ import Typography from "@mui/joy/Typography";
 import IconButton from "@mui/joy/IconButton";
 import Stack from "@mui/joy/Stack";
 import Avatar from "@mui/joy/Avatar";
-import Input from "@mui/joy/Input";
 import Button from "@mui/joy/Button";
 import Tooltip from "@mui/joy/Tooltip";
 import Dropdown from "@mui/joy/Dropdown";
@@ -15,7 +14,6 @@ import MenuItem from "@mui/joy/MenuItem";
 import ListDivider from "@mui/joy/ListDivider";
 import ReloadButton from './ReloadButton';
 
-import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import DarkModeRoundedIcon from "@mui/icons-material/DarkModeRounded";
 import LightModeRoundedIcon from "@mui/icons-material/LightModeRounded";
 import LanguageRoundedIcon from "@mui/icons-material/LanguageRounded";
@@ -106,21 +104,8 @@ export default function Header() {
             Feedback an das Gründerteam
         </Button>
         <Button variant="plain" color="neutral" href="#team">Team</Button>
-        <Button variant="plain" color="neutral" href="#files">Files</Button>
       </Stack>
       <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
-        <Input
-          size="sm"
-          variant="outlined"
-          placeholder="Search anything…"
-          startDecorator={<SearchRoundedIcon color="primary" />}
-          endDecorator={
-            <IconButton variant="outlined" color="neutral">
-              <Typography level="title-sm">⌘ K</Typography>
-            </IconButton>
-          }
-          sx={{ display: { xs: "none", sm: "inline-flex" } }}
-        />
         <ColorSchemeToggle />
         <Tooltip title="Chat Historie und Quellen zurücksetzen" variant="outlined">
             <ReloadButton handleClearChat={handleClearChat} /> 
