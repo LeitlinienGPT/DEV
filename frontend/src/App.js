@@ -1,9 +1,10 @@
+import 'resize-observer-polyfill';
 import React, { useState, useEffect } from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import Chat from './Chat';
 import ChatOutput from './ChatOutput';
 import SourcesOutput from './SourcesOutput';
-import { ThemeProvider } from '@mui/joy';
+import { CssVarsProvider } from '@mui/joy/styles'; // Ensure this is imported correctly
 import joyTheme from './joyTheme';
 import Header from './Header';
 import About from './About';
@@ -54,7 +55,7 @@ function App() {
   }, [messages]);
 
   return (
-    <ThemeProvider theme={joyTheme}>
+    <CssVarsProvider theme={joyTheme}>
       <CssBaseline />
       <Header />
       <ErrorBoundary>
@@ -74,7 +75,7 @@ function App() {
           </Routes>
         </div>
       </ErrorBoundary>
-    </ThemeProvider>
+    </CssVarsProvider>
   );
 }
 

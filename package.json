@@ -5,5 +5,8 @@
   "workspaces": [
     "frontend",
     "mylib"
-  ]
+  ],
+  "dependencies": {
+    "resize-observer-polyfill": "^1.5.1"
+  }
 }
