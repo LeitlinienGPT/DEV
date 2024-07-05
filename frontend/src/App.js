@@ -3,10 +3,14 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Chat from './Chat';
 import ChatOutput from './ChatOutput';
 import SourcesOutput from './SourcesOutput';
-import './App.css';
 import { ThemeProvider } from '@mui/joy';
 import joyTheme from './joyTheme';
 import Header from './Header';
+import About from './About';
+// import MyComponent from 'mylib/dist/MyComponent'; // Comment out or remove this line
+import { Routes, Route } from 'react-router-dom';
+import './App.css';
+import ErrorBoundary from './ErrorBoundary'; // Import the ErrorBoundary component
 
 function App() {
   const [messages, setMessages] = useState([]);
@@ -54,22 +58,30 @@ function App() {
     <ThemeProvider theme={joyTheme}>
       <CssBaseline />
       <Header />
-      <div 
-        className="app-container"
-        sx={{ 
-          bgcolor: 'background.body', 
-          minHeight: '100vh',          
-        }}
-      >
-        <div className="chat-layout"> 
-          <Chat addMessage={addMessage} setMessages={setMessages} messages={messages} />
-          <ChatOutput messages={messages} isLoading={isLoading} />
-          <SourcesOutput
-            sourceDocuments={messages.flatMap((msg) => msg.source_documents)}
-            isLoading={isLoading}
-          />
+      <ErrorBoundary>
+        <div 
+          className="app-container"
+          sx={{ 
+            bgcolor: 'background.body', 
+            minHeight: '100vh',          
+          }}
+        >
+          <Routes>
+            <Route path="/" element={
+              <div className="chat-layout"> 
+                <Chat addMessage={addMessage} setMessages={setMessages} messages={messages} />
+                <ChatOutput messages={messages} isLoading={isLoading} />
+                <SourcesOutput
+                  sourceDocuments={messages.flatMap((msg) => msg.source_documents)}
+                  isLoading={isLoading}
+                />
+                {/* <MyComponent /> */} {/* Remove or comment out this line */}
+              </div>
+            } />
+            <Route path="/about" element={<About />} />
+          </Routes>
         </div>
-      </div>
+      </ErrorBoundary>
     </ThemeProvider>
   );
 }

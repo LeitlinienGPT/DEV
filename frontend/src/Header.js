@@ -12,6 +12,7 @@ import Menu from "@mui/joy/Menu";
 import MenuButton from "@mui/joy/MenuButton";
 import MenuItem from "@mui/joy/MenuItem";
 import ListDivider from "@mui/joy/ListDivider";
+import { useNavigate } from 'react-router-dom';
 import ReloadButton from './ReloadButton';
 
 import DarkModeRoundedIcon from "@mui/icons-material/DarkModeRounded";
@@ -54,30 +55,30 @@ function ColorSchemeToggle() {
 }
 
 export default function Header() {
-    const handleClearChat = async () => {
-        try {
-          const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/clear_history`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          });
-    
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-    
-          const data = await response.json();
-          console.log(data.message);
-          // Assuming you have a way to update the messages state in your main App component
-          // You'll need to pass a function to update the messages from Header to App
-          // For example: setMessages([]); 
-        } catch (error) {
-          console.error('Error clearing the chat history:', error);
-        }
-      };
-    
+  const navigate = useNavigate();
+  
+  const handleClearChat = async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/clear_history`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log(data.message);
+      // Assuming you have a way to update the messages state in your main App component
+      // You'll need to pass a function to update the messages from Header to App
+      // For example: setMessages([]); 
+    } catch (error) {
+      console.error('Error clearing the chat history:', error);
+    }
+  };
 
   return (
     <Box
@@ -103,7 +104,7 @@ export default function Header() {
             >
             Feedback an das Gründerteam
         </Button>
-        <Button variant="plain" color="neutral" href="#team">Team</Button>
+        <Button variant="plain" color="neutral" onClick={() => navigate('/about')}>About</Button>
       </Stack>
       <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
         <ColorSchemeToggle />
