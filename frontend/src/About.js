@@ -24,19 +24,19 @@ const bioData = [
     name: 'Marlon',
     bio: 'Hello, this is the bio of Marlon. I am a member of SearchAid. I specialize in various fields and love to contribute to the team.',
     linkedin: 'https://www.linkedin.com/in/m-hamm/',
-    avatar: 'https://media.licdn.com/dms/image/C4E03AQFMBpTEUvjKfQ/profile-displayphoto-shrink_200_200/0/1643726150373?e=1693440000&v=beta&t=sxKwzDdcuA5PRPYzJZnRJTC3Soh-RkG6tNR1rEflC_E'
+    avatar: 'marlon.jpg'
   },
   {
     name: 'Tim',
     bio: 'Hello, this is the bio of Tim. I am a member of SearchAid. I specialize in various fields and love to contribute to the team.',
     linkedin: 'https://www.linkedin.com/in/tim-strohmeyer-437a76185/',
-    avatar: 'https://media.licdn.com/dms/image/C4E03AQF-HZwvUqOR9g/profile-displayphoto-shrink_200_200/0/1627398939381?e=1693440000&v=beta&t=FnTNTMZ_DJhz-GH9AdpB4Y8RX4OeK9G2H6YX_vhQHIQ'
+    avatar: 'tim.jpg'
   },
   {
     name: 'Paolo',
-    bio: 'Hello, this is the bio of Paolo. I am a member of SearchAid. I specialize in various fields and love to contribute to the team.',
+    bio: 'Top-Kompetenzen: Unternehmensstrategie, Entrepreneurship & Innovation Paolo ist Junior Investment Manager bei UnternehmerTUM, wo er B2B Deep Tech Start-ups unterstützt. Er hat umfassende Erfahrung in Unternehmensstrategie und Innovation durch seine Tätigkeit bei Microsoft und Eight Advisory. Neben seiner Rolle als Investment Manager ist er Mitgründer von SearchAid, einem innovativen Startup. Paolo hat einen Master in Management und Technologie von der TU München und einen Bachelor in Internationaler Betriebswirtschaftslehre von der Rotterdam School of Management. Seine fundierten Kenntnisse in Unternehmensstrategie und technologischer Innovation machen ihn zu einem wertvollen Mitglied des Gründungsteams.',
     linkedin: 'https://www.linkedin.com/in/paolo-oppelt/',
-    avatar: 'https://media.licdn.com/dms/image/C4E03AQF-ZGdYHG3ohA/profile-displayphoto-shrink_200_200/0/1583337480194?e=1693440000&v=beta&t=O88zXeN6fpl4FvTVfyXwSKAEN39DOJ3QThz3QOaGy8k'
+    avatar: '/paolo.jpg'
   },
 ];
 
@@ -72,7 +72,7 @@ function WerWirSind() {
           <Card sx={{ width: '100%', mb: 4 }}>
             <CardOverflow>
               <CardCover>
-                <img src="" alt="" />
+                <img src="team.jpg" alt="" />
               </CardCover>
               <CardContent>
                 <Typography level="h2" fontSize="lg" sx={{ mb: 0.5 }}>
