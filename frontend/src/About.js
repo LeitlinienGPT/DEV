@@ -1,4 +1,3 @@
-// About.js
 import * as React from 'react'; 
 import { useState } from 'react'; 
 import { CssVarsProvider } from '@mui/joy/styles';
@@ -18,7 +17,86 @@ import Layout from './Layout';
 import Navigation from './Navigation';
 
 const peopleData = [
-  // ... (your peopleData array)
+  {
+    name: 'Andrew Smith',
+    position: 'UI Designer',
+    avatar2x: 'https://i.pravatar.cc/80?img=7',
+    companyData: [
+      {
+        role: 'Senior designer',
+        name: 'Dribbble',
+        logo: 'https://www.vectorlogo.zone/logos/dribbble/dribbble-icon.svg',
+        years: '2015-now',
+      },
+      {
+        role: 'Designer',
+        name: 'Pinterest',
+        logo: 'https://www.vectorlogo.zone/logos/pinterest/pinterest-icon.svg',
+        years: '2012-2015',
+      },
+    ],
+    skills: ['UI design', 'Illustration'],
+  },
+  {
+    name: 'John Doe',
+    position: 'Frontend Developer',
+    avatar2x: 'https://i.pravatar.cc/80?img=8',
+    companyData: [
+      {
+        role: 'UI Engineer',
+        name: 'Google',
+        logo: 'https://www.vectorlogo.zone/logos/google/google-icon.svg',
+        years: '2018-now',
+      },
+      {
+        role: 'Frontend Developer',
+        name: 'Amazon',
+        logo: 'https://www.vectorlogo.zone/logos/amazon/amazon-icon.svg',
+        years: '2015-2018',
+      },
+    ],
+    skills: ['HTML', 'CSS', 'JavaScript'],
+  },
+  {
+    name: 'Alice Johnson',
+    position: 'Product Manager',
+    avatar2x: 'https://i.pravatar.cc/80?img=9',
+    companyData: [
+      {
+        role: 'Product Manager',
+        name: 'Microsoft',
+        logo: 'https://www.vectorlogo.zone/logos/microsoft/microsoft-icon.svg',
+        years: '2016-now',
+      },
+      {
+        role: 'Product Analyst',
+        name: 'IBM',
+        logo: 'https://www.vectorlogo.zone/logos/ibm/ibm-icon.svg',
+        years: '2013-2016',
+      },
+    ],
+    skills: ['Product Management', 'Market Analysis'],
+  },
+  {
+    name: 'Eva Brown',
+    position: 'Graphic Designer',
+    avatar2x: 'https://i.pravatar.cc/80?img=10',
+    companyData: [
+      {
+        role: 'Art Director',
+        name: 'Adobe',
+        logo: 'https://www.vectorlogo.zone/logos/adobe/adobe-icon.svg',
+        years: '2019-now',
+      },
+      {
+        role: 'Graphic Designer',
+        name: 'Apple',
+        logo: 'https://www.vectorlogo.zone/logos/apple/apple-icon.svg',
+        years: '2016-2019',
+      },
+    ],
+    skills: ['Graphic Design', 'Illustration'],
+  },
 ];
 
 export default function About() {
@@ -63,7 +141,7 @@ export default function About() {
                     <Avatar
                       variant="outlined"
                       src={person.avatar2x}
-                      srcSet={`${person.avatar2x} 2x`} // Corrected line
+                      srcSet={`${person.avatar2x} 2x`}
                       sx={{ borderRadius: '50%' }}
                     />
                     <Stack>
@@ -77,7 +155,7 @@ export default function About() {
                   <Typography level="title-sm" sx={{ mb: 1 }}>
                     Rolle
                   </Typography>
-                  <List sx={{ '–ListItemDecorator-size': '40px', gap: 2 }}>
+                  <List sx={{ '--ListItemDecorator-size': '40px', gap: 2 }}>
                     {person.companyData.map((company, companyIndex) => (
                       <ListItem key={companyIndex} sx={{ alignItems: 'flex-start' }}>
                         <ListItemDecorator
@@ -88,12 +166,12 @@ export default function About() {
                               height: '100%',
                               width: '1px',
                               bgcolor: 'divider',
-                              left: 'calc(var(–ListItem-paddingLeft) + 12px)',
+                              left: 'calc(var(--ListItem-paddingLeft) + 12px)',
                               top: '50%',
                             },
                           }}
                         >
-                          <Avatar src={company.logo} sx={{ '–Avatar-size': '24px' }} />
+                          <Avatar src={company.logo} sx={{ '--Avatar-size': '24px' }} />
                         </ListItemDecorator>
                         <ListItemContent>
                           <Typography fontWeight="lg">{company.role}</Typography>

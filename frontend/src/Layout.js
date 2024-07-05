@@ -143,7 +143,7 @@ function SideDrawer(props) {
   );
 }
 
-export default {
+const Layout = {
   Root,
   Header,
   SideNav,
@@ -151,3 +151,5 @@ export default {
   SideDrawer,
   Main,
 };
+
+export default Layout;
