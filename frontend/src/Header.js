@@ -18,6 +18,7 @@ import ReloadButton from './ReloadButton';
 import DarkModeRoundedIcon from "@mui/icons-material/DarkModeRounded";
 import LightModeRoundedIcon from "@mui/icons-material/LightModeRounded";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded"; // Import the home icon
+import EmailRoundedIcon from "@mui/icons-material/EmailRounded"; // Import the email icon
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
 import HelpRoundedIcon from "@mui/icons-material/HelpRounded";
 import OpenInNewRoundedIcon from "@mui/icons-material/OpenInNewRounded";
@@ -100,12 +101,12 @@ export default function Header() {
         >
           <HomeRoundedIcon />
         </IconButton>
-        {/* You can replace these buttons with your app's navigation */}
         <Button 
             variant="plain" 
             color="neutral" 
             onClick={() => window.open('mailto:leitliniengpt@gmail.com', '_blank')}
-            >
+            startDecorator={<EmailRoundedIcon />} // Add the email icon here
+        >
             Feedback an das Gründerteam
         </Button>
         <Button variant="plain" color="neutral" onClick={() => navigate('/about')}>About</Button>

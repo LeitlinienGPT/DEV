@@ -1,3 +1,4 @@
+/* App.css */
 .app-container {
   display: flex;
   flex-direction: column;
@@ -22,10 +23,6 @@
   padding: 0; /* Remove padding to make full width */
 }
 
-.menu-button {
-  /* Add your styles here */
-}
-
 @media (min-width: 768px) {
   .App {
     flex-direction: column; /* Changed from row to column for larger devices */
@@ -44,7 +41,7 @@
   /* height: 20px; */
 }
 
-/* chat input box where i type the input */
+/* chat input box where I type the input */
 .chat {
   font-family: 'Arial', sans-serif;
   height: calc(100vh - 100px); /* Adjust if you have headers or footers */

@@ -7,10 +7,9 @@ import { ThemeProvider } from '@mui/joy';
 import joyTheme from './joyTheme';
 import Header from './Header';
 import About from './About';
-// import MyComponent from 'mylib/dist/MyComponent'; // Comment out or remove this line
 import { Routes, Route } from 'react-router-dom';
 import './App.css';
-import ErrorBoundary from './ErrorBoundary'; // Import the ErrorBoundary component
+import ErrorBoundary from './ErrorBoundary';
 
 function App() {
   const [messages, setMessages] = useState([]);
@@ -59,13 +58,7 @@ function App() {
       <CssBaseline />
       <Header />
       <ErrorBoundary>
-        <div 
-          className="app-container"
-          sx={{ 
-            bgcolor: 'background.body', 
-            minHeight: '100vh',          
-          }}
-        >
+        <div className="app-container">
           <Routes>
             <Route path="/" element={
               <div className="chat-layout"> 
@@ -75,7 +68,6 @@ function App() {
                   sourceDocuments={messages.flatMap((msg) => msg.source_documents)}
                   isLoading={isLoading}
                 />
-                {/* <MyComponent /> */} {/* Remove or comment out this line */}
               </div>
             } />
             <Route path="/about" element={<About />} />
