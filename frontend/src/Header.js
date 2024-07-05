@@ -17,7 +17,7 @@ import ReloadButton from './ReloadButton';
 
 import DarkModeRoundedIcon from "@mui/icons-material/DarkModeRounded";
 import LightModeRoundedIcon from "@mui/icons-material/LightModeRounded";
-import LanguageRoundedIcon from "@mui/icons-material/LanguageRounded";
+import HomeRoundedIcon from "@mui/icons-material/HomeRounded"; // Import the home icon
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
 import HelpRoundedIcon from "@mui/icons-material/HelpRounded";
 import OpenInNewRoundedIcon from "@mui/icons-material/OpenInNewRounded";
@@ -93,8 +93,12 @@ export default function Header() {
       }}
     >
       <Stack direction="row" spacing={2} alignItems="center">
-        <IconButton variant="plain" color="neutral">
-          <LanguageRoundedIcon />
+        <IconButton 
+          variant="plain" 
+          color="neutral" 
+          onClick={() => navigate('/')} // Navigate to home page
+        >
+          <HomeRoundedIcon />
         </IconButton>
         {/* You can replace these buttons with your app's navigation */}
         <Button 
