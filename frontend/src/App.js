@@ -1,4 +1,3 @@
-import 'resize-observer-polyfill';
 import React, { useState, useEffect } from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import Chat from './Chat';
@@ -63,12 +62,9 @@ function App() {
           <Routes>
             <Route path="/" element={
               <div className="chat-layout"> 
-                <Chat addMessage={addMessage} setMessages={setMessages} messages={messages} />
-                <ChatOutput messages={messages} isLoading={isLoading} />
-                <SourcesOutput
-                  sourceDocuments={messages.flatMap((msg) => msg.source_documents)}
-                  isLoading={isLoading}
-                />
+                <Chat addMessage={addMessage} setMessages={setMessages} messages={messages} className="grid-card" />
+                <ChatOutput messages={messages} isLoading={isLoading} className="grid-card" />
+                <SourcesOutput sourceDocuments={messages.flatMap((msg) => msg.source_documents)} isLoading={isLoading} className="grid-card" />
               </div>
             } />
             <Route path="/about" element={<About />} />

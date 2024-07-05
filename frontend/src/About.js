@@ -110,7 +110,7 @@ function WerWirSind() {
 function FirmaHinterLeitlinienGPT() {
   return (
     <div>
-      <h1>Content for Die Firma hinter LeitlinienGPT</h1>
+      <h1>Vision and Mission</h1>
       {/* Add your content for "Die Firma hinter LeitlinienGPT" here */}
     </div>
   );
