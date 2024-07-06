@@ -5,7 +5,9 @@
   width: 100vw;
   overflow-x: hidden;
   padding: 0; /* Remove padding to make full width */
+  margin-top: 0px; /* Adjust this value to match the height of your header */
 }
+
 
 .chat-layout {
   display: flex;

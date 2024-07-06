@@ -5,6 +5,7 @@ import Textarea from '@mui/joy/Textarea';
 import CircularProgress from '@mui/joy/CircularProgress';
 import IconButton from '@mui/joy/IconButton';
 import SendIcon from '@mui/icons-material/Send';
+import Button from '@mui/joy/Button';
 
 const Chat = ({ addMessage, setMessages, messages, setIsQuestionSubmitted, setCurrentQuestion }) => {
   const [input, setInput] = useState('');
@@ -42,7 +43,7 @@ const Chat = ({ addMessage, setMessages, messages, setIsQuestionSubmitted, setCu
 
   return (
     <Box className="chat" sx={{ bgcolor: 'background.body', padding: 2 }}>
-      <div className="chat-header">
+      <div className="chat-header" style={{ paddingTop: '64px' }}> {/* Adjust padding top */}
         <h1 style={{ color: 'text.primary' }}>Demoversion: LeitlinienGPT</h1>
       </div>
 
@@ -62,9 +63,9 @@ const Chat = ({ addMessage, setMessages, messages, setIsQuestionSubmitted, setCu
             minHeight: '100px'
           }}
         />
-        <IconButton type="submit" color="primary" disabled={isSubmitting}>
+        <Button type="submit" variant="outlined" color="primary" loading={isSubmitting} disabled={isSubmitting}>
           {isSubmitting ? <CircularProgress size="24" /> : <SendIcon />}
-        </IconButton>
+        </Button>
       </Box>
     </Box>
   );

@@ -1,4 +1,3 @@
-// Navigation.js
 import * as React from 'react';
 import List from '@mui/joy/List';
 import ListSubheader from '@mui/joy/ListSubheader';
@@ -10,14 +9,14 @@ import PeopleRoundedIcon from '@mui/icons-material/PeopleRounded';
 import QuestionAnswerRoundedIcon from '@mui/icons-material/QuestionAnswerRounded'; // For FAQ
 import BusinessRoundedIcon from '@mui/icons-material/BusinessRounded'; // For Company
 
-export default function Navigation({ onNavigationClick }) { // Receive the function 
+export default function Navigation({ onNavigationClick }) {
   return (
     <List size="sm" sx={{ '--ListItem-radius': 'var(--joy-radius-sm)', '--List-gap': '4px' }}>
       <ListItem nested>
         <ListSubheader sx={{ letterSpacing: '2px', fontWeight: '800' }}>Browse</ListSubheader>
         <List aria-labelledby="nav-list-browse" sx={{ '& .JoyListItemButton-root': { p: '8px' } }}>
           <ListItem>
-            <ListItemButton onClick={() => onNavigationClick('Wer wir sind')}> 
+            <ListItemButton onClick={() => onNavigationClick('Wer wir sind')}>
               <ListItemDecorator>
                 <PeopleRoundedIcon fontSize="small" />
               </ListItemDecorator>
@@ -25,9 +24,9 @@ export default function Navigation({ onNavigationClick }) { // Receive the funct
             </ListItemButton>
           </ListItem>
           <ListItem>
-            <ListItemButton onClick={() => onNavigationClick('Die Firma hinter LeitlinienGPT')}> 
+            <ListItemButton onClick={() => onNavigationClick('Die Firma hinter LeitlinienGPT')}>
               <ListItemDecorator sx={{ color: 'neutral.500' }}>
-              <BusinessRoundedIcon fontSize="small" /> 
+                <BusinessRoundedIcon fontSize="small" />
               </ListItemDecorator>
               <ListItemContent>Die Firma hinter LeitlinienGPT</ListItemContent>
             </ListItemButton>
@@ -35,7 +34,7 @@ export default function Navigation({ onNavigationClick }) { // Receive the funct
           <ListItem>
             <ListItemButton onClick={() => onNavigationClick('FAQs')}>
               <ListItemDecorator sx={{ color: 'neutral.500' }}>
-              <QuestionAnswerRoundedIcon fontSize="small" /> 
+                <QuestionAnswerRoundedIcon fontSize="small" />
               </ListItemDecorator>
               <ListItemContent>FAQs</ListItemContent>
             </ListItemButton>

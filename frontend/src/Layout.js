@@ -20,6 +20,7 @@ function Root(props) {
                                          // - First row (header): fixed height of 64px
                                          // - Second row (content): takes up remaining space (1fr)
           minHeight: '100vh', // Layout will be at least the height of the viewport
+          pt: '64px', // Padding top to account for fixed header
         },
         // Allows for applying additional styles using the `sx` prop 
         ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
@@ -47,8 +48,9 @@ function Header(props) {
           gridColumn: '1 / -1', // Header spans across all columns of the grid
           borderBottom: '1px solid', // Bottom border style
           borderColor: 'divider', // Border color
-          position: 'sticky', // Makes the header "sticky" to the top on scroll
+          position: 'fixed', // Makes the header "fixed" to the top
           top: 0, // Positions the header at the top of the viewport
+          width: '100%', // Ensure the header takes full width
           zIndex: 1100, // Ensures header stays above most other elements
         },
         // Allows for applying additional styles using the `sx` prop
@@ -91,8 +93,7 @@ function Main(props) {
       className="Main" // Class name for styling
       {...props} // Spreads any props passed to the component
       sx={[{ 
-        p: 2, // Padding around main content (consider removing/reducing this if your cards are too small)
-        // ... you might want to make changes to the main container here
+        p: 2, // Padding around main content
        }, ...(Array.isArray(props.sx) ? props.sx : [props.sx])]} 
     />
   );

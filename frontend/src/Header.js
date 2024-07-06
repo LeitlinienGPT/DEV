@@ -95,6 +95,10 @@ export default function Header() {
         backgroundColor: "background.level1",
         borderBottom: "1px solid",
         borderColor: "divider",
+        position: "fixed", // Change to fixed position
+        top: 0, // Ensure it sticks to the top
+        width: "100%", // Make sure it covers the full width
+        zIndex: 1100, // Ensure it stays above other elements
       }}
     >
       <Stack direction="row" spacing={2} alignItems="center">

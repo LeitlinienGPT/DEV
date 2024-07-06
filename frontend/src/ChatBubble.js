@@ -78,7 +78,7 @@ const ChatBubble = ({ content, variant, timestamp, attachment = undefined, sende
                 {content}
               </Typography>
             </Sheet>
-            {(isHovered || isLiked) && (
+            {(isHovered || isLiked) && isSent && (
               <Stack
                 direction="row"
                 justifyContent={isSent ? 'flex-end' : 'flex-start'}
