@@ -7,6 +7,7 @@ import { CssVarsProvider } from '@mui/joy/styles'; // Ensure this is imported co
 import joyTheme from './joyTheme';
 import Header from './Header';
 import About from './About';
+import FAQ from './FAQ'; // Import the new FAQ component
 import { Routes, Route } from 'react-router-dom';
 import './App.css';
 import ErrorBoundary from './ErrorBoundary';
@@ -76,6 +77,7 @@ function App() {
               </div>
             } />
             <Route path="/about" element={<About />} />
+            <Route path="/faq" element={<FAQ />} /> {/* Added FAQ route */}
           </Routes>
         </div>
       </ErrorBoundary>

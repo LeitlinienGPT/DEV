@@ -1,3 +1,4 @@
+// Navigation.js
 import * as React from 'react';
 import List from '@mui/joy/List';
 import ListSubheader from '@mui/joy/ListSubheader';
@@ -6,7 +7,6 @@ import ListItemButton from '@mui/joy/ListItemButton';
 import ListItemDecorator from '@mui/joy/ListItemDecorator';
 import ListItemContent from '@mui/joy/ListItemContent';
 import PeopleRoundedIcon from '@mui/icons-material/PeopleRounded';
-import QuestionAnswerRoundedIcon from '@mui/icons-material/QuestionAnswerRounded'; // For FAQ
 import BusinessRoundedIcon from '@mui/icons-material/BusinessRounded'; // For Company
 
 export default function Navigation({ onNavigationClick }) {
@@ -29,14 +29,6 @@ export default function Navigation({ onNavigationClick }) {
                 <BusinessRoundedIcon fontSize="small" />
               </ListItemDecorator>
               <ListItemContent>Die Firma hinter LeitlinienGPT</ListItemContent>
-            </ListItemButton>
-          </ListItem>
-          <ListItem>
-            <ListItemButton onClick={() => onNavigationClick('FAQs')}>
-              <ListItemDecorator sx={{ color: 'neutral.500' }}>
-                <QuestionAnswerRoundedIcon fontSize="small" />
-              </ListItemDecorator>
-              <ListItemContent>FAQs</ListItemContent>
             </ListItemButton>
           </ListItem>
         </List>

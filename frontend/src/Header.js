@@ -1,3 +1,4 @@
+// Header.js
 import * as React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useColorScheme } from "@mui/joy/styles";
@@ -117,6 +118,7 @@ export default function Header() {
         >
           Feedback an die Gründer
         </Button>
+        <Button variant="plain" color="neutral" onClick={() => navigate('/faq')}>FAQs</Button> {/* Added FAQ button */}
         <Button variant="plain" color="neutral" onClick={() => navigate('/about')}>About</Button>
       </Stack>
       <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
@@ -171,10 +173,6 @@ export default function Header() {
               </Box>
             </MenuItem>
             <ListDivider />
-            <MenuItem onClick={() => handleNavigationClick('FAQs')}>
-              <HelpRoundedIcon />
-              FAQs
-            </MenuItem>
             <MenuItem>
               <SettingsRoundedIcon />
               Einstellungen (in Bearbeitung)
