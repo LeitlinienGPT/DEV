@@ -3,17 +3,25 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Chat from './Chat';
 import ChatOutput from './ChatOutput';
 import SourcesOutput from './SourcesOutput';
-import './App.css';
-import { ThemeProvider } from '@mui/joy';
+import { CssVarsProvider } from '@mui/joy/styles'; // Ensure this is imported correctly
 import joyTheme from './joyTheme';
 import Header from './Header';
+import About from './About';
+import FAQ from './FAQ'; // Import the new FAQ component
+import { Routes, Route } from 'react-router-dom';
+import './App.css';
+import ErrorBoundary from './ErrorBoundary';
 
 function App() {
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isQuestionSubmitted, setIsQuestionSubmitted] = useState(false); // New state
+  const [currentQuestion, setCurrentQuestion] = useState(''); // New state for current question
 
   const addMessage = async (message) => {
     setIsLoading(true);
+    setIsQuestionSubmitted(true); // Set question submitted state
+    setCurrentQuestion(message.text); // Set the current question
 
     try {
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/process`, {
@@ -51,26 +59,29 @@ function App() {
   }, [messages]);
 
   return (
-    <ThemeProvider theme={joyTheme}>
+    <CssVarsProvider theme={joyTheme}>
       <CssBaseline />
       <Header />
-      <div 
-        className="app-container"
-        sx={{ 
-          bgcolor: 'background.body', 
-          minHeight: '100vh',          
-        }}
-      >
-        <div className="chat-layout"> 
-          <Chat addMessage={addMessage} setMessages={setMessages} messages={messages} />
-          <ChatOutput messages={messages} isLoading={isLoading} />
-          <SourcesOutput
-            sourceDocuments={messages.flatMap((msg) => msg.source_documents)}
-            isLoading={isLoading}
-          />
+      <ErrorBoundary>
+        <div className="app-container">
+          <Routes>
+            <Route path="/" element={
+              <div className="chat-layout"> 
+                <Chat addMessage={addMessage} setMessages={setMessages} messages={messages} setIsQuestionSubmitted={setIsQuestionSubmitted} setCurrentQuestion={setCurrentQuestion} className="grid-card" />
+                {isQuestionSubmitted && (
+                  <>
+                    <ChatOutput messages={messages} isLoading={isLoading} currentQuestion={currentQuestion} className="grid-card" />
+                    <SourcesOutput sourceDocuments={messages.flatMap((msg) => msg.source_documents)} isLoading={isLoading} className="grid-card" />
+                  </>
+                )}
+              </div>
+            } />
+            <Route path="/about" element={<About />} />
+            <Route path="/faq" element={<FAQ />} /> {/* Added FAQ route */}
+          </Routes>
         </div>
-      </div>
-    </ThemeProvider>
+      </ErrorBoundary>
+    </CssVarsProvider>
   );
 }
 

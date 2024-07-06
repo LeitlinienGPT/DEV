@@ -1,0 +1,12 @@
+{
+  "name": "DEV",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "mylib"
+  ],
+  "dependencies": {
+    "resize-observer-polyfill": "^1.5.1"
+  }
+}

@@ -4,7 +4,8 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { CssVarsProvider } from '@mui/joy/styles'; // Import CssVarsProvider
+import { CssVarsProvider } from '@mui/joy/styles';
+import { BrowserRouter } from 'react-router-dom'; // Import BrowserRouter
 
 // Material Web Components imports (if needed)
 import '@material/web/button/filled-button.js';
@@ -16,8 +17,10 @@ const root = createRoot(container);
 
 root.render(
   <React.StrictMode>
-    <CssVarsProvider> {/* Wrap your App with CssVarsProvider */}
-      <App /> 
+    <CssVarsProvider>
+      <BrowserRouter>
+        <App /> 
+      </BrowserRouter>
     </CssVarsProvider>
   </React.StrictMode>
 );

@@ -16,3 +16,10 @@ code {
   background-color:  #000000;
 }
 
+/* Extremely important code here as it does not leave the background white here but allows it to switch to black */
+body {
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--joy-palette-background-body); /* Use theme variable */
+}

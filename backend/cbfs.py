@@ -1,6 +1,6 @@
 from langchain.retrievers.contextual_compression import ContextualCompressionRetriever
 from langchain_cohere import CohereRerank
-from langchain_community.llms import Cohere
+# from langchain_community.llms import Cohere
 from langchain.retrievers.multi_query import MultiQueryRetriever
 from pinecone import Pinecone
 from langchain_pinecone import PineconeVectorStore as Pinecone_Langchain
