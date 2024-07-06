@@ -1,6 +1,15 @@
-/* App.css */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  overflow-x: hidden;
+  padding: 0; /* Remove padding to make full width */
+}
 
 .chat-layout {
+  display: flex;
+  flex-direction: column; /* Changed from row to column */
   display: grid;
   grid-template-columns: 1fr;
   gap: 1rem; /* Adjust the gap between grid items */
@@ -9,12 +18,32 @@
   width: 100%; /* Full width */
 }
 
+
+/* Center the chat header content */
+.chat-header {
+  /* determines the space around the chat-header so around the title*/
+  flex-grow: .5;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Vertically center in the available space */
+  align-items: center; /* Horizontally center */
+  margin-bottom: 0; /* Remove bottom margin if any */
+  /* height: 20px; */
+}
+
 /* This is where I actually type in the question */
 .chat-input-container {
   width: 100%; /* Full width */
-  display: flex;
-  justify-content: center; /* Center the input form */
-  /* Space to the next Element so that would be the Question card */
   padding-bottom: .2rem; /* Space from the bottom */
 }
 
+/* Target table rows */
+.sources-output table tbody tr {
+  background-color: transparent; 
+  color: inherit; 
+}
+
+/* Target text in the "Chat Leeren" button */
+.chat button {
+  color: inherit; 
+}

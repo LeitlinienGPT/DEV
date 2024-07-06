@@ -7,8 +7,8 @@ import ListItemButton from '@mui/joy/ListItemButton';
 import ListItemDecorator from '@mui/joy/ListItemDecorator';
 import ListItemContent from '@mui/joy/ListItemContent';
 import PeopleRoundedIcon from '@mui/icons-material/PeopleRounded';
-import AssignmentIndRoundedIcon from '@mui/icons-material/AssignmentIndRounded';
-import AccountTreeRoundedIcon from '@mui/icons-material/AccountTreeRounded';
+import QuestionAnswerRoundedIcon from '@mui/icons-material/QuestionAnswerRounded'; // For FAQ
+import BusinessRoundedIcon from '@mui/icons-material/BusinessRounded'; // For Company
 
 export default function Navigation({ onNavigationClick }) { // Receive the function 
   return (
@@ -27,7 +27,7 @@ export default function Navigation({ onNavigationClick }) { // Receive the funct
           <ListItem>
             <ListItemButton onClick={() => onNavigationClick('Die Firma hinter LeitlinienGPT')}> 
               <ListItemDecorator sx={{ color: 'neutral.500' }}>
-                <AssignmentIndRoundedIcon fontSize="small" />
+              <BusinessRoundedIcon fontSize="small" /> 
               </ListItemDecorator>
               <ListItemContent>Die Firma hinter LeitlinienGPT</ListItemContent>
             </ListItemButton>
@@ -35,7 +35,7 @@ export default function Navigation({ onNavigationClick }) { // Receive the funct
           <ListItem>
             <ListItemButton onClick={() => onNavigationClick('FAQs')}>
               <ListItemDecorator sx={{ color: 'neutral.500' }}>
-                <AccountTreeRoundedIcon fontSize="small" />
+              <QuestionAnswerRoundedIcon fontSize="small" /> 
               </ListItemDecorator>
               <ListItemContent>FAQs</ListItemContent>
             </ListItemButton>

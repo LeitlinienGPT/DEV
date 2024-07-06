@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useColorScheme } from "@mui/joy/styles";
 import Box from "@mui/joy/Box";
 import Typography from "@mui/joy/Typography";
@@ -12,16 +13,14 @@ import Menu from "@mui/joy/Menu";
 import MenuButton from "@mui/joy/MenuButton";
 import MenuItem from "@mui/joy/MenuItem";
 import ListDivider from "@mui/joy/ListDivider";
-import { useNavigate } from 'react-router-dom';
 import ReloadButton from './ReloadButton';
 
 import DarkModeRoundedIcon from "@mui/icons-material/DarkModeRounded";
 import LightModeRoundedIcon from "@mui/icons-material/LightModeRounded";
-import HomeRoundedIcon from "@mui/icons-material/HomeRounded"; // Import the home icon
-import EmailRoundedIcon from "@mui/icons-material/EmailRounded"; // Import the email icon
+import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
+import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
 import HelpRoundedIcon from "@mui/icons-material/HelpRounded";
-import OpenInNewRoundedIcon from "@mui/icons-material/OpenInNewRounded";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 
 function ColorSchemeToggle() {
@@ -57,7 +56,12 @@ function ColorSchemeToggle() {
 
 export default function Header() {
   const navigate = useNavigate();
-  
+  const location = useLocation(); // Get the current location
+
+  const handleNavigationClick = (section) => {
+    navigate('/about', { state: { section } });
+  };
+
   const handleClearChat = async () => {
     try {
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/clear_history`, {
@@ -75,7 +79,7 @@ export default function Header() {
       console.log(data.message);
       // Assuming you have a way to update the messages state in your main App component
       // You'll need to pass a function to update the messages from Header to App
-      // For example: setMessages([]); 
+      // For example: setMessages([]);
     } catch (error) {
       console.error('Error clearing the chat history:', error);
     }
@@ -94,27 +98,27 @@ export default function Header() {
       }}
     >
       <Stack direction="row" spacing={2} alignItems="center">
-        <IconButton 
-          variant="plain" 
-          color="neutral" 
-          onClick={() => navigate('/')} // Navigate to home page
+        <IconButton
+          variant="plain"
+          color="neutral"
+          onClick={() => navigate('/')} 
         >
           <HomeRoundedIcon />
         </IconButton>
-        <Button 
-            variant="plain" 
-            color="neutral" 
-            onClick={() => window.open('mailto:leitliniengpt@gmail.com', '_blank')}
-            startDecorator={<EmailRoundedIcon />} // Add the email icon here
+        <Button
+          variant="plain"
+          color="neutral"
+          onClick={() => window.open('mailto:leitliniengpt@gmail.com', '_blank')}
+          startDecorator={<EmailRoundedIcon />} 
         >
-            Feedback an das Gründerteam
+          Feedback an die Gründer
         </Button>
         <Button variant="plain" color="neutral" onClick={() => navigate('/about')}>About</Button>
       </Stack>
       <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
         <ColorSchemeToggle />
         <Tooltip title="Chat Historie und Quellen zurücksetzen" variant="outlined">
-            <ReloadButton handleClearChat={handleClearChat} /> 
+          <ReloadButton handleClearChat={handleClearChat} />
         </Tooltip>
         <Dropdown>
           <MenuButton
@@ -127,8 +131,7 @@ export default function Header() {
             }}
           >
             <Avatar
-              src="https://i.pravatar.cc/40?img=2"
-              srcSet="https://i.pravatar.cc/80?img=2"
+              src={`${process.env.PUBLIC_URL}/favicon_LeitlinienGPT.png`} 
               sx={{ maxWidth: "32px", maxHeight: "32px" }}
             />
           </MenuButton>
@@ -141,12 +144,16 @@ export default function Header() {
               gap: 1,
               "--ListItem-radius": "var(--joy-radius-sm)",
             }}
+            onClose={() => { 
+              if (location.pathname !== '/about') {
+                navigate('/about'); 
+              }
+            }}
           >
             <MenuItem>
               <Box sx={{ display: "flex", alignItems: "center" }}>
                 <Avatar
-                  src="https://i.pravatar.cc/40?img=2"
-                  srcSet="https://i.pravatar.cc/80?img=2"
+                  src={`${process.env.PUBLIC_URL}/favicon_LeitlinienGPT.png`} 
                   sx={{ borderRadius: "50%" }}
                 />
                 <Box sx={{ ml: 1.5 }}>
@@ -160,27 +167,18 @@ export default function Header() {
               </Box>
             </MenuItem>
             <ListDivider />
-            <MenuItem>
+            <MenuItem onClick={() => handleNavigationClick('FAQs')}>
               <HelpRoundedIcon />
-              Help
+              FAQs
             </MenuItem>
             <MenuItem>
               <SettingsRoundedIcon />
-              Settings
-            </MenuItem>
-            <ListDivider />
-            <MenuItem component="a" href="https://joy-ui.com/blog/first-look/">
-              First look at Joy UI
-              <OpenInNewRoundedIcon />
-            </MenuItem>
-            <MenuItem component="a" href="https://github.com/mui/material-ui">
-              Sourcecode
-              <OpenInNewRoundedIcon />
+              Einstellungen (in Bearbeitung)
             </MenuItem>
             <ListDivider />
             <MenuItem>
               <LogoutRoundedIcon />
-              Log out
+              Ausloggen (in Bearbeitung)
             </MenuItem>
           </Menu>
         </Dropdown>

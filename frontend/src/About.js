@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState } from 'react'; 
 import {
   CssVarsProvider,
   CssBaseline,
@@ -14,10 +14,10 @@ import {
   Button,
   Avatar,
   SvgIcon,
-  ButtonGroup,
 } from '@mui/joy';
 import Layout from './Layout';
 import Navigation from './Navigation';
+import { useLocation } from 'react-router-dom'; // Import useLocation
 
 const bioData = [
   {
@@ -40,11 +40,13 @@ const bioData = [
   },
 ];
 
+// this makes it possible to navigate directly to faq from another part of the website
 export default function About() {
-  const [activeNavItem, setActiveNavItem] = useState('Wer wir sind');
+  const location = useLocation();
+  const [activeNavItem, setActiveNavItem] = useState(location.state?.section || 'Wer wir sind');
 
   const handleNavigationClick = (itemName) => {
-    setActiveNavItem(itemName);
+    setActiveNavItem(itemName); 
   };
 
   return (
@@ -63,6 +65,7 @@ export default function About() {
     </CssVarsProvider>
   );
 }
+
 
 function WerWirSind() {
   return (
