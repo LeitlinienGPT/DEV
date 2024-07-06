@@ -8,6 +8,9 @@ import Button from '@mui/joy/Button';
 import Sheet from '@mui/joy/Sheet';
 import Table from '@mui/joy/Table';
 import Skeleton from '@mui/joy/Skeleton';
+import IconButton from '@mui/joy/IconButton';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 const formatTitleAndExtractRegisterNumber = (source) => {
   const parts = source.split('_');
@@ -22,16 +25,66 @@ const formatTitleAndExtractRegisterNumber = (source) => {
   return { formattedTitle, registerNumber, entwicklungsstufe };
 };
 
+const CollapsibleRow = ({ row, index, isOpen, toggleOpen }) => {
+  const { metadata, page_content: pageContent } = row;
+  const { formattedTitle, registerNumber, entwicklungsstufe } = formatTitleAndExtractRegisterNumber(metadata?.Source || '');
+  const { Gültigkeit, href: awmfRegisterUrl, Page, Fachgesellschaft } = metadata || {};
+  const pages = Array.isArray(Page) ? Page.join(', ') : Page;
+
+  return (
+    <>
+      <tr>
+        <td className="table-cell">{Gültigkeit}</td>
+        <td className="table-cell">{entwicklungsstufe}</td>
+        <td className="table-cell">
+          {awmfRegisterUrl ? (
+            <Link href={awmfRegisterUrl} target="_blank" variant="outlined">
+              {registerNumber}
+            </Link>
+          ) : (
+            <span>{registerNumber}</span>
+          )}
+        </td>
+        <td className="table-cell">{formattedTitle}</td>
+        <td className="table-cell">{pages}</td>
+        <td className="table-cell">{Fachgesellschaft && Fachgesellschaft.join(', ')}</td>
+        <td className="table-cell">
+          <IconButton
+            aria-label="expand row"
+            variant="plain"
+            color="neutral"
+            size="sm"
+            onClick={() => toggleOpen(index)}
+          >
+            {isOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+          </IconButton>
+        </td>
+      </tr>
+      {isOpen && (
+        <tr>
+          <td colSpan={7} style={{ padding: 0 }}>
+            <Sheet
+              variant="soft"
+              sx={{ p: 2, boxShadow: 'inset 0 3px 6px 0 rgba(0 0 0 / 0.08)' }}
+            >
+              <Typography level="body-lg" component="div">
+                Mehr Informationen
+              </Typography>
+              <Typography variant="body2">{pageContent}</Typography>
+            </Sheet>
+          </td>
+        </tr>
+      )}
+    </>
+  );
+};
+
 const SourcesOutput = ({ sourceDocuments, isLoading }) => {
   const [showContentStates, setShowContentStates] = useState(Array(sourceDocuments.length).fill(false));
 
   useEffect(() => {
     console.log('Source documents updated:', sourceDocuments);
   }, [sourceDocuments]);
-
-  const renderValidityText = (validity) => {
-    return <span>{validity}</span>;
-  };
 
   const toggleShowContent = (index) => {
     const updatedShowContentStates = [...showContentStates];
@@ -61,38 +114,15 @@ const SourcesOutput = ({ sourceDocuments, isLoading }) => {
 
   const renderSourceDocuments = () => {
     if (sourceDocuments && sourceDocuments.length > 0) {
-      const recentSourceDocuments = sourceDocuments.slice(-3);
-      return recentSourceDocuments.map((doc, index) => {
-        const { metadata } = doc;
-        const { formattedTitle, registerNumber, entwicklungsstufe } = formatTitleAndExtractRegisterNumber(metadata?.Source || '');
-        const { Gültigkeit, href: awmfRegisterUrl, Page, Fachgesellschaft } = metadata || {};
-        const pages = Array.isArray(Page) ? Page.join(', ') : Page;
-
-        return (
-          <tr key={index}>
-            <td className="table-cell">{renderValidityText(Gültigkeit)}</td>
-            <td className="table-cell">{entwicklungsstufe}</td>
-            <td className="table-cell">{awmfRegisterUrl ? (
-              <Link href={awmfRegisterUrl} target="_blank" variant="outlined">
-                {registerNumber}
-              </Link>
-            ) : (
-              <span>{registerNumber}</span>
-            )}</td>
-            <td className="table-cell">{formattedTitle}</td>
-            <td className="table-cell">{pages}</td>
-            <td className="table-cell">{Fachgesellschaft && Fachgesellschaft.join(', ')}</td>
-            <td className="table-cell">
-              <Button onClick={() => toggleShowContent(index)} variant="outlined" size="small">
-                Mehr Informationen
-              </Button>
-              {showContentStates[index] && (
-                <div className="content-section">{doc.page_content}</div>
-              )}
-            </td>
-          </tr>
-        );
-      });
+      return sourceDocuments.map((doc, index) => (
+        <CollapsibleRow
+          key={index}
+          row={doc}
+          index={index}
+          isOpen={showContentStates[index]}
+          toggleOpen={toggleShowContent}
+        />
+      ));
     }
     return null;
   };
@@ -129,7 +159,7 @@ const SourcesOutput = ({ sourceDocuments, isLoading }) => {
                   <tr>
                     <td colSpan={7}>
                       <Typography variant="body2" color="text.secondary" className="sources-content">
-                       Bitte stelle eine Frage, damit hier Quellen angezeigt werden.
+                        Bitte stelle eine Frage, damit hier Quellen angezeigt werden.
                       </Typography>
                     </td>
                   </tr>
