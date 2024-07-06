@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react'; 
+import { useState } from 'react';
 import {
   CssVarsProvider,
   CssBaseline,
@@ -10,14 +10,13 @@ import {
   CardContent,
   CardOverflow,
   CardCover,
-  CardActions,
   Button,
   Avatar,
-  SvgIcon,
 } from '@mui/joy';
 import Layout from './Layout';
 import Navigation from './Navigation';
-import { useLocation } from 'react-router-dom'; // Import useLocation
+import { useLocation } from 'react-router-dom';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
 
 const bioData = [
   {
@@ -66,19 +65,18 @@ export default function About() {
   );
 }
 
-
 function WerWirSind() {
   return (
     <Box sx={{ p: 2 }}>
-      <Grid container spacing={2}>
-        <Grid item xs={12} md={12} >
-          <Card sx={{ width: '100%', mb: 4 }}>
+      <Grid container spacing={1}>
+        <Grid item xs={12}> {/* Ensure Founders card takes full width */}
+          <Card sx={{ width: '100%', mb: 1 }}>
             <CardOverflow>
               <CardCover>
-                <img src="team.jpg" alt="" />
+                <img src="team.jpg" alt="Team" />
               </CardCover>
               <CardContent>
-                <Typography level="h2" fontSize="lg" sx={{ mb: 0.5 }}>
+                <Typography level="h1" fontSize="lg" sx={{ mb: 0.5 }}>
                   Founders
                 </Typography>
                 <Typography level="body2"></Typography>
@@ -89,20 +87,32 @@ function WerWirSind() {
                 Marlon, Tim und Paolo bilden ein starkes und kompetentes Team mit sieben Jahren Berufserfahrung und einem umfangreichen Netzwerk im Start-up-Ökosystem. Ihre Expertise liegt an der Schnittstelle von Data Science, Natural Language Processing und Unternehmensführung. Alle drei genießen den Ruf, konstant neue Maßstäbe zu setzen, und verfügen über eine beeindruckende Erfolgsbilanz bei der herausragenden Projektdurchführung – auch in gemeinsamer Zusammenarbeit. Sie sind hochmotiviert, ein profitables Unternehmen aufzubauen und einen positiven Einfluss zu erzielen, um die Arbeit von Ärzten in Deutschland zu erleichtern. SearchAid ist aus einer langjährigen Freundschaft und Bekanntschaften während des Studiums entstanden.
               </Typography>
             </CardContent>
-            <CardActions>
-              <Button variant="solid" size="sm" color="primary">
-                Explore
-              </Button>
-            </CardActions>
           </Card>
         </Grid>
-        <Grid item xs={10}>
-          <Grid container spacing={2}>
-            {bioData.map((bio, index) => (
-              <Grid key={bio.name} item xs={12} sm={10}>
-                <BioCard name={bio.name} bio={bio.bio} index={index} linkedin={bio.linkedin} avatar={bio.avatar} />
-              </Grid>
-            ))}
+        <Grid container spacing={2} sx={{ flexGrow: 1 }}>
+          <Grid xs={4}>
+            <BioCard 
+              name={bioData[0].name} 
+              bio={bioData[0].bio} 
+              linkedin={bioData[0].linkedin} 
+              avatar={bioData[0].avatar} 
+            />
+          </Grid>
+          <Grid xs={4}>
+            <BioCard 
+              name={bioData[1].name} 
+              bio={bioData[1].bio} 
+              linkedin={bioData[1].linkedin} 
+              avatar={bioData[1].avatar} 
+            />
+          </Grid>
+          <Grid xs={4}>
+            <BioCard 
+              name={bioData[2].name} 
+              bio={bioData[2].bio} 
+              linkedin={bioData[2].linkedin} 
+              avatar={bioData[2].avatar} 
+            />
           </Grid>
         </Grid>
       </Grid>
@@ -128,25 +138,25 @@ function FAQs() {
   );
 }
 
-function BioCard({ name, bio, index, linkedin, avatar }) {
+function BioCard({ name, bio, linkedin, avatar }) {
   return (
     <Card sx={bioCardStyles}>
       <CardContent sx={{ alignItems: 'center', textAlign: 'center' }}>
-        <Avatar src={avatar} sx={{ '--Avatar-size': '4rem' }} />
+        <Avatar src={avatar} sx={{ '--Avatar-size': '5rem' }} />
         <Typography level="title-lg">{name}</Typography>
-        <Typography level="body-sm" sx={{ maxWidth: '24ch' }}>
+        <Typography level="body-sm">
           {bio}
         </Typography>
         <Box sx={{ mt: 2 }}>
           <Button
             variant="outlined"
             sx={{ bgcolor: 'background.surface', mb: 1 }}
-            startIcon={<LinkedInIcon />}
             component="a"
             href={linkedin}
             target="_blank"
+            startIcon={<LinkedInIcon />}
           >
-            Connect
+           Connect {<LinkedInIcon />}
           </Button>
           <Button
             variant="outlined"
@@ -163,21 +173,7 @@ function BioCard({ name, bio, index, linkedin, avatar }) {
   );
 }
 
-function LinkedInIcon() {
-  return (
-    <SvgIcon>
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-        <path
-          fill="currentColor"
-          d="M22.23 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.46c.98 0 1.77-.77 1.77-1.72V1.72C24 .77 23.21 0 22.23 0zM7.12 20.45H3.56V9h3.56v11.45zM5.34 7.51c-1.14 0-2.06-.93-2.06-2.08 0-1.14.92-2.07 2.06-2.07s2.06.93 2.06 2.07c0 1.15-.92 2.08-2.06 2.08zM20.45 20.45h-3.56v-5.59c0-1.33-.03-3.03-1.84-3.03-1.84 0-2.12 1.43-2.12 2.91v5.71h-3.56V9h3.42v1.56h.05c.48-.9 1.65-1.84 3.4-1.84 3.64 0 4.31 2.4 4.31 5.51v6.22z"
-        />
-      </svg>
-    </SvgIcon>
-  );
-}
-
 const bioCardStyles = {
-  width: 320,
-  maxWidth: '100%',
+  maxWidth: '100%', // Ensures cards never exceed their container
   boxShadow: 'lg',
 };
