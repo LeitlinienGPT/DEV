@@ -154,9 +154,9 @@ function BioCard({ name, bio, linkedin, avatar }) {
             component="a"
             href={linkedin}
             target="_blank"
-            startIcon={<LinkedInIcon />}
+            startDecorator={<LinkedInIcon />} // Change startIcon to startDecorator
           >
-           Connect {<LinkedInIcon />}
+            Connect {<LinkedInIcon />}
           </Button>
           <Button
             variant="outlined"
