@@ -11,7 +11,9 @@ import Skeleton from '@mui/joy/Skeleton';
 import IconButton from '@mui/joy/IconButton';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { useTheme } from '@mui/system';
 
+// Helper function to format title and extract register number
 const formatTitleAndExtractRegisterNumber = (source) => {
   const parts = source.split('_');
   let registerNumber = parts[0];
@@ -25,15 +27,25 @@ const formatTitleAndExtractRegisterNumber = (source) => {
   return { formattedTitle, registerNumber, entwicklungsstufe };
 };
 
-const CollapsibleRow = ({ row, index, isOpen, toggleOpen }) => {
+// CollapsibleRow component
+const CollapsibleRow = ({ row, index, isOpen, toggleOpen, isEven }) => {
   const { metadata, page_content: pageContent } = row;
   const { formattedTitle, registerNumber, entwicklungsstufe } = formatTitleAndExtractRegisterNumber(metadata?.Source || '');
   const { Gültigkeit, href: awmfRegisterUrl, Page, Fachgesellschaft } = metadata || {};
   const pages = Array.isArray(Page) ? Page.join(', ') : Page;
+  const theme = useTheme();
+
+  const rowStyle = {
+    backgroundColor: isEven
+      ? theme.palette.mode === 'dark'
+        ? theme.palette.background.default
+        : '#f9f9f9'
+      : theme.palette.background.paper,
+  };
 
   return (
     <>
-      <tr>
+      <tr style={rowStyle}>
         <td className="table-cell">{Gültigkeit}</td>
         <td className="table-cell">{entwicklungsstufe}</td>
         <td className="table-cell">
@@ -79,8 +91,10 @@ const CollapsibleRow = ({ row, index, isOpen, toggleOpen }) => {
   );
 };
 
+// SourcesOutput component
 const SourcesOutput = ({ sourceDocuments, isLoading }) => {
   const [showContentStates, setShowContentStates] = useState(Array(sourceDocuments.length).fill(false));
+  const theme = useTheme();
 
   useEffect(() => {
     console.log('Source documents updated:', sourceDocuments);
@@ -121,6 +135,7 @@ const SourcesOutput = ({ sourceDocuments, isLoading }) => {
           index={index}
           isOpen={showContentStates[index]}
           toggleOpen={toggleShowContent}
+          isEven={index % 2 === 0}
         />
       ));
     }
@@ -135,16 +150,16 @@ const SourcesOutput = ({ sourceDocuments, isLoading }) => {
             Quellen
           </Typography>
           <Sheet sx={{ width: '100%' }}>
-            <Table sx={{ width: '100%' }}>
+            <Table sx={{ width: '100%', tableLayout: 'auto' }}>
               <thead>
                 <tr>
-                  <th>Gültigkeit</th>
-                  <th>Entwicklungsstufe</th>
-                  <th>Registernummer</th>
-                  <th>Titel</th>
-                  <th>Seite (im PDF)</th>
-                  <th>Fachgesellschaften</th>
-                  <th>Inhalt</th>
+                  <th style={{ backgroundColor: theme.palette.background.level1, fontWeight: 'bold' }}>Gültigkeit</th>
+                  <th style={{ backgroundColor: theme.palette.background.level1, fontWeight: 'bold' }}>Entwicklungsstufe</th>
+                  <th style={{ backgroundColor: theme.palette.background.level1, fontWeight: 'bold' }}>Registernummer</th>
+                  <th style={{ backgroundColor: theme.palette.background.level1, fontWeight: 'bold' }}>Titel</th>
+                  <th style={{ backgroundColor: theme.palette.background.level1, fontWeight: 'bold' }}>Seite (im PDF)</th>
+                  <th style={{ backgroundColor: theme.palette.background.level1, fontWeight: 'bold' }}>Fachgesellschaften</th>
+                  <th style={{ backgroundColor: theme.palette.background.level1, fontWeight: 'bold' }}>Inhalt</th>
                 </tr>
               </thead>
               <tbody>
