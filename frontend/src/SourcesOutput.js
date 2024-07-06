@@ -18,7 +18,7 @@ const formatTitleAndExtractRegisterNumber = (source) => {
   const parts = source.split('_');
   let registerNumber = parts[0];
   if (registerNumber && registerNumber.length >= 6) {
-    registerNumber = `${registerNumber.substring(0, 3)}-${registerNumber.substring(4, 7)}`;
+    registerNumber = `${registerNumber.substring(0, 3)}-${registerNumber.substring(3, 6)}`;
   } else {
     registerNumber = 'Unbekannt';
   }

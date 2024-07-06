@@ -14,9 +14,13 @@ import ErrorBoundary from './ErrorBoundary';
 function App() {
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isQuestionSubmitted, setIsQuestionSubmitted] = useState(false); // New state
+  const [currentQuestion, setCurrentQuestion] = useState(''); // New state for current question
 
   const addMessage = async (message) => {
     setIsLoading(true);
+    setIsQuestionSubmitted(true); // Set question submitted state
+    setCurrentQuestion(message.text); // Set the current question
 
     try {
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/process`, {
@@ -62,9 +66,13 @@ function App() {
           <Routes>
             <Route path="/" element={
               <div className="chat-layout"> 
-                <Chat addMessage={addMessage} setMessages={setMessages} messages={messages} className="grid-card" />
-                <ChatOutput messages={messages} isLoading={isLoading} className="grid-card" />
-                <SourcesOutput sourceDocuments={messages.flatMap((msg) => msg.source_documents)} isLoading={isLoading} className="grid-card" />
+                <Chat addMessage={addMessage} setMessages={setMessages} messages={messages} setIsQuestionSubmitted={setIsQuestionSubmitted} setCurrentQuestion={setCurrentQuestion} className="grid-card" />
+                {isQuestionSubmitted && (
+                  <>
+                    <ChatOutput messages={messages} isLoading={isLoading} currentQuestion={currentQuestion} className="grid-card" />
+                    <SourcesOutput sourceDocuments={messages.flatMap((msg) => msg.source_documents)} isLoading={isLoading} className="grid-card" />
+                  </>
+                )}
               </div>
             } />
             <Route path="/about" element={<About />} />

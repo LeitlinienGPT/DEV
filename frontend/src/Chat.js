@@ -6,7 +6,7 @@ import CircularProgress from '@mui/joy/CircularProgress';
 import IconButton from '@mui/joy/IconButton';
 import SendIcon from '@mui/icons-material/Send';
 
-const Chat = ({ addMessage, setMessages, messages }) => {
+const Chat = ({ addMessage, setMessages, messages, setIsQuestionSubmitted, setCurrentQuestion }) => {
   const [input, setInput] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -14,6 +14,8 @@ const Chat = ({ addMessage, setMessages, messages }) => {
     event.preventDefault();
     if (input.trim()) {
       setIsSubmitting(true);
+      setIsQuestionSubmitted(true); // Set question submitted state
+      setCurrentQuestion(input.trim()); // Set the current question directly
       try {
         const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/process`, {
           method: 'POST',
