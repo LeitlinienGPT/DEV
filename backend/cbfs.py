@@ -1,74 +1,126 @@
+from langchain.retrievers.contextual_compression import ContextualCompressionRetriever
+from langchain_cohere import CohereRerank
+from langchain.retrievers.multi_query import MultiQueryRetriever
 from pinecone import Pinecone
-from langchain_pinecone import Pinecone as Pinecone_Langchain
-
-# Importing necessary modules and classes
-from langchain_community.chat_models import ChatOpenAI
-from langchain_openai import ChatOpenAI
-from langchain.embeddings.openai import OpenAIEmbeddings  # Use OpenAIEmbeddings
+from langchain_pinecone import PineconeVectorStore as Pinecone_Langchain
+from dotenv import load_dotenv
+import os
 from langchain.prompts import PromptTemplate
 from langchain.chains import ConversationalRetrievalChain
-import param  # For defining parameters in classes
-from dotenv import load_dotenv  # For loading environment variables
-import os  # For interacting with the operating system
-import openai  # OpenAI's Python client library
-from pydantic import BaseModel, Field
+from langchain_openai import ChatOpenAI
+from langchain_openai.embeddings import OpenAIEmbeddings
+import openai
 import json
 from fastapi.encoders import jsonable_encoder
+import param
 
-# Document class definition
-class Document(BaseModel):
-    """Interface for interacting with a document."""
-    page_content: str
-    metadata: dict = Field(default_factory=dict)
-
-    def to_json(self):
-        return self.model_dump_json(by_alias=True, exclude_unset=True)
-
-# Environment variable setup
-dotenv_path = 'KEYs.env'
-_ = load_dotenv(os.path.join(os.path.dirname(__file__), '../KEYs.env'))
+# Load environment variables from the root .env file
+dotenv_path = os.path.join(os.path.dirname(__file__), '../KEYs.env')
+load_dotenv(dotenv_path)
 
 # API keys and credentials
-openai.api_key = os.environ['OPENAI_API_KEY']
-PINECONE_API_KEY = os.getenv('PINECONE_API_KEY') 
+openai.api_key = os.getenv('OPENAI_API_KEY')
+PINECONE_API_KEY = os.getenv('PINECONE_API_KEY')
+os.environ['COHERE_API_KEY'] = os.getenv('COHERE_API_KEY')
 
 # Initialize Pinecone
 pinecone = Pinecone(api_key=PINECONE_API_KEY)
+index = pinecone.Index('leitliniengpt-vdb')
 
-# Connect to your Pinecone index (make sure the name is correct)
-index = pinecone.Index('leitliniengpt-vdb')  
+# Initialize the OpenAI embeddings
+MODEL = "text-embedding-ada-002"
+embeddings = OpenAIEmbeddings(model=MODEL)
 
-# Use OpenAIEmbeddings for 1536 dimensions
-embeddings = OpenAIEmbeddings(openai_api_key=openai.api_key)  
+vectorstore = Pinecone_Langchain(index, embeddings, 'text')
 
-# Create the vectorstore
-vectorstore = Pinecone_Langchain(
-    index, embeddings, 'text'
+# Retriever
+MULTI_QUERY_PROMPT = PromptTemplate(
+    input_variables=["question"],
+    template="""Sie sind ein AI-Assistent.
+              Ihre Aufgabe ist es, drei verschiedene Versionen der gegebenen ursprünglichen Frage zu generieren.
+              Bitte fügen Sie in die Versionen verschiedene Begriffe für komplexes medizinisches Vokabular ein.
+              Die neu generierten Versionen der Frage sollten in der gleichen Sprache sein wie die ursprüngliche Frage.
+
+              Hier ein Beispiel für eine ursprüngliche Frage.
+              Frage: Wie ist der laborchemische Algorithmus zum Ausschluss eines akuten Herzinfarkts?
+
+              Hier ein Beispiel für die generierten Versionen der Frage:
+              1. Was ist die normale Blutdiagnostik beim Herzinfarkt?
+              2. Was ist die Diagnostik eines akuten Myokardinfarkt?
+              3. Wie schließe ich einen NSTEMI aus?
+
+              Bitte generiere nun versionen der Frage für die folgende Frage.
+              Ursprüngliche Frage: {question}
+              Generierten Versionen der Frage:""",
+)
+llm = ChatOpenAI(temperature=0, model="gpt-4-turbo")
+retriever_from_llm = MultiQueryRetriever.from_llm(
+    retriever=vectorstore.as_retriever(search_kwargs={"k": 5}), llm=llm, prompt=MULTI_QUERY_PROMPT
 )
 
-# Fallback message (if no documents are found)
-No_Doc = "Die hinterlegten Leitlinien Dokumente enthalten keine Informationen zu Ihrer Frage."
+# Reranker
+compressor = CohereRerank()
+compression_retriever = ContextualCompressionRetriever(
+    base_compressor=compressor, base_retriever=retriever_from_llm
+)
 
-# Prompt template definition for the chatbot
-template = """
-Beantworte die Frage ausschließlich basierend auf dem gegebenen Kontext. 
-Die Antwort sollte 8 Sätze nicht überschreiten.
-Kontext: {context}
-Frage: {question}
-:"""
+# Final Retriever
+template = """Beantworten Sie die Frage nur auf der Grundlage 
+            der Quellen und inkludieren Sie alle relevanten Details.
+            Die Antwort sollte nicht länger als sechs Sätze sein.
+            Jeder Satz sollte mit Quellenangaben ende, die listen 
+            aus welcher Quelle die Inforamtionen kamen.
+            Wenn Informationen aus mehreren Quellen stammen, 
+            geben Sie diese in der Form [Quelle 1; Quelle 2] an.
+            Quellen: {context}
+            Frage: {question}
+            Antwort:"""
 prompt = PromptTemplate.from_template(template)
 
+
+# `custom_retriever` is already defined and set up
+def preprocess_documents(documents):
+    for doc in range(len(documents)):
+        documents[doc].page_content = f"Quelle {doc + 1}: \n" + documents[doc].page_content
+    return documents
+
+
+# Custom conversational retrieval chain with preprocessing
+class PreprocessingConversationalRetrievalChain(ConversationalRetrievalChain):
+    def __init__(self, combine_docs_chain, question_generator, **kwargs):
+        super().__init__(combine_docs_chain=combine_docs_chain, question_generator=question_generator, **kwargs)
+        self.combine_docs_chain = combine_docs_chain
+        self.question_generator = question_generator
+
+    def invoke(self, inputs):
+        retrieved_docs = self.retriever.invoke(inputs['question'])
+        preprocessed_docs = preprocess_documents(retrieved_docs)
+        combined_output = self.combine_docs_chain.invoke({"input_documents": preprocessed_docs, "question": inputs['question']})
+        return {"answer": combined_output, "source_documents": preprocessed_docs}
+
+
+# Create an instance of the combine_docs_chain and question_generator separately
+conversational_chain = ConversationalRetrievalChain.from_llm(
+    llm=llm,
+    retriever=compression_retriever,
+    combine_docs_chain_kwargs={"prompt": prompt},
+    return_source_documents=True,
+    chain_type='stuff'
+)
+combine_docs_chain = conversational_chain.combine_docs_chain
+question_generator = conversational_chain.question_generator
+
+
 # ConversationalRetrievalChain model initialization function
-def Init_model():
-    qa = ConversationalRetrievalChain.from_llm(
-        llm=ChatOpenAI(temperature=0, model="gpt-3.5-turbo"), # gpt-3.5-turbo-instruct
-        retriever=vectorstore.as_retriever(search_kwargs={"k": 3}), # Retrieve top 3 documents
-        combine_docs_chain_kwargs={"prompt": prompt},
-        # response_if_no_docs_found=No_Doc,
-        return_source_documents=True,  # Important: Return source documents
-        chain_type='stuff'
+def init_model():
+    qa_with_preprocessing = PreprocessingConversationalRetrievalChain(
+        combine_docs_chain=combine_docs_chain,
+        question_generator=question_generator,
+        retriever=compression_retriever,
+        return_source_documents=True
     )
-    return qa
+    return qa_with_preprocessing
+
 
 # cbfs class definition (your main chatbot class)
 class cbfs(param.Parameterized):
@@ -77,31 +129,25 @@ class cbfs(param.Parameterized):
 
     def __init__(self, **params):
         super(cbfs, self).__init__(**params)
-        self.qa = Init_model()
+        self.qa = init_model()
 
-    def load_model(self, Database):
-        # Implement the specific configuration for different databases
-        # (This part seems incomplete - you'll need to fill it in)
-        if Database == "Nur aktuell gültige Leitlinien":
+    def load_model(self, database):
+        if database == "Nur aktuell gültige Leitlinien":
             self.qa = ConversationalRetrievalChain.from_llm(...)
             self.count.append(1)
         else:
-            self.qa = Init_model()
+            self.qa = init_model()
 
     def convchain(self, query):
         print("Convchain method started")
         try:
-            # Run the query through the chatbot chain
-            result = self.qa({"question": query, "chat_history": self.chat_history})
-            # print("Result from self.qa:", result)
+            result = self.qa.invoke({"question": query, "chat_history": self.chat_history})
         except Exception as e:
             print(f"Error in self.qa call: {e}")
-            # You might want to return an error response here
+            return {'answer': 'Error occurred', 'source_documents': []}
 
-        # Update the chat history
-        self.chat_history.extend([(query, result["answer"])])
+        self.chat_history.extend([(query, result["answer"]["output_text"])])
 
-        # Extract and format source documents
         source_documents = []
         for match in result["source_documents"]:
             source_documents.append({
@@ -109,36 +155,27 @@ class cbfs(param.Parameterized):
                 'metadata': match.metadata
             })
 
-        # Create the response dictionary
         serializable_result = jsonable_encoder({
-            'answer': result['answer'],
-            'source_documents': source_documents  # Include source documents
+            'answer': result['answer']['output_text'],
+            'source_documents': source_documents
         })
 
-        # Return the response
         return serializable_result
 
     def clr_history(self):
-        # Clear the chat history
         self.chat_history = []
 
-    # Test function to demonstrate JSON serialization
     def test_default_prompt(self):
         default_prompt = "Wie behandel ich einen Patienten mit Gastritis?"
         result_json = self.convchain(default_prompt)
-        # result_json = json.dumps(result, ensure_ascii=False, indent=4)
         try:
-            # Attempt to parse the JSON string back into a dictionary
-            result_dict = json.loads(result_json)
+            result_dict = json.loads(json.dumps(result_json))
             print("The result is a valid JSON object.")
-            # Optionally print the dictionary to see its structure
             print(result_dict)
         except json.JSONDecodeError:
             print("The result is not a valid JSON object.")
 
 
-
-# If this file is run as a script, execute the test function
 if __name__ == "__main__":
     cbfs_instance = cbfs()
     cbfs_instance.test_default_prompt()

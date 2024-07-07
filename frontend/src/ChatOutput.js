@@ -6,6 +6,9 @@ const ChatOutput = ({ messages, isLoading, currentQuestion }) => {
   const lastMessage = messages[messages.length - 1] || {};
   const question = currentQuestion || "Bitte stelle eine Frage, um eine Antwort zu erhalten.";
 
+  console.log('Messages:', messages);
+  console.log('Current Question:', currentQuestion);
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%' }}>
       <ChatBubble

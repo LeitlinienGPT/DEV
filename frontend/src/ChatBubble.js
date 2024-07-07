@@ -75,7 +75,7 @@ const ChatBubble = ({ content, variant, timestamp, attachment = undefined, sende
                     : 'var(--joy-palette-text-primary)',
                 }}
               >
-                {content}
+                {typeof content === 'string' ? content : JSON.stringify(content)}
               </Typography>
             </Sheet>
             {(isHovered || isLiked) && isSent && (

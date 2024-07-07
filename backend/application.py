@@ -7,9 +7,9 @@ import importlib
 
 # Load environment variables
 dotenv_path = 'KEYs.env'
-_ = load_dotenv(dotenv_path)
-  
-app = Flask(__name__, static_folder='../frontend/build', static_url_path='') # Adjust this path as necessary
+load_dotenv(dotenv_path)
+
+app = Flask(__name__, static_folder='../frontend/build', static_url_path='')  # Adjust this path as necessary
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 # Initialize your Langchain-based class
@@ -49,7 +49,6 @@ def process_text():
     try:
         response = langchain_instance.convchain(data['question'])
         print("API:PY:", response)
-        print("API:PY:", jsonify(response))
         return jsonify(response), 200
 
     except Exception as e:
@@ -73,5 +72,5 @@ def reload_cbfs():
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 8080))  # Default to 5000 if no environment variable
+    port = int(os.environ.get('PORT', 8080))  # Default to 8080 if no environment variable
     app.run(debug=True, host='0.0.0.0', port=port)
