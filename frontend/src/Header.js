@@ -56,11 +56,7 @@ function ColorSchemeToggle() {
 export default function Header() {
   const navigate = useNavigate();
   const location = useLocation(); // Get the current location
-
-  const handleNavigationClick = (section) => {
-    navigate('/about', { state: { section } });
-  };
-
+  
   const handleClearChat = async () => {
     try {
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/clear_history`, {
