@@ -1,26 +1,47 @@
 import React from 'react';
 import './ChatOutput.css';
-import ChatBubble from './ChatBubble';
+import Card from '@mui/joy/Card';
+import CardContent from '@mui/joy/CardContent';
+import Typography from '@mui/joy/Typography';
+import Skeleton from '@mui/joy/Skeleton';
+import Grid from '@mui/joy/Grid';
 
 const ChatOutput = ({ messages, isLoading, currentQuestion }) => {
   const lastMessage = messages[messages.length - 1] || {};
   const question = currentQuestion || "Bitte stelle eine Frage, um eine Antwort zu erhalten.";
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%' }}>
-      <ChatBubble
-        content={question}
-        variant="sent"  // Changed to 'sent' to align the question on the right side
-        sender="You"
-      />
-      {!isLoading && lastMessage.answer && (
-        <ChatBubble
-          content={lastMessage.answer || "Warte auf die Antwort..."}
-          variant="received"  // Changed to 'received' to align the answer on the left side
-          sender="Bot"
-        />
-      )}
-    </div>
+    <Grid container spacing={2} sx={{ width: '100%' }}>
+      <Grid item xs={12}>
+        <Card sx={{ width: '100%', borderRadius: '16px', boxShadow: 3, bgcolor: 'background.surface' }}>
+          <CardContent>
+            <Typography level="title-md" sx={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Frage</Typography>
+            <Typography level="body2" color="text.secondary" component="div" sx={{ textAlign: 'justify' }}>
+              {question}
+            </Typography>
+          </CardContent>
+        </Card>
+      </Grid>
+
+      <Grid item xs={12}>
+        <Card sx={{ width: '100%', borderRadius: '16px', boxShadow: 3, bgcolor: 'background.surface' }}>
+          <CardContent>
+            <Typography level="title-md" sx={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Antwort</Typography>
+            {isLoading ? (
+              <div>
+                <Skeleton variant="text" width="80%" />
+                <Skeleton variant="rectangular" height="2rem" />
+                <Skeleton variant="text" width="90%" />
+              </div>
+            ) : (
+              <Typography level="body2" color="text.secondary" component="div" sx={{ textAlign: 'justify' }}>
+                {lastMessage.answer}
+              </Typography>
+            )}
+          </CardContent>
+        </Card>
+      </Grid>
+    </Grid>
   );
 };
 
