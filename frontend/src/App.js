@@ -67,7 +67,7 @@ function App() {
           <Routes>
             <Route path="/" element={
               <div className="chat-layout"> 
-                <Chat addMessage={addMessage} setMessages={setMessages} messages={messages} setIsQuestionSubmitted={setIsQuestionSubmitted} setCurrentQuestion={setCurrentQuestion} className="grid-card" />
+                <Chat addMessage={addMessage} setMessages={setMessages} messages={messages} setIsQuestionSubmitted={setIsQuestionSubmitted} setCurrentQuestion={setCurrentQuestion} isQuestionSubmitted={isQuestionSubmitted} className="grid-card" />
                 {isQuestionSubmitted && (
                   <>
                     <ChatOutput messages={messages} isLoading={isLoading} currentQuestion={currentQuestion} className="grid-card" />
