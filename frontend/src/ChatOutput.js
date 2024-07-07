@@ -10,13 +10,13 @@ const ChatOutput = ({ messages, isLoading, currentQuestion }) => {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%' }}>
       <ChatBubble
         content={question}
-        variant="received"
+        variant="sent"  // Changed to 'sent' to align the question on the right side
         sender="You"
       />
       {!isLoading && lastMessage.answer && (
         <ChatBubble
           content={lastMessage.answer || "Warte auf die Antwort..."}
-          variant="sent"
+          variant="received"  // Changed to 'received' to align the answer on the left side
           sender="Bot"
         />
       )}
