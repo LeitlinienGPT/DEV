@@ -20,7 +20,6 @@ import LightModeRoundedIcon from "@mui/icons-material/LightModeRounded";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
-import HelpRoundedIcon from "@mui/icons-material/HelpRounded";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 
 function ColorSchemeToggle() {
