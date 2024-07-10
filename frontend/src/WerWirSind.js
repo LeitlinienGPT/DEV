@@ -4,21 +4,21 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 
 const bioData = [
   {
-    name: 'Marlon',
+    name: 'Marlon Hamm',
     topCompetencies: 'Dataengineering, Projectmanagement',
     bio: 'Marlon ist Data Engineering Consultant und Executive Assistant bei reeeliance, wo er die analytische Datenarchitektur von multinationalen Unternehmen auf Qualität testet und in der Umsetzung begleitet. Er hat Erfahrung in Datenmanagement und innovativen Datenprodukten durch seine Tätigkeit bei Fintechs, Retail- und MedTech-Unternehmen. Neben seiner Rolle als Data Engineer ist er Mitgründer dieses Start-ups. Marlon hält einen Bachelor in Internationaler Betriebswirtschaftslehre mit Fokus auf Digitalem Management von der Cologne Business School.',
     linkedin: 'https://www.linkedin.com/in/m-hamm/',
     avatar: 'marlon.jpg'
   },
   {
-    name: 'Tim',
+    name: 'Tim Strohmeyer',
     topCompetencies: 'Robotics, Data Integration',
     bio: 'Tim ist ein erfahrener Ingenieur mit umfangreicher Erfahrung in Robotik und Datenintegration. Derzeit verfolgt er seinen Master in Robotics, Cognition, Intelligence an der Technischen Universität München. Seine beruflichen Erfahrungen umfassen Tätigkeiten bei renommierten Institutionen wie dem Deutschen Zentrum für Luft- und Raumfahrt (DLR) und der SMS group. Neben seiner Rolle bei reeeliance arbeitet er an der Entwicklung von LLM-Chatbots unter Verwendung von Retrieval Augmented Generation (RAG) Mustern.',
     linkedin: 'https://www.linkedin.com/in/tim-strohmeyer-437a76185/',
     avatar: 'tim.jpg'
   },
   {
-    name: 'Paolo',
+    name: 'Paolo Oppelt',
     topCompetencies: 'Unternehmensstrategie, Entrepreneurship & Innovation',
     bio: 'Paolo ist Junior Investment Manager bei der UnternehmerTUM, wo er B2B Deep Tech Start-ups unterstützt. Er hat umfassende Erfahrung in Unternehmensstrategie und Innovation durch seine Tätigkeit bei Microsoft und Eight Advisory. Neben seiner Rolle als Investment Manager ist er Mitgründer dieses Start-ups. Paolo hat einen Master in Management und Technologie von der TU München und einen Bachelor in Internationaler Betriebswirtschaftslehre von der Rotterdam School of Management.',
     linkedin: 'https://www.linkedin.com/in/paolo-oppelt/',

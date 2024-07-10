@@ -24,11 +24,11 @@ export default function Navigation({ onNavigationClick }) {
             </ListItemButton>
           </ListItem>
           <ListItem>
-            <ListItemButton onClick={() => onNavigationClick('Die Firma hinter LeitlinienGPT')}>
+            <ListItemButton onClick={() => onNavigationClick('SearchAid')}>
               <ListItemDecorator sx={{ color: 'neutral.500' }}>
                 <BusinessRoundedIcon fontSize="small" />
               </ListItemDecorator>
-              <ListItemContent>Die Firma hinter LeitlinienGPT</ListItemContent>
+              <ListItemContent>SearchAid</ListItemContent>
             </ListItemButton>
           </ListItem>
         </List>

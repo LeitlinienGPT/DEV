@@ -6,6 +6,7 @@ import CircularProgress from '@mui/joy/CircularProgress';
 import Button from '@mui/joy/Button';
 import SendIcon from '@mui/icons-material/Send';
 import Grid from '@mui/joy/Grid';
+import AlertVariousStates from './AlertComponent'; // Ensure this is the correct path
 
 const Chat = ({ addMessage, setMessages, messages, setIsQuestionSubmitted, setCurrentQuestion, isQuestionSubmitted }) => {
   const [input, setInput] = useState('');
@@ -15,8 +16,8 @@ const Chat = ({ addMessage, setMessages, messages, setIsQuestionSubmitted, setCu
     event.preventDefault();
     if (input.trim()) {
       setIsSubmitting(true);
-      setIsQuestionSubmitted(true); // Set question submitted state
-      setCurrentQuestion(input.trim()); // Set the current question directly
+      setIsQuestionSubmitted(true);
+      setCurrentQuestion(input.trim());
       try {
         const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/process`, {
           method: 'POST',
@@ -52,6 +53,8 @@ const Chat = ({ addMessage, setMessages, messages, setIsQuestionSubmitted, setCu
       <div className="chat-header" style={{ paddingTop: '64px' }}>
         <h1 style={{ color: 'text.primary' }}>Demoversion: LeitlinienGPT</h1>
       </div>
+
+      <AlertVariousStates sx={{ marginBottom: 4 }} /> {/* Add margin-bottom to the alert component */}
 
       {isQuestionSubmitted && (
         <Box component="form" className="chat-input-container" onSubmit={handleSubmit} sx={{ display: 'flex', gap: 2 }}>

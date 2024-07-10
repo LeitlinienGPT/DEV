@@ -35,8 +35,22 @@ const MissionVisionCard = ({ title, content, icon }) => (
   </Card>
 );
 
-const FirmaHinterLeitlinienGPT = () => (
+const AnnouncementCard = () => (
+  <Card sx={{ width: '100%', mb: 4, boxShadow: 3, borderRadius: 'lg', bgcolor: 'background.surface' }}>
+    <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+      <Typography level="h2" fontSize="lg" sx={{ mt: 2, mb: 1 }}>
+        Hinweis
+      </Typography>
+      <Typography level="body2" sx={{ mb: 1, textAlign: 'justify' }}>
+        SearchAid ist ein in der Gründungsphase befindliches Start-up. Vor der offiziellen Gründung möchten wir gerne erste Pilotprojekte initiieren, um wertvolles Feedback von Ärzten zu erhalten und unsere Web-App optimal an deren Bedürfnisse anzupassen.
+      </Typography>
+    </CardContent>
+  </Card>
+);
+
+const SearchAid = () => (
   <Box sx={{ p: 2 }}>
+    <AnnouncementCard />
     <Grid container spacing={2}>
       {missionVisionData.map((data, index) => (
         <Grid item xs={12} sm={6} key={index}>
@@ -71,7 +85,7 @@ export default function About() {
         </Layout.SideNav>
         <Layout.Main>
           {activeNavItem === 'Wer wir sind' && <WerWirSind />}
-          {activeNavItem === 'Die Firma hinter LeitlinienGPT' && <FirmaHinterLeitlinienGPT />}
+          {activeNavItem === 'SearchAid' && <SearchAid />}
           {activeNavItem === 'FAQs' && <FAQs />}
         </Layout.Main>
       </Layout.Root>
