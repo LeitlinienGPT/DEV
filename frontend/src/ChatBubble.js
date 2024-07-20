@@ -122,7 +122,7 @@ const ChatBubble = ({ content, variant, timestamp, attachment = undefined, sende
             onMouseLeave={() => setIsHovered(false)}
           >
             <Sheet
-              color="neutral" // Use neutral color for soft variant
+              color={isSent ? "primary" : "neutral"} // Adjust color for better contrast in Light Mode
               variant="soft" // Apply soft variant for the background
               sx={{
                 p: 2,
@@ -139,7 +139,7 @@ const ChatBubble = ({ content, variant, timestamp, attachment = undefined, sende
                 level="body-sm"
                 sx={{
                   color: isSent
-                    ? 'var(--joy-palette-common-white)'
+                    ? 'var(--joy-palette-primary-contrastText)'
                     : 'var(--joy-palette-text-primary)',
                   textAlign: 'justify'
                 }}
