@@ -21,6 +21,7 @@ const ChatOutput = ({ messages, isLoading, currentQuestion }) => {
           content={lastMessage.answer || "Warte auf die Antwort..."}
           variant="received"  // Changed to 'received' to align the answer on the left side
           sender="Bot"
+          sourceDocuments={lastMessage.source_documents || []}  // Pass the source documents here
         />
       )}
     </div>

@@ -5,13 +5,78 @@ import IconButton from '@mui/joy/IconButton';
 import Stack from '@mui/joy/Stack';
 import Sheet from '@mui/joy/Sheet';
 import Typography from '@mui/joy/Typography';
+import Link from '@mui/joy/Link';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import InsertDriveFileRoundedIcon from '@mui/icons-material/InsertDriveFileRounded';
 
-const ChatBubble = ({ content, variant, timestamp, attachment = undefined, sender }) => {
+const ChatBubble = ({ content, variant, timestamp, attachment = undefined, sender, sourceDocuments = [] }) => {
   const isSent = variant === 'sent';
   const [isHovered, setIsHovered] = React.useState(false);
   const [isLiked, setIsLiked] = React.useState(false);
+
+  // Function to replace "Quelle 1", "Quelle 2", "Quelle 3" with hyperlinks without brackets and add '&' between consecutive sources
+  const renderContentWithLinks = (content) => {
+    const regex = /\(Quelle \d+(?:; Quelle \d+)*\)/g;
+    let lastIndex = 0;
+    const parts = [];
+
+    content.replace(regex, (match, offset) => {
+      if (offset > lastIndex) {
+        parts.push(content.slice(lastIndex, offset));
+      }
+
+      const items = match.split(';').map((item) => item.trim());
+
+      items.forEach((item, index) => {
+        if (index > 0) {
+          parts.push(' & ');
+        }
+
+        const matchInner = item.match(/Quelle (\d+)/);
+        if (matchInner) {
+          const sourceIndex = parseInt(matchInner[1], 10) - 1;
+          const source = sourceDocuments[sourceIndex];
+          if (source && source.metadata && source.metadata.href) {
+            parts.push(
+              <Link
+                key={`${offset}-${matchInner[1]}`}
+                href={source.metadata.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                variant="soft"
+                color="primary"
+                underline="none"
+                sx={{
+                  mx: 0.5,
+                  px: 1,
+                  py: 0.5,
+                  borderRadius: 'md',
+                  backgroundColor: 'var(--joy-palette-primary-softBg)',
+                  color: 'var(--joy-palette-primary-contrastText)',
+                  '&:hover': {
+                    backgroundColor: 'var(--joy-palette-primary-solidBg)',
+                    color: 'var(--joy-palette-primary-solidContrastText)',
+                  },
+                }}
+              >
+                {`Quelle ${matchInner[1]}`}
+              </Link>
+            );
+          } else {
+            parts.push(`Quelle ${matchInner[1]}`);
+          }
+        }
+      });
+
+      lastIndex = offset + match.length;
+    });
+
+    if (lastIndex < content.length) {
+      parts.push(content.slice(lastIndex));
+    }
+
+    return parts;
+  };
 
   return (
     <Box sx={{ maxWidth: '100%', display: 'flex', justifyContent: isSent ? 'flex-end' : 'flex-start' }}>
@@ -79,7 +144,7 @@ const ChatBubble = ({ content, variant, timestamp, attachment = undefined, sende
                   textAlign: 'justify'
                 }}
               >
-                {typeof content === 'string' ? content : JSON.stringify(content)}
+                {renderContentWithLinks(content)}
               </Typography>
             </Sheet>
             {(isHovered || isLiked) && isSent && (

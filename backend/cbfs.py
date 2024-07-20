@@ -45,7 +45,7 @@ template = """Beantworten Sie die Frage nur auf der Grundlage
             Jeder Satz sollte mit Quellenangaben ende, die listen 
             aus welcher Quelle die Informationen kamen.
             Wenn Informationen aus mehreren Quellen stammen, 
-            geben Sie diese in der Form [Quelle 1; Quelle 2] an.
+            geben Sie diese in der Form Quelle 1; Quelle 2 an.
             Quellen: {context}
             Frage: {question}
             Antwort:"""

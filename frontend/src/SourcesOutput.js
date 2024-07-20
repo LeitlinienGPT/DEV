@@ -81,7 +81,7 @@ const CollapsibleRow = ({ row, index, isOpen, toggleOpen, isEven }) => {
               <Typography level="body-lg" component="div">
                 Mehr Informationen
               </Typography>
-              <Typography variant="body2">{pageContent}</Typography>
+              <Typography variant="body2" className="sources-content">{pageContent}</Typography>
             </Sheet>
           </td>
         </tr>
