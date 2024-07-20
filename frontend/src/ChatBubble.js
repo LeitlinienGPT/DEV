@@ -50,21 +50,24 @@ const ChatBubble = ({ content, variant, timestamp, attachment = undefined, sende
           </Sheet>
         ) : (
           <Box
-            sx={{ position: 'relative' }}
+            sx={{ 
+              position: 'relative', 
+            }}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
             <Sheet
-              color={isSent ? 'primary' : 'neutral'}
-              variant={isSent ? 'solid' : 'soft'}
+              color="neutral" // Use neutral color for soft variant
+              variant="soft" // Apply soft variant for the background
               sx={{
-                p: 1.25,
+                p: 2,
                 borderRadius: 'lg',
                 borderTopRightRadius: isSent ? 0 : 'lg',
                 borderTopLeftRadius: isSent ? 'lg' : 0,
+                // Dynamic background color based on sender
                 backgroundColor: isSent
-                  ? 'var(--joy-palette-primary-solidBg)'
-                  : 'background.body',
+                  ? 'var(--joy-palette-primary-softBg)' // Use primary soft background if sent
+                  : 'var(--joy-palette-neutral-softBg)', // Use neutral soft background if received
               }}
             >
               <Typography
@@ -73,6 +76,7 @@ const ChatBubble = ({ content, variant, timestamp, attachment = undefined, sende
                   color: isSent
                     ? 'var(--joy-palette-common-white)'
                     : 'var(--joy-palette-text-primary)',
+                  textAlign: 'justify'
                 }}
               >
                 {typeof content === 'string' ? content : JSON.stringify(content)}

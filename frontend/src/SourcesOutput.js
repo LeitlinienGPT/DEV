@@ -176,7 +176,7 @@ const SourcesOutput = ({ sourceDocuments, isLoading }) => {
                   <tr>
                     <td colSpan={7}>
                       <Typography variant="body2" color="text.secondary" className="sources-content">
-                        Bitte stelle eine Frage, damit hier Quellen angezeigt werden.
+                        Ihre Anfrage wird bearbeitet. Aktuell dauert die Suche nach passenden Quellen ca. 10 Sekunden. 
                       </Typography>
                     </td>
                   </tr>
