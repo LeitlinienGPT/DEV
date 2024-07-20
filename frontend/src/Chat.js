@@ -32,13 +32,31 @@ const Chat = ({ addMessage, setMessages, messages, setIsQuestionSubmitted, setCu
         }
 
         const data = await response.json();
-        addMessage({ text: input.trim(), ...data });
+        
+        // Update the messages with the new message and its sources
+        const updatedMessages = [
+          ...messages,
+          { text: input.trim(), ...data }
+        ];
+        
+        // Limit the sourceDocuments to the three most recent sources
+        const updatedSourceDocuments = updatedMessages.flatMap(msg => msg.source_documents).slice(-3);
+        
+        // Update the state with the new messages and limited sources
+        setMessages(updatedMessages);
         setInput('');
       } catch (error) {
         console.error('Error sending the query to the backend:', error);
       } finally {
         setIsSubmitting(false);
       }
+    }
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      handleSubmit(event);
     }
   };
 
@@ -63,6 +81,7 @@ const Chat = ({ addMessage, setMessages, messages, setIsQuestionSubmitted, setCu
             placeholder="Schreibe eine Nachricht..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
+            onKeyDown={handleKeyDown} // Add this line
             variant="soft"
             minRows={3}
             maxRows={8}
@@ -87,6 +106,7 @@ const Chat = ({ addMessage, setMessages, messages, setIsQuestionSubmitted, setCu
               placeholder="Schreibe eine Nachricht..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
+              onKeyDown={handleKeyDown} // Add this line
               variant="soft"
               minRows={3}
               maxRows={8}

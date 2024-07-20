@@ -126,8 +126,11 @@ const SourcesOutput = ({ sourceDocuments, isLoading }) => {
   );
 
   const renderSourceDocuments = () => {
-    if (sourceDocuments && sourceDocuments.length > 0) {
-      return sourceDocuments.map((doc, index) => (
+    // Show only the latest three source documents
+    const latestSourceDocuments = sourceDocuments.slice(-3);
+
+    if (latestSourceDocuments && latestSourceDocuments.length > 0) {
+      return latestSourceDocuments.map((doc, index) => (
         <CollapsibleRow
           key={index}
           row={doc}

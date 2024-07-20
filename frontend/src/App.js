@@ -38,15 +38,18 @@ function App() {
       }
 
       const data = await response.json();
+      
+      // Update the messages with the new message and its sources
+      const updatedMessages = [
+        ...messages,
+        { text: message.text, ...data }
+      ];
 
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        {
-          text: message.text,
-          answer: data.answer,
-          source_documents: data.source_documents,
-        },
-      ]);
+      // Limit the sourceDocuments to the three most recent sources
+      const updatedSourceDocuments = updatedMessages.flatMap(msg => msg.source_documents).slice(-3);
+
+      // Update the state with the new messages and limited sources
+      setMessages(updatedMessages);
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
@@ -71,7 +74,7 @@ function App() {
                 {isQuestionSubmitted && (
                   <>
                     <ChatOutput messages={messages} isLoading={isLoading} currentQuestion={currentQuestion} className="grid-card" />
-                    <SourcesOutput sourceDocuments={messages.flatMap((msg) => msg.source_documents)} isLoading={isLoading} className="grid-card" />
+                    <SourcesOutput sourceDocuments={messages.flatMap((msg) => msg.source_documents).slice(-3)} isLoading={isLoading} className="grid-card" />
                   </>
                 )}
               </div>
