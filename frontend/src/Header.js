@@ -94,9 +94,10 @@ export default function Header() {
       }}
     >
       <Stack direction="row" spacing={2} alignItems="center">
-        <IconButton variant="plain" color="neutral" onClick={() => navigate('/')}>
+        <IconButton variant="plain" color="neutral" onClick={() => navigate('/home')}>
           <HomeRoundedIcon />
         </IconButton>
+        <Button variant="plain" color="neutral" onClick={() => navigate('/')}>WebApp</Button>
         <Button variant="plain" color="neutral" onClick={() => navigate('/faq')}>FAQs</Button>
         <Button variant="plain" color="neutral" onClick={() => navigate('/about')}>Über Uns</Button>
       </Stack>

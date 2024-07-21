@@ -8,6 +8,7 @@ import joyTheme from './joyTheme';
 import Header from './Header';
 import About from './About';
 import FAQ from './FAQ'; // Import the new FAQ component
+import Home from './Home'; // Import the new Home component
 import { Routes, Route } from 'react-router-dom';
 import './App.css';
 import ErrorBoundary from './ErrorBoundary';
@@ -80,6 +81,7 @@ function App() {
                 )}
               </div>
             } />
+            <Route path="/home" element={<Home />} /> {/* Home component */}
             <Route path="/about" element={<About />} />
             <Route path="/faq" element={<FAQ />} /> {/* Added FAQ route */}
           </Routes>

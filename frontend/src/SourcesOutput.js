@@ -17,7 +17,7 @@ const formatTitleAndExtractRegisterNumber = (source) => {
   const parts = source.split('_');
   let registerNumber = parts[0];
   if (registerNumber && registerNumber.length >= 6) {
-    registerNumber = `${registerNumber.substring(0, 3)}-${registerNumber.substring(3, 6)}`;
+    registerNumber = `${registerNumber.substring(0, 3)}-${registerNumber.substring(3, 7)}`;
   } else {
     registerNumber = 'Unbekannt';
   }
@@ -57,7 +57,15 @@ const CollapsibleRow = ({ row, index, isOpen, toggleOpen, isEven }) => {
           )}
         </td>
         <td className="table-cell">{formattedTitle}</td>
-        <td className="table-cell">{pages}</td>
+        <td className="table-cell">
+          {awmfRegisterUrl ? (
+            <Link href={`${awmfRegisterUrl}#page=${Page}`} target="_blank" variant="outlined">
+              {pages}
+            </Link>
+          ) : (
+            <span>{pages}</span>
+          )}
+        </td>
         <td className="table-cell">{Fachgesellschaft && Fachgesellschaft.join(', ')}</td>
         <td className="table-cell">
           <IconButton
