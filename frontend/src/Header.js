@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useColorScheme } from "@mui/joy/styles";
 import Box from "@mui/joy/Box";
 import Typography from "@mui/joy/Typography";
@@ -13,14 +13,14 @@ import Menu from "@mui/joy/Menu";
 import MenuButton from "@mui/joy/MenuButton";
 import MenuItem from "@mui/joy/MenuItem";
 import ListDivider from "@mui/joy/ListDivider";
-import ReloadButton from './ReloadButton';
-
 import DarkModeRoundedIcon from "@mui/icons-material/DarkModeRounded";
 import LightModeRoundedIcon from "@mui/icons-material/LightModeRounded";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
+import ReloadButton from './ReloadButton';
+import FeedbackForm from './FeedbackForm'; // Import the card component
 
 function ColorSchemeToggle() {
   const { mode, setMode } = useColorScheme();
@@ -55,8 +55,8 @@ function ColorSchemeToggle() {
 
 export default function Header() {
   const navigate = useNavigate();
-  const location = useLocation(); // Get the current location
-  
+  const [showCard, setShowCard] = React.useState(false); // State to toggle card visibility
+
   const handleClearChat = async () => {
     try {
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/clear_history`, {
@@ -72,9 +72,6 @@ export default function Header() {
 
       const data = await response.json();
       console.log(data.message);
-      // Assuming you have a way to update the messages state in your main App component
-      // You'll need to pass a function to update the messages from Header to App
-      // For example: setMessages([]);
     } catch (error) {
       console.error('Error clearing the chat history:', error);
     }
@@ -90,32 +87,27 @@ export default function Header() {
         backgroundColor: "background.level1",
         borderBottom: "1px solid",
         borderColor: "divider",
-        position: "fixed", // Change to fixed position
-        top: 0, // Ensure it sticks to the top
-        width: "100%", // Make sure it covers the full width
-        zIndex: 1100, // Ensure it stays above other elements
+        position: "fixed",
+        top: 0,
+        width: "100%",
+        zIndex: 1100,
       }}
     >
       <Stack direction="row" spacing={2} alignItems="center">
-        <IconButton
-          variant="plain"
-          color="neutral"
-          onClick={() => navigate('/')} 
-        >
+        <IconButton variant="plain" color="neutral" onClick={() => navigate('/')}>
           <HomeRoundedIcon />
         </IconButton>
         <Button variant="plain" color="neutral" onClick={() => navigate('/faq')}>FAQs</Button>
         <Button variant="plain" color="neutral" onClick={() => navigate('/about')}>Über Uns</Button>
+      </Stack>
+      <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
         <Button
           variant="plain"
           color="neutral"
-          onClick={() => window.open('mailto:leitliniengpt@gmail.com', '_blank')}
-          startDecorator={<EmailRoundedIcon />} 
+          onClick={() => setShowCard(!showCard)} // Toggle card visibility
         >
-          Feedback an die Gründer
+          Feedback
         </Button>
-      </Stack>
-      <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
         <ColorSchemeToggle />
         <Tooltip title="Chat Historie und Quellen zurücksetzen" variant="outlined">
           <ReloadButton handleClearChat={handleClearChat} />
@@ -131,7 +123,7 @@ export default function Header() {
             }}
           >
             <Avatar
-              src={`${process.env.PUBLIC_URL}/favicon_LeitlinienGPT.png`} 
+              src={`${process.env.PUBLIC_URL}/favicon_LeitlinienGPT.png`}
               sx={{ maxWidth: "32px", maxHeight: "32px" }}
             />
           </MenuButton>
@@ -144,16 +136,11 @@ export default function Header() {
               gap: 1,
               "--ListItem-radius": "var(--joy-radius-sm)",
             }}
-            onClose={() => { 
-              if (location.pathname !== '/about') {
-                navigate('/about'); 
-              }
-            }}
           >
             <MenuItem>
               <Box sx={{ display: "flex", alignItems: "center" }}>
                 <Avatar
-                  src={`${process.env.PUBLIC_URL}/favicon_LeitlinienGPT.png`} 
+                  src={`${process.env.PUBLIC_URL}/favicon_LeitlinienGPT.png`}
                   sx={{ borderRadius: "50%" }}
                 />
                 <Box sx={{ ml: 1.5 }}>
@@ -179,6 +166,18 @@ export default function Header() {
           </Menu>
         </Dropdown>
       </Box>
+      {showCard && (
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '48px',
+            right: '16px',
+            zIndex: 1200,
+          }}
+        >
+          <FeedbackForm />
+        </Box>
+      )}
     </Box>
   );
 }

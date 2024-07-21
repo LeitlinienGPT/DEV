@@ -11,6 +11,7 @@ import FAQ from './FAQ'; // Import the new FAQ component
 import { Routes, Route } from 'react-router-dom';
 import './App.css';
 import ErrorBoundary from './ErrorBoundary';
+import FeedbackForm from './FeedbackForm'; // Import the card component
 
 function App() {
   const [messages, setMessages] = useState([]);
