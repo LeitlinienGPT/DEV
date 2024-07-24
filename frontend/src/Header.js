@@ -7,7 +7,7 @@ import IconButton from "@mui/joy/IconButton";
 import Stack from "@mui/joy/Stack";
 import Avatar from "@mui/joy/Avatar";
 import Button from "@mui/joy/Button";
-import Tooltip from "@mui/joy/Tooltip";
+import Tooltip from "@mui/joy/Tooltip"; // Korrigiert
 import Dropdown from "@mui/joy/Dropdown";
 import Menu from "@mui/joy/Menu";
 import MenuButton from "@mui/joy/MenuButton";
@@ -16,7 +16,6 @@ import ListDivider from "@mui/joy/ListDivider";
 import DarkModeRoundedIcon from "@mui/icons-material/DarkModeRounded";
 import LightModeRoundedIcon from "@mui/icons-material/LightModeRounded";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
-import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import ReloadButton from './ReloadButton';
@@ -94,12 +93,12 @@ export default function Header() {
       }}
     >
       <Stack direction="row" spacing={2} alignItems="center">
-        <IconButton variant="plain" color="neutral" onClick={() => navigate('/home')}>
+        <IconButton variant="plain" color="neutral" onClick={() => navigate('/')}>
           <HomeRoundedIcon />
         </IconButton>
-        <Button variant="plain" color="neutral" onClick={() => navigate('/')}>WebApp</Button>
         <Button variant="plain" color="neutral" onClick={() => navigate('/faq')}>FAQs</Button>
-        <Button variant="plain" color="neutral" onClick={() => navigate('/about')}>Über Uns</Button>
+        {/* Entferne den Button "Über Uns" */}
+        {/* <Button variant="plain" color="neutral" onClick={() => navigate('/about')}>Über Uns</Button> */}
       </Stack>
       <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
         <Button
