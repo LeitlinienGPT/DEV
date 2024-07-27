@@ -44,6 +44,7 @@ template = """Beantworte die Frage mit den Quellen und deinem vorhandenen Wissen
             Jeder Satz der aus den Quellen kommt muss mit einer Quellenangabe enden.
             Wenn Informationen aus mehreren Quellen stammen, 
             gebe diese in der Form Quelle 1; Quelle 2 an.
+            Formattiere die Antwort sehr übersichtlich.
             Quellen: {context}
             Frage: {question}
             Antwort:"""

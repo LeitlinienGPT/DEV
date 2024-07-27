@@ -8,6 +8,7 @@ import Typography from '@mui/joy/Typography';
 import Link from '@mui/joy/Link';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import InsertDriveFileRoundedIcon from '@mui/icons-material/InsertDriveFileRounded';
+import ReactMarkdown from 'react-markdown';
 
 const ChatBubble = ({ content, variant, timestamp, attachment = undefined, sender, sourceDocuments = [] }) => {
   const isSent = variant === 'sent';
@@ -16,6 +17,8 @@ const ChatBubble = ({ content, variant, timestamp, attachment = undefined, sende
 
   // Function to replace "Quelle 1", "Quelle 2", "Quelle 3" with hyperlinks without brackets and add '&' between consecutive sources
   const renderContentWithLinks = (content) => {
+    if (typeof content !== 'string') return content;
+    
     const regex = /\(Quelle \d+(?:; Quelle \d+)*\)/g;
     let lastIndex = 0;
     const parts = [];
@@ -37,31 +40,7 @@ const ChatBubble = ({ content, variant, timestamp, attachment = undefined, sende
           const sourceIndex = parseInt(matchInner[1], 10) - 1;
           const source = sourceDocuments[sourceIndex];
           if (source && source.metadata && source.metadata.href) {
-            parts.push(
-              <Link
-                key={`${offset}-${matchInner[1]}`}
-                href={source.metadata.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                variant="soft"
-                color="primary"
-                underline="none"
-                sx={{
-                  mx: 0.5,
-                  px: 1,
-                  py: 0.5,
-                  borderRadius: 'md',
-                  backgroundColor: 'var(--joy-palette-primary-softBg)',
-                  color: 'var(--joy-palette-primary-contrastText)',
-                  '&:hover': {
-                    backgroundColor: 'var(--joy-palette-primary-solidBg)',
-                    color: 'var(--joy-palette-primary-solidContrastText)',
-                  },
-                }}
-              >
-                {`Quelle ${matchInner[1]}`}
-              </Link>
-            );
+            parts.push(`[Quelle ${matchInner[1]}](${source.metadata.href})`);
           } else {
             parts.push(`Quelle ${matchInner[1]}`);
           }
@@ -75,8 +54,10 @@ const ChatBubble = ({ content, variant, timestamp, attachment = undefined, sende
       parts.push(content.slice(lastIndex));
     }
 
-    return parts;
+    return parts.join('');
   };
+
+  const markdownContent = renderContentWithLinks(content);
 
   return (
     <Box sx={{ maxWidth: '100%', display: 'flex', justifyContent: isSent ? 'flex-end' : 'flex-start' }}>
@@ -144,7 +125,9 @@ const ChatBubble = ({ content, variant, timestamp, attachment = undefined, sende
                   textAlign: 'justify'
                 }}
               >
-                {renderContentWithLinks(content)}
+                <ReactMarkdown>
+                  {markdownContent}
+                </ReactMarkdown>
               </Typography>
             </Sheet>
             {(isHovered || isLiked) && isSent && (

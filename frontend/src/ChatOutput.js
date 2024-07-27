@@ -1,4 +1,6 @@
 import React from 'react';
+import ReactMarkdown from 'react-markdown';
+import DOMPurify from 'dompurify';
 import './ChatOutput.css';
 import ChatBubble from './ChatBubble';
 
@@ -9,19 +11,21 @@ const ChatOutput = ({ messages, isLoading, currentQuestion }) => {
   console.log('Messages:', messages);
   console.log('Current Question:', currentQuestion);
 
+  const sanitizedMarkdown = lastMessage.answer ? DOMPurify.sanitize(lastMessage.answer) : '';
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%' }}>
       <ChatBubble
         content={question}
-        variant="sent"  // Changed to 'sent' to align the question on the right side
+        variant="sent"
         sender="You"
       />
       {!isLoading && lastMessage.answer && (
         <ChatBubble
-          content={lastMessage.answer || "Warte auf die Antwort..."}
-          variant="received"  // Changed to 'received' to align the answer on the left side
+          content={sanitizedMarkdown}
+          variant="received"
           sender="Bot"
-          sourceDocuments={lastMessage.source_documents || []}  // Pass the source documents here
+          sourceDocuments={lastMessage.source_documents || []}
         />
       )}
     </div>
