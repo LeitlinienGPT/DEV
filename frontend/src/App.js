@@ -8,11 +8,9 @@ import joyTheme from './joyTheme';
 import Header from './Header';
 import About from './About';
 import FAQ from './FAQ'; // Import the new FAQ component
-import Home from './Home'; // Import the new Home component
 import { Routes, Route } from 'react-router-dom';
 import './App.css';
 import ErrorBoundary from './ErrorBoundary';
-import FeedbackForm from './FeedbackForm'; // Import the card component
 
 function App() {
   const [messages, setMessages] = useState([]);
@@ -72,16 +70,15 @@ function App() {
           <Routes>
             <Route path="/" element={
               <div className="chat-layout"> 
-                <Chat addMessage={addMessage} setMessages={setMessages} messages={messages} setIsQuestionSubmitted={setIsQuestionSubmitted} setCurrentQuestion={setCurrentQuestion} isQuestionSubmitted={isQuestionSubmitted} className="grid-card" />
                 {isQuestionSubmitted && (
                   <>
-                    <ChatOutput messages={messages} isLoading={isLoading} currentQuestion={currentQuestion} className="grid-card" />
                     <SourcesOutput sourceDocuments={messages.flatMap((msg) => msg.source_documents).slice(-3)} isLoading={isLoading} className="grid-card" />
+                    <ChatOutput messages={messages} isLoading={isLoading} currentQuestion={currentQuestion} className="grid-card" />
                   </>
                 )}
+                <Chat addMessage={addMessage} setMessages={setMessages} messages={messages} setIsQuestionSubmitted={setIsQuestionSubmitted} setCurrentQuestion={setCurrentQuestion} isQuestionSubmitted={isQuestionSubmitted} className="grid-card" />
               </div>
             } />
-            <Route path="/home" element={<Home />} /> {/* Home component */}
             <Route path="/about" element={<About />} />
             <Route path="/faq" element={<FAQ />} /> {/* Added FAQ route */}
           </Routes>

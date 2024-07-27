@@ -1,3 +1,4 @@
+/* App.css */
 .app-container {
   display: flex;
   flex-direction: column;
@@ -6,46 +7,39 @@
   overflow-x: hidden;
   padding: 0; /* Remove padding to make full width */
   margin-top: 0px; /* Adjust this value to match the height of your header */
+  padding-bottom: 2rem; /* Add bottom padding to enable scrolling past the last element */
 }
-
 
 .chat-layout {
   display: flex;
-  flex-direction: column; /* Changed from row to column */
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem; /* Adjust the gap between grid items */
-  padding: 1rem;
-  height: 100%; /* Full height */
-  width: 100%; /* Full width */
-}
-
-
-/* Center the chat header content */
-.chat-header {
-  /* determines the space around the chat-header so around the title*/
-  flex-grow: .5;
-  display: flex;
   flex-direction: column;
-  justify-content: center; /* Vertically center in the available space */
-  align-items: center; /* Horizontally center */
-  margin-bottom: 0; /* Remove bottom margin if any */
-  /* height: 20px; */
+  flex-grow: 1;
+  overflow-y: auto; /* Enable vertical scrolling */
+  padding: 1rem;
+  padding-bottom: 6rem; /* Space for input box */
+  margin-top: 64px; /* Ensure content starts below the header */
 }
 
-/* This is where I actually type in the question */
 .chat-input-container {
-  width: 100%; /* Full width */
-  padding-bottom: .2rem; /* Space from the bottom */
+  position: fixed;
+  bottom: 0;
+  left: 0; /* Ensure it starts from the left edge */
+  width: 100%;
+  padding: 1rem;
+  z-index: 10; /* Ensure it stays on top of other elements */
+  margin: 0; /* Remove any margins */
 }
 
-/* Target table rows */
-.sources-output table tbody tr {
-  background-color: transparent; 
-  color: inherit; 
+.textarea {
+  flex-grow: 1;
+  resize: none;
+  min-height: 100px;
+  width: calc(100% - 72px); 
 }
 
-/* Target text in the "Chat Leeren" button */
-.chat button {
-  color: inherit; 
+.chat {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 6rem; /* Space for input box */
+  position: relative; /* Ensure it sits below the fixed input container */
 }

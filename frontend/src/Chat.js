@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import './Chat.css';
+import { useColorScheme } from '@mui/joy/styles';
 import Box from '@mui/joy/Box';
 import Textarea from '@mui/joy/Textarea';
 import CircularProgress from '@mui/joy/CircularProgress';
 import Button from '@mui/joy/Button';
 import SendIcon from '@mui/icons-material/Send';
-import Grid from '@mui/joy/Grid';
-import AlertVariousStates from './AlertComponent'; // Ensure this is the correct path
+import Stack from '@mui/joy/Stack';
+import AlertVariousStates from './AlertComponent';
+import './Chat.css';
 
-const Chat = ({ addMessage, setMessages, messages, setIsQuestionSubmitted, setCurrentQuestion, isQuestionSubmitted }) => {
+const Chat = ({ setMessages, messages, setIsQuestionSubmitted, setCurrentQuestion }) => {
   const [input, setInput] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [firstMessageSent, setFirstMessageSent] = useState(false);
+  const { mode } = useColorScheme();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -18,6 +21,8 @@ const Chat = ({ addMessage, setMessages, messages, setIsQuestionSubmitted, setCu
       setIsSubmitting(true);
       setIsQuestionSubmitted(true);
       setCurrentQuestion(input.trim());
+      setFirstMessageSent(true); 
+
       try {
         const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/process`, {
           method: 'POST',
@@ -32,17 +37,12 @@ const Chat = ({ addMessage, setMessages, messages, setIsQuestionSubmitted, setCu
         }
 
         const data = await response.json();
-        
-        // Update the messages with the new message and its sources
+
         const updatedMessages = [
           ...messages,
           { text: input.trim(), ...data }
         ];
-        
-        // Limit the sourceDocuments to the three most recent sources
-        const updatedSourceDocuments = updatedMessages.flatMap(msg => msg.source_documents).slice(-3);
-        
-        // Update the state with the new messages and limited sources
+
         setMessages(updatedMessages);
         setInput('');
       } catch (error) {
@@ -61,68 +61,60 @@ const Chat = ({ addMessage, setMessages, messages, setIsQuestionSubmitted, setCu
   };
 
   useEffect(() => {
-    if (isQuestionSubmitted) {
+    if (firstMessageSent) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-  }, [isQuestionSubmitted]);
+  }, [firstMessageSent]);
 
   return (
     <Box className="chat" sx={{ bgcolor: 'background.body', padding: 2 }}>
-      <div className="chat-header" style={{ paddingTop: '64px' }}>
-        <h1 style={{ color: 'text.primary' }}>Demoversion: LeitlinienGPT</h1>
-      </div>
-
-      <AlertVariousStates sx={{ marginBottom: 4 }} /> {/* Add margin-bottom to the alert component */}
-
-      {isQuestionSubmitted && (
-        <Box component="form" className="chat-input-container" onSubmit={handleSubmit} sx={{ display: 'flex', gap: 2 }}>
-          <Textarea
-            size="lg"
-            placeholder="Schreibe eine Nachricht..."
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={handleKeyDown} // Add this line
-            variant="soft"
-            minRows={3}
-            maxRows={8}
-            sx={{
-              flexGrow: 1,
-              resize: 'none',
-              color: 'text.primary',
-              minHeight: '100px'
-            }}
-          />
-          <Button type="submit" variant="outlined" color="primary" loading={isSubmitting} disabled={isSubmitting}>
-            {isSubmitting ? <CircularProgress size="24" /> : <SendIcon />}
-          </Button>
-        </Box>
+      {!firstMessageSent && (
+        <div className="chat-header" style={{ paddingTop: '64px' }}>
+          <h1 style={{ color: 'text.primary' }}>Demoversion: LeitlinienGPT</h1>
+          <AlertVariousStates sx={{ marginBottom: 4 }} />
+        </div>
       )}
 
-      {!isQuestionSubmitted && (
-        <Grid container justifyContent="center" sx={{ position: 'fixed', bottom: 0, width: '100%', bgcolor: 'background.body', padding: 2 }}>
-          <Grid item xs={12} sm={8} md={6} component="form" className="chat-input-container" onSubmit={handleSubmit} sx={{ display: 'flex', gap: 2 }}>
-            <Textarea
-              size="lg"
-              placeholder="Schreibe eine Nachricht..."
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={handleKeyDown} // Add this line
-              variant="soft"
-              minRows={3}
-              maxRows={8}
-              sx={{
-                flexGrow: 1,
-                resize: 'none',
-                color: 'text.primary',
-                minHeight: '100px'
-              }}
-            />
-            <Button type="submit" variant="outlined" color="primary" loading={isSubmitting} disabled={isSubmitting}>
-              {isSubmitting ? <CircularProgress size="24" /> : <SendIcon />}
-            </Button>
-          </Grid>
-        </Grid>
-      )}
+      <Stack spacing={2} className="chat-layout" sx={{ flex: 1, overflowY: 'auto' }}>
+        {/* Remove the message rendering from here */}
+      </Stack>
+
+      <Box
+        component="form"
+        className="chat-input-container"
+        onSubmit={handleSubmit}
+        sx={{
+          display: 'flex',
+          gap: 2,
+          padding: '8px 16px',
+          margin: 0,
+        }}
+      >
+        <Textarea
+          className="textarea"
+          size="lg"
+          placeholder="Schreibe eine Nachricht..."
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={handleKeyDown}
+          variant="soft"
+          minRows={3}
+          maxRows={8}
+          sx={{
+            flexGrow: 1,
+            resize: 'none',
+            color: 'text.primary',
+            minHeight: '100px',
+            backgroundColor: mode === 'light' ? 'background.paper' : 'background.level1',
+            border: '1px solid',
+            borderColor: 'divider',
+            margin: 0,
+          }}
+        />
+        <Button className="button" type="submit" variant="outlined" color="primary" loading={isSubmitting} disabled={isSubmitting}>
+          {isSubmitting ? <CircularProgress size="24" /> : <SendIcon />}
+        </Button>
+      </Box>
     </Box>
   );
 };

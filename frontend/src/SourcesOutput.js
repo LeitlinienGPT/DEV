@@ -184,7 +184,7 @@ const SourcesOutput = ({ sourceDocuments, isLoading }) => {
                   <tr>
                     <td colSpan={7}>
                       <Typography variant="body2" color="text.secondary" className="sources-content">
-                        Ihre Anfrage wird bearbeitet. Aktuell dauert die Suche nach passenden Quellen ca. 10 Sekunden. 
+                        Ihre Anfrage wird bearbeitet. Aktuell dauert die Suche nach passenden Quellen ca. 10-15 Sekunden. 
                       </Typography>
                     </td>
                   </tr>
