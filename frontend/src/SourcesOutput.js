@@ -1,3 +1,4 @@
+// Updated SourcesOutput.js
 import React, { useState, useEffect } from 'react';
 import './SourcesOutput.css';
 import Card from '@mui/joy/Card';
@@ -15,22 +16,16 @@ import { useTheme } from '@mui/system';
 // Helper function to format title and extract register number
 const formatTitleAndExtractRegisterNumber = (source) => {
   const parts = source.split('_');
-  let registerNumber = parts[0];
-  if (registerNumber && registerNumber.length >= 6) {
-    registerNumber = `${registerNumber.substring(0, 3)}-${registerNumber.substring(3, 7)}`;
-  } else {
-    registerNumber = 'Unbekannt';
-  }
   const entwicklungsstufe = parts[1];
   const formattedTitle = parts.slice(2).join(' ');
-  return { formattedTitle, registerNumber, entwicklungsstufe };
+  return { formattedTitle, entwicklungsstufe };
 };
 
 // CollapsibleRow component
 const CollapsibleRow = ({ row, index, isOpen, toggleOpen, isEven }) => {
   const { metadata, page_content: pageContent } = row;
-  const { formattedTitle, registerNumber, entwicklungsstufe } = formatTitleAndExtractRegisterNumber(metadata?.Source || '');
-  const { Gültigkeit, href: awmfRegisterUrl, Page, Fachgesellschaft } = metadata || {};
+  const { formattedTitle, entwicklungsstufe } = formatTitleAndExtractRegisterNumber(metadata?.Source || '');
+  const { href: awmfRegisterUrl, Page, Fachgesellschaft } = metadata || {};
   const pages = Array.isArray(Page) ? Page.join(', ') : Page;
   const theme = useTheme();
 
@@ -45,18 +40,9 @@ const CollapsibleRow = ({ row, index, isOpen, toggleOpen, isEven }) => {
   return (
     <>
       <tr style={rowStyle}>
-        <td className="table-cell">{Gültigkeit}</td>
-        <td className="table-cell">{entwicklungsstufe}</td>
-        <td className="table-cell">
-          {awmfRegisterUrl ? (
-            <Link href={awmfRegisterUrl} target="_blank" variant="outlined">
-              {registerNumber}
-            </Link>
-          ) : (
-            <span>{registerNumber}</span>
-          )}
-        </td>
         <td className="table-cell">{formattedTitle}</td>
+        <td className="table-cell">{Fachgesellschaft && Fachgesellschaft.join(', ')}</td>
+        <td className="table-cell">{entwicklungsstufe}</td>
         <td className="table-cell">
           {awmfRegisterUrl ? (
             <Link href={`${awmfRegisterUrl}#page=${Page}`} target="_blank" variant="outlined">
@@ -66,7 +52,6 @@ const CollapsibleRow = ({ row, index, isOpen, toggleOpen, isEven }) => {
             <span>{pages}</span>
           )}
         </td>
-        <td className="table-cell">{Fachgesellschaft && Fachgesellschaft.join(', ')}</td>
         <td className="table-cell">
           <IconButton
             aria-label="expand row"
@@ -81,7 +66,7 @@ const CollapsibleRow = ({ row, index, isOpen, toggleOpen, isEven }) => {
       </tr>
       {isOpen && (
         <tr>
-          <td colSpan={7} style={{ padding: 0 }}>
+          <td colSpan={5} style={{ padding: 0 }}>
             <Sheet
               variant="soft"
               sx={{ p: 2, boxShadow: 'inset 0 3px 6px 0 rgba(0 0 0 / 0.08)' }}
@@ -115,7 +100,7 @@ const SourcesOutput = ({ sourceDocuments, isLoading }) => {
 
   const renderSourceDocumentsSkeleton = () => (
     <tr>
-      <td colSpan={7}>
+      <td colSpan={5}>
         <div className="source-skeleton">
           <Skeleton variant="text" width="60%" />
           <Skeleton variant="rectangular" height="2rem" />
@@ -163,12 +148,10 @@ const SourcesOutput = ({ sourceDocuments, isLoading }) => {
             <Table sx={{ width: '100%', tableLayout: 'auto' }}>
               <thead>
                 <tr>
-                  <th style={{ backgroundColor: theme.palette.background.level1, fontWeight: 'bold' }}>Gültigkeit</th>
-                  <th style={{ backgroundColor: theme.palette.background.level1, fontWeight: 'bold' }}>Entwicklungsstufe</th>
-                  <th style={{ backgroundColor: theme.palette.background.level1, fontWeight: 'bold' }}>Registernummer</th>
                   <th style={{ backgroundColor: theme.palette.background.level1, fontWeight: 'bold' }}>Titel</th>
-                  <th style={{ backgroundColor: theme.palette.background.level1, fontWeight: 'bold' }}>Seite (im PDF)</th>
                   <th style={{ backgroundColor: theme.palette.background.level1, fontWeight: 'bold' }}>Fachgesellschaften</th>
+                  <th style={{ backgroundColor: theme.palette.background.level1, fontWeight: 'bold' }}>Entwicklungsstufe</th>
+                  <th style={{ backgroundColor: theme.palette.background.level1, fontWeight: 'bold' }}>Seite (im PDF)</th>
                   <th style={{ backgroundColor: theme.palette.background.level1, fontWeight: 'bold' }}>Inhalt</th>
                 </tr>
               </thead>
@@ -182,7 +165,7 @@ const SourcesOutput = ({ sourceDocuments, isLoading }) => {
                   renderSourceDocuments()
                 ) : (
                   <tr>
-                    <td colSpan={7}>
+                    <td colSpan={5}>
                       <Typography variant="body2" color="text.secondary" className="sources-content">
                         Ihre Anfrage wird bearbeitet. Aktuell dauert die Suche nach passenden Quellen ca. 10-15 Sekunden. 
                       </Typography>
