@@ -93,7 +93,7 @@ const Chat = ({ setMessages, messages, setIsQuestionSubmitted, setCurrentQuestio
         <Textarea
           className="textarea"
           size="lg"
-          placeholder="Schreibe eine Nachricht..."
+          placeholder="Stelle eine Frage..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}

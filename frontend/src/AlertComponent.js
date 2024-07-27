@@ -1,7 +1,4 @@
 import InfoIcon from '@mui/icons-material/Info';
-import WarningIcon from '@mui/icons-material/Warning';
-import ReportIcon from '@mui/icons-material/Report';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import * as React from 'react';
 import Box from '@mui/joy/Box';
@@ -29,7 +26,7 @@ const AlertVariousStates = () => {
           <div>
             <div>Achtung</div>
             <Typography level="body-sm" color="neutral">
-              Die bereitgestellten Informationen können Ungenauigkeiten enthalten. Bitte überprüfen Sie alle Informationen sorgfältig, da Halluzinationen auftreten können. Wir übernehmen keine Haftung.
+            Die bereitgestellten Antworten basieren auf einem fortschrittlichen System, das primär medizinische Leitlinien sowie aktuelle wissenschaftliche Erkenntnisse analysiert. Aufgrund der Natur des algorithmischen Prozesses können gelegentlich Ungenauigkeiten oder sogenannte Halluzinationen auftreten. Bitte überprüfen Sie alle Informationen sorgfältig; wir übernehmen keine Haftung für eventuelle Schäden oder Verluste, die durch die Verwendung der bereitgestellten Informationen entstehen.
             </Typography>
           </div>
         </Alert>

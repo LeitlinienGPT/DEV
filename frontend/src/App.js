@@ -45,9 +45,6 @@ function App() {
         { text: message.text, ...data }
       ];
 
-      // Limit the sourceDocuments to the three most recent sources
-      const updatedSourceDocuments = updatedMessages.flatMap(msg => msg.source_documents).slice(-3);
-
       // Update the state with the new messages and limited sources
       setMessages(updatedMessages);
     } catch (error) {

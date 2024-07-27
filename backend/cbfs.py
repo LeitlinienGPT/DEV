@@ -39,13 +39,11 @@ compression_retriever = ContextualCompressionRetriever(
 )
 
 # Final Retriever
-template = """Beantworten Sie die Frage nur auf der Grundlage 
-            der Quellen und inkludieren Sie alle relevanten Details.
-            Die Antwort sollte nicht länger als sechs Sätze sein.
-            Jeder Satz sollte mit Quellenangaben ende, die listen 
-            aus welcher Quelle die Informationen kamen.
+template = """Beantworte die Frage mit den Quellen und deinem vorhandenen Wissen. 
+            Inkludiere alle relevanten Details.
+            Jeder Satz der aus den Quellen kommt muss mit einer Quellenangabe enden.
             Wenn Informationen aus mehreren Quellen stammen, 
-            geben Sie diese in der Form Quelle 1; Quelle 2 an.
+            gebe diese in der Form Quelle 1; Quelle 2 an.
             Quellen: {context}
             Frage: {question}
             Antwort:"""
