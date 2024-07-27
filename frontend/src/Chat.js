@@ -23,6 +23,8 @@ const Chat = ({ setMessages, messages, setIsQuestionSubmitted, setCurrentQuestio
       setCurrentQuestion(input.trim());
       setFirstMessageSent(true); 
 
+      setInput('');
+
       try {
         const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/process`, {
           method: 'POST',

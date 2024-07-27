@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactMarkdown from 'react-markdown';
 import DOMPurify from 'dompurify';
 import './ChatOutput.css';
 import ChatBubble from './ChatBubble';

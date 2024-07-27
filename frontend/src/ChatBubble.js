@@ -1,19 +1,14 @@
 import React from 'react';
 import Avatar from '@mui/joy/Avatar';
 import Box from '@mui/joy/Box';
-import IconButton from '@mui/joy/IconButton';
 import Stack from '@mui/joy/Stack';
 import Sheet from '@mui/joy/Sheet';
 import Typography from '@mui/joy/Typography';
-import Link from '@mui/joy/Link';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import InsertDriveFileRoundedIcon from '@mui/icons-material/InsertDriveFileRounded';
 import ReactMarkdown from 'react-markdown';
 
 const ChatBubble = ({ content, variant, timestamp, attachment = undefined, sender, sourceDocuments = [] }) => {
   const isSent = variant === 'sent';
-  const [isHovered, setIsHovered] = React.useState(false);
-  const [isLiked, setIsLiked] = React.useState(false);
 
   // Function to replace "Quelle 1", "Quelle 2", "Quelle 3" with hyperlinks without brackets and add '&' between consecutive sources
   const renderContentWithLinks = (content) => {
@@ -99,8 +94,6 @@ const ChatBubble = ({ content, variant, timestamp, attachment = undefined, sende
             sx={{ 
               position: 'relative', 
             }}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
           >
             <Sheet
               color={isSent ? "primary" : "neutral"} // Adjust color for better contrast in Light Mode
@@ -130,36 +123,6 @@ const ChatBubble = ({ content, variant, timestamp, attachment = undefined, sende
                 </ReactMarkdown>
               </Typography>
             </Sheet>
-            {(isHovered || isLiked) && isSent && (
-              <Stack
-                direction="row"
-                justifyContent={isSent ? 'flex-end' : 'flex-start'}
-                spacing={0.5}
-                sx={{
-                  position: 'absolute',
-                  top: '50%',
-                  p: 1.5,
-                  ...(isSent
-                    ? {
-                        left: 0,
-                        transform: 'translate(-100%, -50%)',
-                      }
-                    : {
-                        right: 0,
-                        transform: 'translate(100%, -50%)',
-                      }),
-                }}
-              >
-                <IconButton
-                  variant={isLiked ? 'soft' : 'plain'}
-                  color={isLiked ? 'danger' : 'neutral'}
-                  size="sm"
-                  onClick={() => setIsLiked((prevState) => !prevState)}
-                >
-                  {isLiked ? '❤️' : <FavoriteBorderIcon />}
-                </IconButton>
-              </Stack>
-            )}
           </Box>
         )}
       </Box>

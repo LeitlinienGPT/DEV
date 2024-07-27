@@ -3,7 +3,8 @@
   gap: 1rem;
   justify-content: center;
   flex-wrap: wrap;
-  width: 100%; /* Full width */
+  width: 100%;
+  margin-bottom: 1rem; /* Add this line */
 }
 
 .sources-card {
