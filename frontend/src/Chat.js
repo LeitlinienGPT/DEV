@@ -71,13 +71,13 @@ const Chat = ({ setMessages, messages, setIsQuestionSubmitted, setCurrentQuestio
   return (
     <Box className="chat" sx={{ bgcolor: 'background.body', padding: 2 }}>
       {!firstMessageSent && (
-        <div className="chat-header" style={{ paddingTop: '64px' }}>
+        <div className="chat-header" style={{ paddingTop: '64px', textAlign: 'center' }}>
           <h1 style={{ color: 'text.primary' }}>Demoversion: LeitlinienGPT</h1>
           <AlertVariousStates sx={{ marginBottom: 4 }} />
         </div>
       )}
 
-      <Stack spacing={2} className="chat-layout" sx={{ flex: 1, overflowY: 'auto' }}>
+      <Stack spacing={2} className="chat-layout" sx={{ flex: 1, overflowY: 'auto', alignItems: 'center' }}>
         {/* Remove the message rendering from here */}
       </Stack>
 
