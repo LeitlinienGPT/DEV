@@ -2,6 +2,7 @@ from langchain.retrievers.contextual_compression import ContextualCompressionRet
 from langchain_cohere import CohereRerank
 from pinecone import Pinecone
 from langchain_pinecone import PineconeVectorStore as Pinecone_Langchain
+from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from dotenv import load_dotenv
 import os
 from langchain.prompts import PromptTemplate
@@ -35,7 +36,7 @@ vectorstore = Pinecone_Langchain(index, embeddings, 'text')
 # Reranker
 compressor = CohereRerank()
 compression_retriever = ContextualCompressionRetriever(
-    base_compressor=compressor, base_retriever=vectorstore.as_retriever(search_kwargs={"k": 12})
+    base_compressor=compressor, base_retriever=vectorstore.as_retriever(search_kwargs={"k": 9})
 )
 
 # Final Retriever
@@ -75,7 +76,7 @@ class PreprocessingConversationalRetrievalChain(ConversationalRetrievalChain):
 
 # Create an instance of the combine_docs_chain and question_generator separately
 conversational_chain = ConversationalRetrievalChain.from_llm(
-    llm=ChatOpenAI(temperature=0, model="gpt-4-turbo"),
+    llm=ChatOpenAI(temperature=0, model="gpt-3.5-turbo",streaming=True, callbacks=[StreamingStdOutCallbackHandler()]),
     retriever=compression_retriever,
     combine_docs_chain_kwargs={"prompt": prompt},
     return_source_documents=True,
