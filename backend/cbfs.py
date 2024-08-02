@@ -76,7 +76,7 @@ class PreprocessingConversationalRetrievalChain(ConversationalRetrievalChain):
 
 # Create an instance of the combine_docs_chain and question_generator separately
 conversational_chain = ConversationalRetrievalChain.from_llm(
-    llm=ChatOpenAI(temperature=0, model="gpt-3.5-turbo",streaming=True, callbacks=[StreamingStdOutCallbackHandler()]),
+    llm=ChatOpenAI(temperature=0, model="gpt-4-turbo",streaming=True, callbacks=[StreamingStdOutCallbackHandler()]),
     retriever=compression_retriever,
     combine_docs_chain_kwargs={"prompt": prompt},
     return_source_documents=True,
