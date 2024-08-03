@@ -1,15 +1,26 @@
+# Langchain
 from langchain.retrievers.contextual_compression import ContextualCompressionRetriever
-from langchain_cohere import CohereRerank
-from pinecone import Pinecone
-from langchain_pinecone import PineconeVectorStore as Pinecone_Langchain
-from dotenv import load_dotenv
-import os
 from langchain.prompts import PromptTemplate
 from langchain.chains import ConversationalRetrievalChain
+from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
+
+
+# Pinecone
+from pinecone import Pinecone
+from langchain_pinecone import PineconeVectorStore as Pinecone_Langchain
+
+
+# Cohere
+from langchain_cohere import CohereRerank
+
+# Openai
+import openai
 from langchain_openai import ChatOpenAI
 from langchain_openai.embeddings import OpenAIEmbeddings
-import openai
-import json
+
+# Setup
+from dotenv import load_dotenv
+import os
 from fastapi.encoders import jsonable_encoder
 import param
 from doccheck_scraper import search_doccheck  # Import the DocCheck scraper
@@ -76,7 +87,7 @@ class PreprocessingConversationalRetrievalChain(ConversationalRetrievalChain):
 
 # Create an instance of the combine_docs_chain and question_generator separately
 conversational_chain = ConversationalRetrievalChain.from_llm(
-    llm=ChatOpenAI(temperature=0, model="gpt-3.5-turbo"),
+    llm=ChatOpenAI(temperature=0, model="gpt-4-turbo",streaming=True, callbacks=[StreamingStdOutCallbackHandler()]),
     retriever=compression_retriever,
     combine_docs_chain_kwargs={"prompt": prompt},
     return_source_documents=True,
