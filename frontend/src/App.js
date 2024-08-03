@@ -3,26 +3,25 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Chat from './Chat';
 import ChatOutput from './ChatOutput';
 import SourcesOutput from './SourcesOutput';
-import { CssVarsProvider } from '@mui/joy/styles'; // Ensure this is imported correctly
+import { CssVarsProvider } from '@mui/joy/styles';
 import joyTheme from './joyTheme';
 import Header from './Header';
-import About from './About';
-import FAQ from './FAQ'; // Import the new FAQ component
+import FAQ from './FAQ';
 import { Routes, Route } from 'react-router-dom';
 import './App.css';
 import ErrorBoundary from './ErrorBoundary';
-import Typography from '@mui/joy/Typography'; // Import Typography from '@mui/joy/Typography'
+import Typography from '@mui/joy/Typography';
 
 function App() {
   const [messages, setMessages] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isQuestionSubmitted, setIsQuestionSubmitted] = useState(false); // New state
-  const [currentQuestion, setCurrentQuestion] = useState(''); // New state for current question
+  const [isLoading, setIsLoading] = useState(false); // Ensure this state controls loading
+  const [isQuestionSubmitted, setIsQuestionSubmitted] = useState(false);
+  const [currentQuestion, setCurrentQuestion] = useState('');
 
   const addMessage = async (message) => {
-    setIsLoading(true);
-    setIsQuestionSubmitted(true); // Set question submitted state
-    setCurrentQuestion(message.text); // Set the current question
+    setIsLoading(true); // Start loading
+    setIsQuestionSubmitted(true);
+    setCurrentQuestion(message.text);
 
     try {
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/process`, {
@@ -39,19 +38,16 @@ function App() {
       }
 
       const data = await response.json();
-      
-      // Update the messages with the new message and its sources
       const updatedMessages = [
         ...messages,
         { text: message.text, ...data }
       ];
 
-      // Update the state with the new messages and limited sources
       setMessages(updatedMessages);
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
-      setIsLoading(false);
+      setIsLoading(false); // End loading
     }
   };
 
@@ -67,7 +63,7 @@ function App() {
         <div className="app-container">
           <Routes>
             <Route path="/" element={
-              <div className="chat-layout"> 
+              <div className="chat-layout">
                 {isQuestionSubmitted && (
                   <>
                     <Typography
@@ -76,15 +72,22 @@ function App() {
                     >
                       {currentQuestion}
                     </Typography>
-                    <SourcesOutput sourceDocuments={messages.flatMap((msg) => msg.source_documents).slice(-3)} isLoading={isLoading} className="grid-card" />
-                    <ChatOutput messages={messages} isLoading={isLoading} currentQuestion={currentQuestion} className="grid-card" />
+                    <SourcesOutput sourceDocuments={messages.flatMap((msg) => msg.source_documents).slice(-3)} isLoading={isLoading} />
+                    <ChatOutput messages={messages} isLoading={isLoading} currentQuestion={currentQuestion} />
                   </>
                 )}
-                <Chat addMessage={addMessage} setMessages={setMessages} messages={messages} setIsQuestionSubmitted={setIsQuestionSubmitted} setCurrentQuestion={setCurrentQuestion} isQuestionSubmitted={isQuestionSubmitted} className="grid-card" />
+                <Chat 
+                  addMessage={addMessage} 
+                  setMessages={setMessages} 
+                  messages={messages} 
+                  setIsQuestionSubmitted={setIsQuestionSubmitted} 
+                  setCurrentQuestion={setCurrentQuestion} 
+                  isQuestionSubmitted={isQuestionSubmitted} 
+                  setIsLoading={setIsLoading} // Pass setIsLoading here
+                />
               </div>
             } />
-            <Route path="/about" element={<About />} />
-            <Route path="/faq" element={<FAQ />} /> {/* Added FAQ route */}
+            <Route path="/faq" element={<FAQ />} />
           </Routes>
         </div>
       </ErrorBoundary>

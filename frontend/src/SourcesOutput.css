@@ -4,15 +4,15 @@
   justify-content: center;
   flex-wrap: wrap;
   width: 100%;
-  margin-bottom: 1rem; /* Add this line */
+  margin-bottom: 1rem;
 }
 
 .sources-card {
-  max-width: 100%; /* Full width */
-  width: 100%; /* Full width */
+  max-width: 100%;
+  width: 100%;
   border-radius: 16px;
   box-shadow: 3;
-  background-color: var(--joy-palette-primary-box); /* Ensure this matches your theme */
+  background-color: var(--joy-palette-primary-box);
 }
 
 .sources-title {
@@ -25,6 +25,9 @@
 }
 
 .source-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
   margin-bottom: 1rem;
 }
 

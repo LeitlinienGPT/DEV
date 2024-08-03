@@ -9,7 +9,7 @@ import Stack from '@mui/joy/Stack';
 import AlertVariousStates from './AlertComponent';
 import './Chat.css';
 
-const Chat = ({ setMessages, messages, setIsQuestionSubmitted, setCurrentQuestion }) => {
+const Chat = ({ setMessages, messages, setIsQuestionSubmitted, setCurrentQuestion, setIsLoading }) => {
   const [input, setInput] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [firstMessageSent, setFirstMessageSent] = useState(false);
@@ -21,7 +21,8 @@ const Chat = ({ setMessages, messages, setIsQuestionSubmitted, setCurrentQuestio
       setIsSubmitting(true);
       setIsQuestionSubmitted(true);
       setCurrentQuestion(input.trim());
-      setFirstMessageSent(true); 
+      setFirstMessageSent(true);
+      setIsLoading(true); // Set loading state to true
 
       setInput('');
 
@@ -46,11 +47,11 @@ const Chat = ({ setMessages, messages, setIsQuestionSubmitted, setCurrentQuestio
         ];
 
         setMessages(updatedMessages);
-        setInput('');
       } catch (error) {
         console.error('Error sending the query to the backend:', error);
       } finally {
         setIsSubmitting(false);
+        setIsLoading(false); // Set loading state to false when the request is complete
       }
     }
   };

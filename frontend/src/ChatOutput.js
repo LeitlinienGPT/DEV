@@ -71,7 +71,9 @@ const ChatBubble = ({ answer, sourceDocuments = [] }) => {
         >
           <ReactMarkdown
             components={{
-              a: ({ ...props }) => <Link {...props} sx={{ color: 'black', fontWeight: 'bold' }} />,
+              a: ({ ...props }) => (
+                <Link {...props} sx={{ color: 'black', fontWeight: 'bold' }} target="_blank" rel="noopener noreferrer" />
+              ),
               blockquote: ({ ...props }) => (
                 <Typography
                   sx={{
