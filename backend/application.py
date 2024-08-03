@@ -31,10 +31,10 @@ def serve(path):
 
 @app.route('/process', methods=['POST'])
 def process_text():
-    print("Received request at /process")
-    print("Headers:", request.headers)  # Log the headers
-    print("Raw Data:", request.data)  # Log the raw request data
-    print("JSON Data:", request.json)  # Log the parsed JSON data
+    # print("Received request at /process")
+    # print("Headers:", request.headers)  # Log the headers
+    # print("Raw Data:", request.data)  # Log the raw request data
+    # print("JSON Data:", request.json)  # Log the parsed JSON data
 
     data = request.json
 

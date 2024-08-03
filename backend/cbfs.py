@@ -12,6 +12,7 @@ import openai
 import json
 from fastapi.encoders import jsonable_encoder
 import param
+from doccheck_scraper import search_doccheck  # Import the DocCheck scraper
 
 # Load environment variables from the root .env file
 dotenv_path = os.path.join(os.path.dirname(__file__), '../KEYs.env')
@@ -108,6 +109,12 @@ class cbfs(param.Parameterized):
         except Exception as e:
             print(f"Error in self.qa call: {e}")
             return {'answer': 'Error occurred', 'source_documents': []}
+
+        # Include DocCheck search results
+        doccheck_content, doccheck_url = search_doccheck(query)
+        if doccheck_content != "No relevant information found on DocCheck.":
+            doccheck_source = f"DocCheck: [link]({doccheck_url})"
+            result["answer"] += f"\n\n{doccheck_content} ({doccheck_source})"
 
         self.chat_history.extend([(query, result["answer"])])
         source_documents = []

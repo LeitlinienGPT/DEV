@@ -11,6 +11,7 @@ import FAQ from './FAQ'; // Import the new FAQ component
 import { Routes, Route } from 'react-router-dom';
 import './App.css';
 import ErrorBoundary from './ErrorBoundary';
+import Typography from '@mui/joy/Typography'; // Import Typography from '@mui/joy/Typography'
 
 function App() {
   const [messages, setMessages] = useState([]);
@@ -69,6 +70,12 @@ function App() {
               <div className="chat-layout"> 
                 {isQuestionSubmitted && (
                   <>
+                    <Typography
+                      level="h2"
+                      sx={{ fontSize: '1.6rem', marginBottom: '1rem', fontWeight: 'bold', paddingLeft: 1 }}
+                    >
+                      {currentQuestion}
+                    </Typography>
                     <SourcesOutput sourceDocuments={messages.flatMap((msg) => msg.source_documents).slice(-3)} isLoading={isLoading} className="grid-card" />
                     <ChatOutput messages={messages} isLoading={isLoading} currentQuestion={currentQuestion} className="grid-card" />
                   </>
