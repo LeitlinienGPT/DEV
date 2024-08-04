@@ -52,21 +52,18 @@ const ChatBubble = ({ answer, sourceDocuments = [] }) => {
   };
 
   const renderContentWithHashtags = (content) => {
-    const hashtagRegex = /#([\w\-ÄÖÜäöü]+)/g;
-    return content.replace(hashtagRegex, (match, hashtag) => {
-      const encodedHashtag = encodeURIComponent(hashtag);
-      return `[${match}](https://flexikon.doccheck.com/de/${encodedHashtag})`;
+    const hashtagRegex = /(^|\s)(#[\w\-ÄÖÜäöü]+)/g;
+    return content.replace(hashtagRegex, (match, p1, hashtag) => {
+      const encodedHashtag = encodeURIComponent(hashtag.slice(1));
+      return `${p1}[${hashtag}](https://flexikon.doccheck.com/de/${encodedHashtag})`;
     });
   };
 
   // Process the content for sources
   const answerContentWithLinks = renderContentWithLinks(answer);
 
-  // Process only the content after the sources for hashtags
-  const parts = answerContentWithLinks.split('\n');
-  const lastPartIndex = parts.length - 1;
-  parts[lastPartIndex] = renderContentWithHashtags(parts[lastPartIndex]);
-  const answerContent = parts.join('\n');
+  // Process the content for hashtags
+  const answerContent = renderContentWithHashtags(answerContentWithLinks);
 
   return (
     <Grid container spacing={2} sx={{ maxWidth: '100%', p: 2 }}>

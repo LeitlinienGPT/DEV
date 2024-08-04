@@ -59,7 +59,7 @@ template = """Beantworte die Frage mit den Quellen und deinem vorhandenen Wissen
             Formattiere die Antwort sehr übersichtlich.
             Quellen: {context}
             Frage: {question}
-            Geb mir drei kurze medizinische Fachbegriffe am Ende deiner Antwort
+            Geb mir drei kurze medizinische Fachbegriffe (nur einzelne Wörter) am Ende deiner Antwort
             die zur Antwort passen mit jeweils einem # davor. 
             Antwort:"""
 prompt = PromptTemplate.from_template(template)
