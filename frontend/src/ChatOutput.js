@@ -51,7 +51,22 @@ const ChatBubble = ({ answer, sourceDocuments = [] }) => {
     return parts.join('');
   };
 
-  const answerContent = renderContentWithLinks(answer);
+  const renderContentWithHashtags = (content) => {
+    const hashtagRegex = /#([\w\-ÄÖÜäöü]+)/g;
+    return content.replace(hashtagRegex, (match, hashtag) => {
+      const encodedHashtag = encodeURIComponent(hashtag);
+      return `[${match}](https://flexikon.doccheck.com/de/${encodedHashtag})`;
+    });
+  };
+
+  // Process the content for sources
+  const answerContentWithLinks = renderContentWithLinks(answer);
+
+  // Process only the content after the sources for hashtags
+  const parts = answerContentWithLinks.split('\n');
+  const lastPartIndex = parts.length - 1;
+  parts[lastPartIndex] = renderContentWithHashtags(parts[lastPartIndex]);
+  const answerContent = parts.join('\n');
 
   return (
     <Grid container spacing={2} sx={{ maxWidth: '100%', p: 2 }}>
