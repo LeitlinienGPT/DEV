@@ -3,8 +3,11 @@
   gap: 1rem;
   justify-content: center;
   flex-wrap: wrap;
-  width: 100%;
-  margin-bottom: 1rem;
+  width: calc(100% - 3rem);
+  margin-bottom: 1rem; /* Adjust this value to change the margin */
+  margin-top: 2rem; /* Example to add a top margin */
+  margin-left: 1.5rem; /* Example to add a left margin */
+  margin-right: 1.5rem; /* Example to add a left margin */
 }
 
 .sources-card {

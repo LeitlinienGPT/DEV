@@ -60,7 +60,8 @@ template = """Beantworte die Frage mit den Quellen und deinem vorhandenen Wissen
             Quellen: {context}
             Frage: {question}
             Geb mir drei kurze medizinische Fachbegriffe (nur einzelne Wörter) am Ende deiner Antwort
-            die zur Antwort passen mit jeweils einem # davor. 
+            die zur Antwort passen mit jeweils einem # davor. Nicht erlaubt ist: #Wort1 Wort2.
+            Erlaubt ist z.B. #Wort1
             Antwort:"""
 prompt = PromptTemplate.from_template(template)
 

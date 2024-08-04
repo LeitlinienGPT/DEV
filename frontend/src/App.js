@@ -68,7 +68,7 @@ function App() {
                   <>
                     <Typography
                       level="h2"
-                      sx={{ fontSize: '1.6rem', marginBottom: '1rem', fontWeight: 'bold', paddingLeft: 1 }}
+                      sx={{ fontSize: '1.6rem', marginBottom: '0rem', fontWeight: 'bold', paddingLeft: '1.5rem', paddingRight: '1.5rem' }}
                     >
                       {currentQuestion}
                     </Typography>
