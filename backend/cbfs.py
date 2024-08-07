@@ -145,3 +145,5 @@ class cbfs(param.Parameterized):
 
 if __name__ == "__main__":
     cbfs_instance = cbfs()
+    results = cbfs_instance.convchain("Beim Mammakarzinom, wann wird eine adjuvante Strahlentherapie der Lymphabfluswege empfohlen?")
+    print(results)
