@@ -1,21 +1,22 @@
 .sources-output {
   display: flex;
   gap: 1rem;
-  justify-content: center;
+  justify-content: flex-start; /* Align items to the left */
   flex-wrap: wrap;
   width: calc(100% - 3rem);
   margin-bottom: 1rem; /* Adjust this value to change the margin */
   margin-top: 2rem; /* Example to add a top margin */
   margin-left: 1.5rem; /* Example to add a left margin */
-  margin-right: 1.5rem; /* Example to add a left margin */
+  margin-right: 1.5rem; /* Example to add a right margin */
 }
 
 .sources-card {
-  max-width: 100%;
-  width: 100%;
+  width: 100%; /* Set the width to 80% */
+  max-width: 100%; /* Ensure the max-width is also 80% */
   border-radius: 16px;
   box-shadow: 3;
   background-color: var(--joy-palette-primary-box);
+  margin-right: 0; /* Ensure there's no margin on the right */
 }
 
 .sources-title {

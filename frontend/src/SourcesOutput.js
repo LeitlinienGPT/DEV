@@ -27,7 +27,6 @@ const CollapsibleRow = ({ row, index, isEven }) => {
   const { metadata } = row;
   const { formattedTitle, entwicklungsstufe, date } = formatTitleAndExtractRegisterNumber(metadata?.Source || '');
   const { href: awmfRegisterUrl, Page, Fachgesellschaft } = metadata || {};
-  const pages = Array.isArray(Page) ? Page.join(', ') : Page;
   const theme = useTheme();
 
   const rowStyle = {
@@ -40,19 +39,18 @@ const CollapsibleRow = ({ row, index, isEven }) => {
 
   return (
     <tr style={rowStyle}>
-      <td className="table-cell">{formattedTitle}</td>
-      <td className="table-cell">{date}</td> {/* New column for date */}
-      <td className="table-cell">{Fachgesellschaft && Fachgesellschaft.join(', ')}</td>
-      <td className="table-cell">{entwicklungsstufe}</td>
       <td className="table-cell">
         {awmfRegisterUrl ? (
           <Link href={`${awmfRegisterUrl}#page=${Page}`} target="_blank" variant="outlined">
-            {pages}
+            {formattedTitle}
           </Link>
         ) : (
-          <span>{pages}</span>
+          <span>{formattedTitle}</span>
         )}
       </td>
+      <td className="table-cell">{date}</td> {/* New column for date */}
+      <td className="table-cell">{Fachgesellschaft && Fachgesellschaft.join(', ')}</td>
+      <td className="table-cell">{entwicklungsstufe}</td>
     </tr>
   );
 };
@@ -105,7 +103,6 @@ const SourcesOutput = ({ sourceDocuments, isLoading }) => {
                   <th style={{ backgroundColor: theme.palette.background.level1, fontWeight: 'bold' }}>Datum der Veröffentlichung</th> {/* New column header */}
                   <th style={{ backgroundColor: theme.palette.background.level1, fontWeight: 'bold' }}>Fachgesellschaften</th>
                   <th style={{ backgroundColor: theme.palette.background.level1, fontWeight: 'bold' }}>Entwicklungsstufe</th>
-                  <th style={{ backgroundColor: theme.palette.background.level1, fontWeight: 'bold' }}>Seite (im PDF)</th>
                 </tr>
               </thead>
               <tbody>
