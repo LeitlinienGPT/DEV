@@ -1,3 +1,6 @@
+// Chat.js: This handles the input form where the user types their question. 
+// It manages the form submission and state changes when a new question is asked.
+
 import React, { useState, useEffect } from 'react';
 import { useColorScheme } from '@mui/joy/styles';
 import Box from '@mui/joy/Box';
@@ -23,9 +26,13 @@ const Chat = ({ setMessages, messages, setIsQuestionSubmitted, setCurrentQuestio
       setCurrentQuestion(input.trim());
       setFirstMessageSent(true);
       setIsLoading(true); // Set loading state to true
-
+  
+      // Append new message without clearing
+      const newMessage = { text: input.trim(), answer: 'Lädt Antwort...' };
+      setMessages([...messages, newMessage]);
+  
       setInput('');
-
+  
       try {
         const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/process`, {
           method: 'POST',
@@ -34,19 +41,18 @@ const Chat = ({ setMessages, messages, setIsQuestionSubmitted, setCurrentQuestio
           },
           body: JSON.stringify({ question: input.trim() }),
         });
-
+  
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-
+  
         const data = await response.json();
-
-        const updatedMessages = [
-          ...messages,
-          { text: input.trim(), ...data }
-        ];
-
-        setMessages(updatedMessages);
+  
+        // Append the new data to messages
+        setMessages((prevMessages) => [
+          ...prevMessages.slice(0, -1), // remove the last placeholder message
+          { ...newMessage, ...data }
+        ]);
       } catch (error) {
         console.error('Error sending the query to the backend:', error);
       } finally {

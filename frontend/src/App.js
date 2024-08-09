@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import Chat from './Chat';
 import ChatOutput from './ChatOutput';
@@ -14,15 +14,18 @@ import Typography from '@mui/joy/Typography';
 
 function App() {
   const [messages, setMessages] = useState([]);
-  const [isLoading, setIsLoading] = useState(false); // Ensure this state controls loading
+  const [isLoading, setIsLoading] = useState(false);
   const [isQuestionSubmitted, setIsQuestionSubmitted] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState('');
+  
+  // Ref to track the last question's title
+  const lastQuestionRef = useRef(null);
 
   const addMessage = async (message) => {
-    setIsLoading(true); // Start loading
+    setIsLoading(true);
     setIsQuestionSubmitted(true);
     setCurrentQuestion(message.text);
-
+  
     try {
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/process`, {
         method: 'POST',
@@ -31,28 +34,33 @@ function App() {
         },
         body: JSON.stringify({ question: message.text }),
       });
-
+  
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(`API request failed with status ${response.status}: ${errorData.message}`);
       }
-
+  
       const data = await response.json();
       const updatedMessages = [
         ...messages,
         { text: message.text, ...data }
       ];
-
+  
       setMessages(updatedMessages);
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
-      setIsLoading(false); // End loading
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
     console.log('Messages array updated:', messages);
+    
+    // Scroll to the last question's title after messages update
+    if (lastQuestionRef.current) {
+      lastQuestionRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
   }, [messages]);
 
   return (
@@ -64,13 +72,14 @@ function App() {
           <Routes>
             <Route path="/" element={
               <div className="chat-layout">
-                {isQuestionSubmitted && (
-                  <>
+                {messages.map((msg, index) => (
+                  <React.Fragment key={index}>
                     <Typography
+                      ref={index === messages.length - 1 ? lastQuestionRef : null}  // Assign ref to the last question
                       level="h2"
                       sx={{ fontSize: '1.8rem', marginBottom: '2rem', fontWeight: 'bold', paddingLeft: '1.5rem', paddingRight: '1.5rem' }}
                     >
-                      {currentQuestion}
+                      {msg.text}
                     </Typography>
                     <Typography
                       level="h3"
@@ -78,10 +87,10 @@ function App() {
                     >
                       Quellen
                     </Typography>
-                    <SourcesOutput sourceDocuments={messages.flatMap((msg) => msg.source_documents).slice(-3)} isLoading={isLoading} />
-                    <ChatOutput messages={messages} isLoading={isLoading} currentQuestion={currentQuestion} />
-                  </>
-                )}
+                    <SourcesOutput sourceDocuments={msg.source_documents} isLoading={isLoading} />
+                    <ChatOutput messages={[msg]} isLoading={isLoading} currentQuestion={msg.text} />
+                  </React.Fragment>
+                ))}
                 <Chat 
                   addMessage={addMessage} 
                   setMessages={setMessages} 
@@ -89,7 +98,7 @@ function App() {
                   setIsQuestionSubmitted={setIsQuestionSubmitted} 
                   setCurrentQuestion={setCurrentQuestion} 
                   isQuestionSubmitted={isQuestionSubmitted} 
-                  setIsLoading={setIsLoading} // Pass setIsLoading here
+                  setIsLoading={setIsLoading} 
                 />
               </div>
             } />
