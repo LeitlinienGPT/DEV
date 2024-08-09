@@ -82,7 +82,7 @@ export default function Header() {
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        padding: "8px 16px",
+        padding: "14px 16px",
         backgroundColor: "background.level1",
         borderBottom: "1px solid",
         borderColor: "divider",

@@ -120,7 +120,7 @@ const Chat = ({ setMessages, messages, setIsQuestionSubmitted, setCurrentQuestio
             margin: 0,
           }}
         />
-        <Button className="button" type="submit" variant="outlined" color="primary" loading={isSubmitting} disabled={isSubmitting}>
+        <Button className="button" type="submit" variant="solid" color="neutral" loading={isSubmitting} disabled={isSubmitting}>
           {isSubmitting ? <CircularProgress size="24" /> : <SendIcon />}
         </Button>
       </Box>
