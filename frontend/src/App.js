@@ -68,9 +68,15 @@ function App() {
                   <>
                     <Typography
                       level="h2"
-                      sx={{ fontSize: '1.6rem', marginBottom: '0rem', fontWeight: 'bold', paddingLeft: '1.5rem', paddingRight: '1.5rem' }}
+                      sx={{ fontSize: '1.8rem', marginBottom: '2rem', fontWeight: 'bold', paddingLeft: '1.5rem', paddingRight: '1.5rem' }}
                     >
                       {currentQuestion}
+                    </Typography>
+                    <Typography
+                      level="h3"
+                      sx={{ fontSize: '1.5rem', marginBottom: '0rem', fontWeight: 'bold', paddingLeft: '1.5rem'}}
+                    >
+                      Quellen
                     </Typography>
                     <SourcesOutput sourceDocuments={messages.flatMap((msg) => msg.source_documents).slice(-3)} isLoading={isLoading} />
                     <ChatOutput messages={messages} isLoading={isLoading} currentQuestion={currentQuestion} />

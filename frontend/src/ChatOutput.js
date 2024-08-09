@@ -1,15 +1,16 @@
 import React from 'react';
-import Box from '@mui/joy/Box';
-import Typography from '@mui/joy/Typography';
-import Grid from '@mui/material/Grid';
+import Grid from '@mui/material/Grid'; 
+import Typography from '@mui/joy/Typography'; 
 import ReactMarkdown from 'react-markdown';
 import Link from '@mui/joy/Link';
 import DOMPurify from 'dompurify';
+import Box from '@mui/joy/Box';
 import LinkPreviewComponent from './LinkPreviewComponent';
-import './ChatOutput.css';
+import { useTheme } from '@mui/joy/styles'; // Import the useTheme hook
 
-// ChatBubble component
 const ChatBubble = ({ answer, sourceDocuments = [] }) => {
+  const theme = useTheme(); // Get the current theme
+
   const renderContentWithLinks = (content) => {
     if (typeof content !== 'string') return content;
 
@@ -24,23 +25,21 @@ const ChatBubble = ({ answer, sourceDocuments = [] }) => {
 
       const items = match.split(';').map((item) => item.trim());
 
-      items.forEach((item, index) => {
-        if (index > 0) {
-          parts.push(' & ');
-        }
-
+      const linkContent = items.map((item, index) => {
         const matchInner = item.match(/Quelle (\d+)/);
         if (matchInner) {
           const sourceIndex = parseInt(matchInner[1], 10) - 1;
           const source = sourceDocuments[sourceIndex];
           if (source && source.metadata && source.metadata.href) {
-            parts.push(`[${matchInner[1]}](${source.metadata.href}#page=${source.metadata.Page})`);
+            return `[(${matchInner[1]})](${source.metadata.href}#page=${source.metadata.Page})`;
           } else {
-            parts.push(`${matchInner[1]}`);
+            return `Quelle ${matchInner[1]}`;
           }
         }
-      });
+        return '';
+      }).join('; ');
 
+      parts.push(`${linkContent}`);
       lastIndex = offset + match.length;
     });
 
@@ -82,14 +81,22 @@ const ChatBubble = ({ answer, sourceDocuments = [] }) => {
             <ReactMarkdown
               components={{
                 a: ({ ...props }) => (
-                  <Link {...props} sx={{ color: 'black', fontWeight: 'bold' }} target="_blank" rel="noopener noreferrer" />
+                  <Link 
+                    {...props} 
+                    sx={{ 
+                      color: theme.palette.primary.main, // Use theme's primary color for links
+                      fontWeight: 'bold' 
+                    }} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                  />
                 ),
                 blockquote: ({ ...props }) => (
                   <Typography
                     sx={{
-                      borderLeft: '4px solid var(--joy-palette-divider)',
+                      borderLeft: `4px solid ${theme.palette.divider}`,
                       paddingLeft: 2,
-                      color: 'var(--joy-palette-text-secondary)',
+                      color: theme.palette.text.secondary,
                       fontStyle: 'italic',
                       margin: 0,
                     }}
@@ -107,27 +114,21 @@ const ChatBubble = ({ answer, sourceDocuments = [] }) => {
   );
 };
 
-// ChatOutput component
 const ChatOutput = ({ messages, isLoading, currentQuestion }) => {
   const lastMessage = messages[messages.length - 1] || {};
-
-  console.log('Messages:', messages);
-  console.log('Current Question:', currentQuestion);
-
   const sanitizedMarkdown = lastMessage.answer ? DOMPurify.sanitize(lastMessage.answer) : '';
 
-  // Extract hashtags from the answer
   const extractHashtags = (text) => {
     const hashtagRegex = /(^|\s)(#[\w\-ÄÖÜäöü]+)/g;
     const hashtags = [];
     let match;
     while ((match = hashtagRegex.exec(text)) !== null) {
-      hashtags.push(match[2].slice(1)); // Remove the '#' character
+      hashtags.push(match[2].slice(1));
     }
     return hashtags;
   };
 
-  const hashtags = extractHashtags(sanitizedMarkdown).slice(0, 3); // Get up to three hashtags
+  const hashtags = extractHashtags(sanitizedMarkdown).slice(0, 3);
 
   return (
     <Grid container spacing={2} sx={{ maxWidth: '100%', margin: '1.5 auto', padding: '1.5rem' }}>

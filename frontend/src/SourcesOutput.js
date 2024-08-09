@@ -9,18 +9,23 @@ import Table from '@mui/joy/Table';
 import Skeleton from '@mui/joy/Skeleton';
 import { useTheme } from '@mui/system';
 
-// Helper function to format title and extract register number
+// Helper function to format title, extract register number, and split date
 const formatTitleAndExtractRegisterNumber = (source) => {
   const parts = source.split('_');
   const entwicklungsstufe = parts[1];
-  const formattedTitle = parts.slice(2).join(' ');
-  return { formattedTitle, entwicklungsstufe };
+  const titlePart = parts.slice(2).join(' ');
+  
+  const dateIndex = titlePart.indexOf('20');
+  const formattedTitle = dateIndex !== -1 ? titlePart.slice(0, dateIndex).trim().replace(/-/g, ' ') : titlePart.replace(/-/g, ' ');
+  const date = dateIndex !== -1 ? titlePart.slice(dateIndex).trim() : '';
+  
+  return { formattedTitle, entwicklungsstufe, date };
 };
 
 // CollapsibleRow component
 const CollapsibleRow = ({ row, index, isEven }) => {
   const { metadata } = row;
-  const { formattedTitle, entwicklungsstufe } = formatTitleAndExtractRegisterNumber(metadata?.Source || '');
+  const { formattedTitle, entwicklungsstufe, date } = formatTitleAndExtractRegisterNumber(metadata?.Source || '');
   const { href: awmfRegisterUrl, Page, Fachgesellschaft } = metadata || {};
   const pages = Array.isArray(Page) ? Page.join(', ') : Page;
   const theme = useTheme();
@@ -36,6 +41,7 @@ const CollapsibleRow = ({ row, index, isEven }) => {
   return (
     <tr style={rowStyle}>
       <td className="table-cell">{formattedTitle}</td>
+      <td className="table-cell">{date}</td> {/* New column for date */}
       <td className="table-cell">{Fachgesellschaft && Fachgesellschaft.join(', ')}</td>
       <td className="table-cell">{entwicklungsstufe}</td>
       <td className="table-cell">
@@ -91,14 +97,12 @@ const SourcesOutput = ({ sourceDocuments, isLoading }) => {
     <div className="sources-output">
       <Card className="sources-card">
         <CardContent>
-          <Typography level="title-md" sx={{ fontSize: '1.5rem', marginBottom: '1rem' }}>
-            Quellen
-          </Typography>
           <Sheet>
             <Table>
               <thead>
                 <tr>
                   <th style={{ backgroundColor: theme.palette.background.level1, fontWeight: 'bold' }}>Titel</th>
+                  <th style={{ backgroundColor: theme.palette.background.level1, fontWeight: 'bold' }}>Datum der Veröffentlichung</th> {/* New column header */}
                   <th style={{ backgroundColor: theme.palette.background.level1, fontWeight: 'bold' }}>Fachgesellschaften</th>
                   <th style={{ backgroundColor: theme.palette.background.level1, fontWeight: 'bold' }}>Entwicklungsstufe</th>
                   <th style={{ backgroundColor: theme.palette.background.level1, fontWeight: 'bold' }}>Seite (im PDF)</th>

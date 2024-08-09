@@ -97,8 +97,8 @@ export default function Header() {
           <HomeRoundedIcon />
         </IconButton>
         <Button variant="plain" color="neutral" onClick={() => navigate('/faq')}>FAQs</Button>
-        {/* Entferne den Button "Über Uns" */}
         {/* <Button variant="plain" color="neutral" onClick={() => navigate('/about')}>Über Uns</Button> */}
+        <Button variant="plain" color="neutral" onClick={() => window.open('https://www.leitliniengpt.de/about', '_blank')}>Über uns</Button>
       </Stack>
       <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
         <Button
