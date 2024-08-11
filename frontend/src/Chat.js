@@ -1,6 +1,3 @@
-// Chat.js: This handles the input form where the user types their question. 
-// It manages the form submission and state changes when a new question is asked.
-
 import React, { useState, useEffect } from 'react';
 import { useColorScheme } from '@mui/joy/styles';
 import Box from '@mui/joy/Box';
@@ -12,14 +9,14 @@ import Stack from '@mui/joy/Stack';
 import AlertVariousStates from './AlertComponent';
 import './Chat.css';
 
-const Chat = ({ setMessages, messages, setIsQuestionSubmitted, setCurrentQuestion, setIsLoading }) => {
+const Chat = ({ setMessages, messages, setIsQuestionSubmitted, setCurrentQuestion, setIsLoading, questionFromCard }) => {
   const [input, setInput] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [firstMessageSent, setFirstMessageSent] = useState(false);
   const { mode } = useColorScheme();
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
+    if (event) event.preventDefault();
     if (input.trim()) {
       setIsSubmitting(true);
       setIsQuestionSubmitted(true);
@@ -75,6 +72,19 @@ const Chat = ({ setMessages, messages, setIsQuestionSubmitted, setCurrentQuestio
     }
   }, [firstMessageSent]);
 
+  useEffect(() => {
+    if (questionFromCard) {
+      setInput(questionFromCard); // Set the input to the question from the card
+
+      // Automatically trigger form submission after 1 second
+      const timer = setTimeout(() => {
+        document.querySelector('.chat-input-container button[type="submit"]').click(); // Simulate button click
+      }, 1000);
+
+      return () => clearTimeout(timer); // Clear timeout if the component unmounts
+    }
+  }, [questionFromCard]);
+
   return (
     <Box className="chat" sx={{ bgcolor: 'background.body', padding: 2 }}>
       {!firstMessageSent && (
@@ -85,7 +95,7 @@ const Chat = ({ setMessages, messages, setIsQuestionSubmitted, setCurrentQuestio
       )}
 
       <Stack spacing={2} className="chat-layout" sx={{ flex: 1, overflowY: 'auto', alignItems: 'center' }}>
-        {/* Remove the message rendering from here */}
+        {/* No need to render messages here, it's handled in the parent component */}
       </Stack>
 
       <Box

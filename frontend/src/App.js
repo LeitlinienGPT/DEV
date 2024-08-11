@@ -1,16 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
+import { CssVarsProvider } from '@mui/joy/styles';
+import { Routes, Route } from 'react-router-dom';
+import Typography from '@mui/joy/Typography';
 import Chat from './Chat';
 import ChatOutput from './ChatOutput';
 import SourcesOutput from './SourcesOutput';
-import { CssVarsProvider } from '@mui/joy/styles';
-import joyTheme from './joyTheme';
 import Header from './Header';
 import FAQ from './FAQ';
-import { Routes, Route } from 'react-router-dom';
-import './App.css';
 import ErrorBoundary from './ErrorBoundary';
-import Typography from '@mui/joy/Typography';
+import joyTheme from './joyTheme';
+import QuestionCard from './QuestionCard';
+import './App.css';
 
 function App() {
   const [messages, setMessages] = useState([]);
@@ -63,6 +64,11 @@ function App() {
     }
   }, [messages]);
 
+  const handleQuestionClick = (question) => {
+    // Clear the current question and simulate user input
+    setCurrentQuestion(question);
+  };
+
   return (
     <CssVarsProvider theme={joyTheme}>
       <CssBaseline />
@@ -91,6 +97,7 @@ function App() {
                     <ChatOutput messages={[msg]} isLoading={isLoading} currentQuestion={msg.text} />
                   </React.Fragment>
                 ))}
+                
                 <Chat 
                   addMessage={addMessage} 
                   setMessages={setMessages} 
@@ -99,7 +106,9 @@ function App() {
                   setCurrentQuestion={setCurrentQuestion} 
                   isQuestionSubmitted={isQuestionSubmitted} 
                   setIsLoading={setIsLoading} 
+                  questionFromCard={currentQuestion} // Pass the current question to the Chat component
                 />
+                <QuestionCard onQuestionClick={handleQuestionClick} /> {/* Pass the handler to the QuestionCard */}
               </div>
             } />
             <Route path="/faq" element={<FAQ />} />

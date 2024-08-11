@@ -30,12 +30,17 @@
   margin: 0; /* Remove any margins */
 }
 
+.question-card {
+  margin-bottom: 0rem; /* Add space between the QuestionCard and input */
+}
+
 .textarea {
   flex-grow: 1;
   resize: none;
   min-height: 100px;
   width: calc(100% - 72px); 
 }
+
 
 .chat {
   flex: 1;
