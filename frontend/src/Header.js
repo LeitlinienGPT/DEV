@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useColorScheme } from "@mui/joy/styles";
 import Box from "@mui/joy/Box";
 import Typography from "@mui/joy/Typography";
@@ -7,7 +7,7 @@ import IconButton from "@mui/joy/IconButton";
 import Stack from "@mui/joy/Stack";
 import Avatar from "@mui/joy/Avatar";
 import Button from "@mui/joy/Button";
-import Tooltip from "@mui/joy/Tooltip"; // Korrigiert
+import Tooltip from "@mui/joy/Tooltip";
 import Dropdown from "@mui/joy/Dropdown";
 import Menu from "@mui/joy/Menu";
 import MenuButton from "@mui/joy/MenuButton";
@@ -54,6 +54,7 @@ function ColorSchemeToggle() {
 
 export default function Header() {
   const navigate = useNavigate();
+  const location = useLocation(); // Get the current location
   const [showCard, setShowCard] = React.useState(false); // State to toggle card visibility
 
   const handleClearChat = async () => {
@@ -76,6 +77,14 @@ export default function Header() {
     }
   };
 
+  const handleHomeClick = () => {
+    if (location.pathname === '/') {
+      window.location.reload(); // Reload the page if the user is already on the homepage
+    } else {
+      navigate('/'); // Navigate to the homepage if the user is not already there
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -93,7 +102,7 @@ export default function Header() {
       }}
     >
       <Stack direction="row" spacing={2} alignItems="center">
-        <IconButton variant="plain" color="neutral" onClick={() => navigate('/')}>
+        <IconButton variant="plain" color="neutral" onClick={handleHomeClick}>
           <HomeRoundedIcon />
         </IconButton>
         <Button variant="plain" color="neutral" onClick={() => navigate('/faq')}>FAQs</Button>

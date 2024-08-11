@@ -13,6 +13,7 @@ const Item = styled(Sheet)(({ theme }) => ({
   ...theme.typography['body-sm'],
   padding: theme.spacing(1),
   textAlign: 'center',
+
   borderRadius: 4,
   color: theme.vars.palette.text.secondary,
 }));
@@ -55,18 +56,20 @@ export default function QuestionCard({ onQuestionClick }) {  // Accept the onQue
           container
           rowSpacing={1}
           columnSpacing={{ xs: 2, sm: 3, md: 4 }}
-          sx={{ width: '100%' }}
+          sx={{ width: '98%' }}
           justifyContent="center"  // Center the question cards
+          alignItems="stretch"
         >
           {randomQuestions.map((question, index) => (
             <Grid item xs={12} sm={6} md={6} key={index}>
               <Item>
-                <Card variant="outlined" onClick={() => handleQuestionClick(question)}>  {/* Handle click event */}
+                <Card variant="soft" onClick={() => handleQuestionClick(question)}>  {/* Handle click event */}
                   <CardContent>
                     <Typography>{question}</Typography>
                   </CardContent>
                 </Card>
               </Item>
+              
             </Grid>
           ))}
         </Grid>

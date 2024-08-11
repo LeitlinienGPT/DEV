@@ -41,7 +41,6 @@
   width: calc(100% - 72px); 
 }
 
-
 .chat {
   flex: 1;
   overflow-y: auto;

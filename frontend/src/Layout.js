@@ -54,29 +54,6 @@ function Header(props) {
   );
 }
 
-function SideNav(props) {
-  return (
-    <Box
-      component="nav"
-      className="Navigation"
-      {...props}
-      sx={[
-        {
-          p: 2,
-          bgcolor: 'background.surface',
-          borderRight: '1px solid',
-          borderColor: 'divider',
-          display: {
-            xs: 'none',
-            sm: 'initial',
-          },
-        },
-        ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
-      ]}
-    />
-  );
-}
-
 function Main(props) {
   return (
     <Box
