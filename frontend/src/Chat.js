@@ -6,7 +6,6 @@ import CircularProgress from '@mui/joy/CircularProgress';
 import Button from '@mui/joy/Button';
 import SendIcon from '@mui/icons-material/Send';
 import Stack from '@mui/joy/Stack';
-import AlertVariousStates from './AlertComponent';
 import './Chat.css';
 
 const Chat = ({ setMessages, messages, setIsQuestionSubmitted, setCurrentQuestion, setIsLoading, questionFromCard }) => {
@@ -17,44 +16,44 @@ const Chat = ({ setMessages, messages, setIsQuestionSubmitted, setCurrentQuestio
 
   const handleSubmit = async (event) => {
     if (event) event.preventDefault();
-    if (input.trim()) {
-      setIsSubmitting(true);
-      setIsQuestionSubmitted(true);
-      setCurrentQuestion(input.trim());
-      setFirstMessageSent(true);
-      setIsLoading(true); // Set loading state to true
-  
-      // Append new message without clearing
-      const newMessage = { text: input.trim(), answer: 'Lädt Antwort...' };
-      setMessages([...messages, newMessage]);
-  
+
+    const messageText = input.trim();
+
+    if (messageText) {
       setInput('');
-  
+      setIsSubmitting(true);
+      setFirstMessageSent(true);
+      setIsQuestionSubmitted(true);
+      setCurrentQuestion(messageText);
+
+      const newMessage = { text: messageText };
+      setMessages([...messages, newMessage]);
+      setIsLoading(true);
+
       try {
         const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/process`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ question: input.trim() }),
+          body: JSON.stringify({ question: messageText }),
         });
-  
+
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-  
+
         const data = await response.json();
-  
-        // Append the new data to messages
+
         setMessages((prevMessages) => [
-          ...prevMessages.slice(0, -1), // remove the last placeholder message
-          { ...newMessage, ...data }
+          ...prevMessages.slice(0, -1),
+          { ...newMessage, ...data },
         ]);
       } catch (error) {
         console.error('Error sending the query to the backend:', error);
       } finally {
         setIsSubmitting(false);
-        setIsLoading(false); // Set loading state to false when the request is complete
+        setIsLoading(false);
       }
     }
   };
@@ -74,29 +73,19 @@ const Chat = ({ setMessages, messages, setIsQuestionSubmitted, setCurrentQuestio
 
   useEffect(() => {
     if (questionFromCard) {
-      setInput(questionFromCard); // Set the input to the question from the card
+      setInput(questionFromCard);
 
-      // Automatically trigger form submission after 1 second
       const timer = setTimeout(() => {
-        document.querySelector('.chat-input-container button[type="submit"]').click(); // Simulate button click
+        handleSubmit();
       }, 1000);
 
-      return () => clearTimeout(timer); // Clear timeout if the component unmounts
+      return () => clearTimeout(timer);
     }
   }, [questionFromCard]);
 
   return (
     <Box className="chat" sx={{ bgcolor: 'background.body', padding: 2 }}>
-      {!firstMessageSent && (
-        <div className="chat-header" style={{ paddingTop: '64px', textAlign: 'center' }}>
-          <h1 style={{ color: 'text.primary' }}>Demoversion: LeitlinienGPT</h1>
-          <AlertVariousStates sx={{ marginBottom: 4 }} />
-        </div>
-      )}
-
-      <Stack spacing={2} className="chat-layout" sx={{ flex: 1, overflowY: 'auto', alignItems: 'center' }}>
-        {/* No need to render messages here, it's handled in the parent component */}
-      </Stack>
+      <Stack spacing={2} className="chat-layout" sx={{ flex: 1, overflowY: 'auto', alignItems: 'center' }} />
 
       <Box
         component="form"

@@ -13,7 +13,6 @@ const Item = styled(Sheet)(({ theme }) => ({
   ...theme.typography['body-sm'],
   padding: theme.spacing(1),
   textAlign: 'center',
-
   borderRadius: 4,
   color: theme.vars.palette.text.secondary,
 }));
@@ -34,9 +33,9 @@ const questions = [
   "Beim Mammakarzinom, wann wird eine adjuvante Strahlentherapie der Lymphabflusswege empfohlen?",
 ];
 
-export default function QuestionCard({ onQuestionClick }) {  // Accept the onQuestionClick prop
+export default function QuestionCard({ onQuestionClick }) {
   const [randomQuestions, setRandomQuestions] = useState([]);
-  const [showQuestions, setShowQuestions] = useState(true); // State to toggle question visibility
+  const [showQuestions, setShowQuestions] = useState(true);
 
   useEffect(() => {
     // Randomly select 4 questions to display
@@ -45,31 +44,42 @@ export default function QuestionCard({ onQuestionClick }) {  // Accept the onQue
   }, []);
 
   const handleQuestionClick = (question) => {
-    setShowQuestions(false);  // Hide all cards when a question is clicked
-    onQuestionClick(question);  // Call the parent handler
+    setShowQuestions(false); // Hide all cards when a question is clicked
+    onQuestionClick(question); // Call the parent handler
   };
 
   return (
     <Box className="question-card" sx={{ paddingBottom: 2 }}>
-      {showQuestions && (  // Conditionally render the grid of questions
+      {showQuestions && (
         <Grid
           container
           rowSpacing={1}
           columnSpacing={{ xs: 2, sm: 3, md: 4 }}
           sx={{ width: '98%' }}
-          justifyContent="center"  // Center the question cards
+          justifyContent="center"
           alignItems="stretch"
         >
           {randomQuestions.map((question, index) => (
             <Grid item xs={12} sm={6} md={6} key={index}>
               <Item>
-                <Card variant="soft" onClick={() => handleQuestionClick(question)}>  {/* Handle click event */}
+                <Card
+                  variant="soft"
+                  onClick={() => handleQuestionClick(question)}
+                  sx={{
+                    cursor: 'pointer',
+                    '&:hover': {
+                      backgroundColor: 'primary.softBg', // Highlight on hover
+                      boxShadow: 'md', // Add shadow on hover
+                      transform: 'scale(1.05)', // Slightly enlarge on hover
+                    },
+                    transition: 'transform 0.3s, box-shadow 0.3s', // Smooth transitions
+                  }}
+                >
                   <CardContent>
                     <Typography>{question}</Typography>
                   </CardContent>
                 </Card>
               </Item>
-              
             </Grid>
           ))}
         </Grid>
