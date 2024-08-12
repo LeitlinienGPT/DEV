@@ -107,7 +107,7 @@ const Chat = ({ setMessages, messages, setIsQuestionSubmitted, setCurrentQuestio
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          variant="soft"
+          variant="outlined"
           minRows={3}
           maxRows={8}
           sx={{
@@ -121,7 +121,27 @@ const Chat = ({ setMessages, messages, setIsQuestionSubmitted, setCurrentQuestio
             margin: 0,
           }}
         />
-        <Button className="button" type="submit" variant="solid" color="neutral" loading={isSubmitting} disabled={isSubmitting}>
+        <Button
+          className="button"
+          type="submit"
+          variant="solid"
+          color="neutral"
+          loading={isSubmitting}
+          disabled={isSubmitting}
+          sx={{
+            background: 'linear-gradient(to right, #1c2d6b, #577ff6)',
+            color: 'white',
+            transition: 'background 0.4s ease, color 0.4s ease', // Smooth transition for background and color
+            '&:hover': {
+              background: '#577ff6', // Solid blue on hover
+              color: 'white',
+            },
+            '&:disabled': {
+              background: 'linear-gradient(to right, #1c2d6b, #577ff6)',
+              opacity: 0.7,
+            },
+          }}
+        >
           {isSubmitting ? <CircularProgress size="24" /> : <SendIcon />}
         </Button>
       </Box>

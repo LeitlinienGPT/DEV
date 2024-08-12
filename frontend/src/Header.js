@@ -55,6 +55,7 @@ function ColorSchemeToggle() {
 export default function Header() {
   const navigate = useNavigate();
   const location = useLocation(); // Get the current location
+  const { mode } = useColorScheme(); // Access mode here
   const [showCard, setShowCard] = React.useState(false); // State to toggle card visibility
 
   const handleClearChat = async () => {
@@ -92,7 +93,7 @@ export default function Header() {
         justifyContent: "space-between",
         alignItems: "center",
         padding: "14px 16px",
-        backgroundColor: "background.level1",
+        background: mode === 'light' ? "linear-gradient(to right, #e7ebfb, #f9f9fa)" : "background.level1", // Conditional gradient
         borderBottom: "1px solid",
         borderColor: "divider",
         position: "fixed",
@@ -106,7 +107,6 @@ export default function Header() {
           <HomeRoundedIcon />
         </IconButton>
         <Button variant="plain" color="neutral" onClick={() => navigate('/faq')}>FAQs</Button>
-        {/* <Button variant="plain" color="neutral" onClick={() => navigate('/about')}>Über Uns</Button> */}
         <Button variant="plain" color="neutral" onClick={() => window.open('https://www.leitliniengpt.de/about', '_blank')}>Über uns</Button>
       </Stack>
       <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
