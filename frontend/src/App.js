@@ -122,9 +122,9 @@ function App() {
                     </Typography>
                     <SourcesOutput 
                       sourceDocuments={(msg.source_documents || []).slice(-3)} // Handle undefined or null cases
-                      isLoading={isLoading} 
+                      isLoading={index === messages.length - 1 && isLoading} // Only show loading state for the most recent question
                     />
-                    <ChatOutput messages={[msg]} isLoading={isLoading} currentQuestion={msg.text} />
+                    <ChatOutput messages={[msg]} isLoading={index === messages.length - 1 && isLoading} currentQuestion={msg.text} />
                   </React.Fragment>
                 ))}
                 <Chat 
