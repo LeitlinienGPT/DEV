@@ -140,7 +140,7 @@ const ChatOutput = ({ messages, isLoading, currentQuestion }) => {
           />
         </Grid>
       )}
-      <Grid item xs={12} md={3} sx={{ paddingLeft: '1.5rem' }}>
+{/*       <Grid item xs={12} md={3} sx={{ paddingLeft: '1.5rem' }}>
         {hashtags.map((hashtag, index) => (
           <Box key={index} sx={{ marginBottom: '1.5rem' }}>
             <LinkPreviewComponent
@@ -148,7 +148,7 @@ const ChatOutput = ({ messages, isLoading, currentQuestion }) => {
             />
           </Box>
         ))}
-      </Grid>
+      </Grid> */}
     </Grid>
   );
 };
