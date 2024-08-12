@@ -9,13 +9,15 @@ import Sheet from '@mui/joy/Sheet';
 
 // Styled component for grid items
 const Item = styled(Sheet)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? theme.palette.background.level1 : '#fff',
-  ...theme.typography['body-sm'],
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  borderRadius: 4,
-  color: theme.vars.palette.text.secondary,
-}));
+    backgroundColor: theme.palette.mode === 'dark' ? '#000000' : '#ffffff', // Deeper dark mode background vs light mode background
+    ...theme.typography['body-sm'],
+    padding: theme.spacing(1),
+    textAlign: 'center',
+    borderRadius: 4,
+    color: theme.palette.mode === 'dark' ? '#ffffff' : '#000000', // Dark mode text color vs light mode text color
+    height: '100%', // Make sure the item fills the grid space
+    border: 'none', // Remove any borders
+  }));
 
 const questions = [
   "Wann wird die bariatrische OP empfohlen?",
@@ -67,9 +69,12 @@ export default function QuestionCard({ onQuestionClick }) {
                   onClick={() => handleQuestionClick(question)}
                   sx={{
                     cursor: 'pointer',
+                    height: '100%', // Ensure all cards are the same height
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center', // Center content vertically
                     '&:hover': {
                       backgroundColor: 'primary.softBg', // Highlight on hover
-                      boxShadow: 'md', // Add shadow on hover
                       transform: 'scale(1.05)', // Slightly enlarge on hover
                     },
                     transition: 'transform 0.3s, box-shadow 0.3s', // Smooth transitions

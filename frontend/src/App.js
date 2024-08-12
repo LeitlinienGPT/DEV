@@ -83,12 +83,12 @@ function App() {
                   <>
                     <Typography
                       level="h1"
-                      sx={{ fontSize: '2rem', marginBottom: '1rem', fontWeight: 'bold', textAlign: 'center' }}
+                      sx={{ fontSize: '2rem', marginTop: '3rem', marginBottom: '3rem', fontWeight: 'bold', textAlign: 'center' }}
                     >
                       Demoversion: LeitlinienGPT
                     </Typography>
                     <AlertVariousStates sx={{ marginBottom: 4 }} />
-                    <QuestionCard onQuestionClick={handleQuestionClick} />
+                    
                   </>
                 )}
                 {isQuestionSubmitted && (
@@ -101,6 +101,7 @@ function App() {
                     </Typography>
                     <SourcesOutput sourceDocuments={messages.flatMap((msg) => msg.source_documents).slice(-3)} isLoading={isLoading} />
                     <ChatOutput messages={messages} isLoading={isLoading} currentQuestion={currentQuestion} />
+                    
                   </>
                 )}
                 <Chat 
@@ -112,6 +113,7 @@ function App() {
                   isQuestionSubmitted={isQuestionSubmitted} 
                   setIsLoading={setIsLoading} 
                 />
+                <QuestionCard onQuestionClick={handleQuestionClick} />
               </div>
             } />
             <Route path="/faq" element={<FAQ />} />
