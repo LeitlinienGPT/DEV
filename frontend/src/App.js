@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import Chat from './Chat';
 import ChatOutput from './ChatOutput';
@@ -19,12 +19,20 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [isQuestionSubmitted, setIsQuestionSubmitted] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState('');
+  
+  // Ref to track the last question's title
+  const lastQuestionRef = useRef(null);
 
   const addMessage = async (message) => {
+    // Immediately set the loading state and add the message to the messages array
     setIsLoading(true);
     setIsQuestionSubmitted(true);
     setCurrentQuestion(message.text);
-
+  
+    // Add the new message to messages array with placeholder data to trigger rendering
+    const newMessage = { text: message.text, source_documents: [], answer: 'Loading...' };
+    setMessages((prevMessages) => [...prevMessages, newMessage]);
+  
     try {
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/process`, {
         method: 'POST',
@@ -33,19 +41,20 @@ function App() {
         },
         body: JSON.stringify({ question: message.text }),
       });
-
+  
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(`API request failed with status ${response.status}: ${errorData.message}`);
       }
-
+  
       const data = await response.json();
-      const updatedMessages = [
-        ...messages,
-        { text: message.text, ...data }
-      ];
-
-      setMessages(updatedMessages);
+  
+      // Replace the placeholder data with the actual data
+      setMessages((prevMessages) => 
+        prevMessages.map((msg, index) => 
+          index === prevMessages.length - 1 ? { ...msg, ...data } : msg
+        )
+      );
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
@@ -68,6 +77,11 @@ function App() {
 
   useEffect(() => {
     console.log('Messages array updated:', messages);
+    
+    // Scroll to the last question's title after messages update
+    if (lastQuestionRef.current) {
+      lastQuestionRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
   }, [messages]);
 
   return (
@@ -91,19 +105,28 @@ function App() {
                     
                   </>
                 )}
-                {isQuestionSubmitted && (
-                  <>
+                {messages.map((msg, index) => (
+                  <React.Fragment key={index}>
                     <Typography
+                      ref={index === messages.length - 1 ? lastQuestionRef : null}  // Assign ref to the last question
                       level="h2"
-                      sx={{ fontSize: '1.6rem', marginBottom: '1rem', fontWeight: 'bold', paddingLeft: 1 }}
+                      sx={{ fontSize: '1.8rem', marginBottom: '2rem', fontWeight: 'bold', paddingLeft: '1.5rem', paddingRight: '1.5rem' }}
                     >
-                      {currentQuestion}
+                      {msg.text}
                     </Typography>
-                    <SourcesOutput sourceDocuments={messages.flatMap((msg) => msg.source_documents).slice(-3)} isLoading={isLoading} />
-                    <ChatOutput messages={messages} isLoading={isLoading} currentQuestion={currentQuestion} />
-                    
-                  </>
-                )}
+                    <Typography
+                      level="h3"
+                      sx={{ fontSize: '1.5rem', marginBottom: '0rem', fontWeight: 'bold', paddingLeft: '1.5rem'}}
+                    >
+                      Quellen
+                    </Typography>
+                    <SourcesOutput 
+                      sourceDocuments={(msg.source_documents || []).slice(-3)} // Handle undefined or null cases
+                      isLoading={isLoading} 
+                    />
+                    <ChatOutput messages={[msg]} isLoading={isLoading} currentQuestion={msg.text} />
+                  </React.Fragment>
+                ))}
                 <Chat 
                   addMessage={addMessage} 
                   setMessages={setMessages} 

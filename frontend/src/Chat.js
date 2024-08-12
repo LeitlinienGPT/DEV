@@ -85,7 +85,9 @@ const Chat = ({ setMessages, messages, setIsQuestionSubmitted, setCurrentQuestio
 
   return (
     <Box className="chat" sx={{ bgcolor: 'background.body', padding: 2 }}>
-      <Stack spacing={2} className="chat-layout" sx={{ flex: 1, overflowY: 'auto', alignItems: 'center' }} />
+      <Stack spacing={2} className="chat-layout" sx={{ flex: 1, overflowY: 'auto', alignItems: 'center' }}>
+        {/* Messages will be rendered outside of this component, handled by parent */}
+      </Stack>
 
       <Box
         component="form"
