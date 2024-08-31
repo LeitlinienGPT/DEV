@@ -131,7 +131,7 @@ function App() {
                   isQuestionSubmitted={isQuestionSubmitted} 
                   setIsLoading={setIsLoading} 
                 />
-                {!isQuestionSubmitted && <QuestionCard onQuestionClick={handleQuestionClick} />}
+                <QuestionCard onQuestionClick={handleQuestionClick} />
               </div>
             } />
             <Route path="/faq" element={<FAQ />} />
